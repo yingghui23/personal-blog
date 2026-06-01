@@ -1,0 +1,26 @@
+project:
+  type: website
+  output-dir: docs
+
+execute: 
+  freeze: true
+
+website:
+  description: "A blog built with Quarto"
+  site-url: https://your-website-url.example.com # you must change this appropriately for RSS feeds to work properly
+  title: "AliAs"
+  navbar:
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/yingghui23
+      - icon: linkedin
+        href: https://www.linkedin.com/in/tan-ying-hui23/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3ByB3dxP8gQESEyO24EnDJ%2BA%3D%3D
+      
+format:
+  html:
+    theme: darkly
+    css: styles.css
+
+
+

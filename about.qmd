@@ -1,0 +1,34 @@
+---
+title: "About Me"
+image: IMG_0560.JPG
+about:
+  template: jolla
+  links:
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/tan-ying-hui23/
+    - icon: github
+      text: Github
+      href: https://github.com/yingghui23
+
+---
+
+Hi, I'm Ying Hui. I am a student double-majoring in **Industrial Engineering and Statistics**.
+
+This blog is my digital sandbox where I combine my ISE background with data analytics to solve practical problems. My toolkit is split into two main worlds:
+
+* **The R Toolkit (Design of Experiments):** I use R to set up rigorous statistical experiments (DOE). This is where we deliberately change inputs in a system (like process variables) to figure out exactly what drives performance and cuts variance.
+* **The Python Toolkit (Machine Learning):** I use Python to build predictive models and machine learning pipelines—tinkering with things like Random Forests and hyperparameter tuning to forecast outcomes and optimize decisions.
+
+Ultimately, this space is a collection of my project walk-throughs, engineering deep dives, and data experiments. Thanks for stopping by!
+
+## Education
+
+National University of Singapore
+Bachelor of Engineering, Industrial and Systems Engineering | Aug 2023 - May 2027
+Second Major in Statistics
+
+## Experience 
+
+ASTM International | Advanced Manufacturing Research Intern | Jun 2025 - Dec 2025
+

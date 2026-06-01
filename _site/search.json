@@ -1,0 +1,128 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "BLOG",
+    "section": "",
+    "text": "A 3x2x2 Factorial Design on Coffee Cooling\n\n\n\nDOE\n\nR\n\nBIBD\n\n\n\nUsing an Analysis of Variance (ANOVA) and linear contrasts in R to determine the optimal combination of cup material, lids, and stirring for heat dispersal.\n\n\n\n\n\nJun 1, 2026\n\n\nYing Hui Tan\n\n\n\n\n\n\n\n\n\n\n\n\nPost With Code\n\n\n\nnews\n\ncode\n\nanalysis\n\n\n\n\n\n\n\n\n\nMay 31, 2026\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nMay 28, 2026\n\n\nTristan O’Malley\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/post-with-code/index.html",
+    "href": "posts/post-with-code/index.html",
+    "title": "Post With Code",
+    "section": "",
+    "text": "This is a post with executable code."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About Me",
+    "section": "",
+    "text": "Hi, I’m Ying Hui. I am a student double-majoring in Industrial Engineering and Statistics.\nThis blog is my digital sandbox where I combine my ISE background with data analytics to solve practical problems. My toolkit is split into two main worlds:\nUltimately, this space is a collection of my project walk-throughs, engineering deep dives, and data experiments. Thanks for stopping by!"
+  },
+  {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To My Blog",
+    "section": "",
+    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+  },
+  {
+    "objectID": "about.html#education",
+    "href": "about.html#education",
+    "title": "About Me",
+    "section": "Education",
+    "text": "Education\nNational University of Singapore Bachelor of Engineering, Industrial and Systems Engineering | Aug 2023 - May 2027 Second Major in Statistics"
+  },
+  {
+    "objectID": "about.html#experience",
+    "href": "about.html#experience",
+    "title": "About Me",
+    "section": "Experience",
+    "text": "Experience\nASTM International | Advanced Manufacturing Research Intern | Jun 2025 - Dec 2025"
+  },
+  {
+    "objectID": "posts/coffee-cooling-doe/index.html",
+    "href": "posts/coffee-cooling-doe/index.html",
+    "title": "A 3x2x2 Factorial Design on Coffee Cooling",
+    "section": "",
+    "text": "While it seems like common sense on which factors affect coffee cooling in general, I guess the main point of this blog is to understand the key concepts of Design of Experiment (DoE). Elements like linear contrast and factorial design could be applied to real world data in manufacturing plants or product analytics."
+  },
+  {
+    "objectID": "posts/coffee-cooling-doe/index.html#overview-the-core-objective",
+    "href": "posts/coffee-cooling-doe/index.html#overview-the-core-objective",
+    "title": "A 3x2x2 Factorial Design on Coffee Cooling",
+    "section": "",
+    "text": "While it seems like common sense on which factors affect coffee cooling in general, I guess the main point of this blog is to understand the key concepts of Design of Experiment (DoE). Elements like linear contrast and factorial design could be applied to real world data in manufacturing plants or product analytics."
+  },
+  {
+    "objectID": "posts/coffee-cooling-doe/index.html#the-problem-what-cools-coffee-fastest",
+    "href": "posts/coffee-cooling-doe/index.html#the-problem-what-cools-coffee-fastest",
+    "title": "A 3x2x2 Factorial Design on Coffee Cooling",
+    "section": "The Problem: What Cools Coffee Fastest?",
+    "text": "The Problem: What Cools Coffee Fastest?\nEver wondered what is the optimal way to cool down hot coffee? In this project, we experiment with different methods of cooling a cup of coffee by varying three factors: the material of the cup, stirring, and the addition of a lid. The goal is to determine the most effective combination for cooling coffee under controlled environmental conditions.\nThe primary response variable is the temperature of the coffee after a fixed time interval (10 minutes)."
+  },
+  {
+    "objectID": "posts/coffee-cooling-doe/index.html#experimental-setup-controls",
+    "href": "posts/coffee-cooling-doe/index.html#experimental-setup-controls",
+    "title": "A 3x2x2 Factorial Design on Coffee Cooling",
+    "section": "Experimental Setup & Controls",
+    "text": "Experimental Setup & Controls\nTo ensure consistency and isolate the true treatment effects, several critical engineering controls were implemented: * Fixed Environment: All trials were conducted in a single room with the thermostat locked at 80°F. * Standardized Initial State: Water was heated in the same vessel to a full boil, poured immediately, and standardized to an initial temperature of 180°F. * Standardized Stirring: The stirring protocol was strictly controlled at 1 rotation per second for exactly 1 minute. * System Cleanliness: Cups were thoroughly washed and allowed to rest for 15 minutes before reuse to return to room temperature.\n\nFactors of Interest (3x2x2 Factorial Design)\nWe evaluated 12 distinct treatment combinations with 2 replications per treatment, resulting in a total of 24 experimental units (individual cups of coffee).\n\nCup Material (3 Levels): Ceramic, Paper, Insulated Metal\nLid (2 Levels): Lid (+) vs. No Lid (-)\nStirring (2 Levels): Stir (+) vs. No Stir (-)\n\nIn addition to the factorial design, there is a blocking effect (Morning vs Afternoon), in consideration of the time frame the experiement is conducted. Hence, this is a 3x2x2 Full Factorial Design arranged in Randomised Complete Block Design (RCBD).\nThe statistical linear model for this 3x2x2 randomized blocked factorial design is expressed as:\n\\[Y_{ijkl} = \\mu + \\gamma_i + \\alpha_j + \\beta_k + \\delta_l + (\\alpha\\beta)_{jk} + (\\alpha\\delta)_{jl} + (\\beta\\delta)_{kl} + (\\alpha\\beta\\delta)_{jkl} + \\epsilon_{ijkl}\\]\nDefinition of Terms: * \\(Y_{ijkl}\\): The observed final coffee temperature for the \\(i\\)-th block, \\(j\\)-th cup material, \\(k\\)-th lid status, and \\(l\\)-th stirring status.\n\n\\(\\mu\\): The overall grand mean of the coffee temperature.\\(\\gamma_i\\): The effect of the \\(i\\)-th Block (Morning vs. Afternoon), where \\(i = 1, 2\\).\n\\(\\alpha_j\\): The main effect of the \\(j\\)-th factor, Cup Material (Ceramic, Paper, Insulated Metal), where \\(j = 1, 2, 3\\).\n\\(\\beta_k\\): The main effect of the \\(k\\)-th factor, Lid (Yes vs. No), where \\(k = 1, 2\\).\n\\(\\delta_l\\): The main effect of the \\(l\\)-th factor, Stirring (Yes vs. No), where \\(l = 1, 2\\).\n\\((\\alpha\\beta)_{jk}\\): The 2-way interaction effect between Cup Material and Lid. (Significant in your data!)\n\\((\\alpha\\delta)_{jl}\\): The 2-way interaction effect between Cup Material and Stirring.\n\\((\\beta\\delta)_{kl}\\): The 2-way interaction effect between Lid and Stirring.\n\\((\\alpha\\beta\\delta)_{jkl}\\): The 3-way interaction effect between Cup Material, Lid, and Stirring.\n\\(\\epsilon_{ijkl}\\): The random experimental error term, assumed to be independent and identically distributed (i.i.d.) following a normal distribution: \\(\\epsilon_{ijkl} \\sim N(0, \\sigma^2)\\)."
+  },
+  {
+    "objectID": "posts/coffee-cooling-doe/index.html#data-loading-the-raw-numbers",
+    "href": "posts/coffee-cooling-doe/index.html#data-loading-the-raw-numbers",
+    "title": "A 3x2x2 Factorial Design on Coffee Cooling",
+    "section": "Data Loading & The Raw Numbers",
+    "text": "Data Loading & The Raw Numbers\nTo analyze this properly, I loaded the 24 experimental runs into R. I also accounted for a Blocking Factor (Morning vs. Afternoon runs) just in case the ambient temperature outside leaked into the room and messed with our data.\nHere is what the raw dataset looks like:\n\n# Creating our 3x2x2 factorial dataset\ncoffee_df &lt;- data.frame(\n  treatment = rep(paste0(\"T\", 1:12), each = 2),\n  material = rep(c(\"ceramic\",\"ceramic\",\"ceramic\",\"ceramic\",\n                   \"paper\",\"paper\",\"paper\",\"paper\",\n                   \"metal\",\"metal\",\"metal\",\"metal\"), each = 2),\n  lid = rep(c(\"yes\",\"yes\",\"no\",\"no\",\n              \"no\",\"no\",\"yes\",\"yes\",\n              \"yes\",\"yes\",\"no\",\"no\"), each = 2),\n  stir = rep(c(\"yes\",\"no\",\"no\",\"yes\",\n               \"no\",\"yes\",\"no\",\"yes\",\n               \"yes\",\"no\",\"no\",\"yes\"), each = 2),\n  block = rep(c(\"Morning\", \"Afternoon\"), times = 12),\n  temp = c(\n    138,152,150,150,126,134,126,136,146,150,144,143,\n    150,154,152,149,162,165,168,169,158,158,161,160\n  )\n)\n\n# Converting characters to factors for ANOVA\ncoffee_df$material &lt;- factor(coffee_df$material)\ncoffee_df$lid &lt;- factor(coffee_df$lid)\ncoffee_df$stir &lt;- factor(coffee_df$stir)\ncoffee_df$block &lt;- factor(coffee_df$block)\n\nhead(coffee_df)\n\n  treatment material lid stir     block temp\n1        T1  ceramic yes  yes   Morning  138\n2        T1  ceramic yes  yes Afternoon  152\n3        T2  ceramic yes   no   Morning  150\n4        T2  ceramic yes   no Afternoon  150\n5        T3  ceramic  no   no   Morning  126\n6        T3  ceramic  no   no Afternoon  134"
+  },
+  {
+    "objectID": "posts/coffee-cooling-doe/index.html#checking-for-assumptions",
+    "href": "posts/coffee-cooling-doe/index.html#checking-for-assumptions",
+    "title": "A 3x2x2 Factorial Design on Coffee Cooling",
+    "section": "Checking for Assumptions",
+    "text": "Checking for Assumptions\nBefore celebrating the results, we have to make sure the linear regression model isn’t lying to us. I ran standard diagnostics to check for normality, independence, and homoscedasticity.\n\nmodel_lm &lt;- lm(temp ~ block + material * lid * stir, data = coffee_df)\npar(mfrow = c(2, 2))\nplot(model_lm)\n\n\n\n\n\n\n\n\nLooking at the plots, everything tracks cleanly along the diagonal lines and the residuals don’t funnel out, meaning our statistical assumptions hold up fine."
+  },
+  {
+    "objectID": "posts/coffee-cooling-doe/index.html#the-results-breaking-down-the-anova",
+    "href": "posts/coffee-cooling-doe/index.html#the-results-breaking-down-the-anova",
+    "title": "A 3x2x2 Factorial Design on Coffee Cooling",
+    "section": "The Results: Breaking Down the ANOVA",
+    "text": "The Results: Breaking Down the ANOVA\n\nmodel_anova &lt;- aov(model_lm)\nsummary(model_anova)\n\n                  Df Sum Sq Mean Sq F value   Pr(&gt;F)    \nblock              1   63.4    63.4   4.871   0.0495 *  \nmaterial           2 2261.1  1130.5  86.889 1.82e-07 ***\nlid                1  570.4   570.4  43.837 3.76e-05 ***\nstir               1   26.0    26.0   2.001   0.1848    \nmaterial:lid       2  159.3    79.6   6.120   0.0163 *  \nmaterial:stir      2    3.1     1.5   0.118   0.8894    \nlid:stir           1   18.4    18.4   1.412   0.2597    \nmaterial:lid:stir  2   32.2    16.1   1.239   0.3270    \nResiduals         11  143.1    13.0                     \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n\nMy Interpretation of the Data: - The Obvious Winners: material and lid have a \\(p\\)-value way below \\(0.001\\). No surprise there. - The Interaction (material:lid): This is significant (\\(p = 0.0163\\)). It mathematically proves that a lid’s effectiveness shifts drastically depending on the cup shape and material. - The Stirring Myth: Interestingly, stir was not significant (\\(p = 0.1848\\)). For a short 10-minute window, the literal fluid motion of stirring barely impacted heat loss compared to the insulation properties of the cup."
+  },
+  {
+    "objectID": "posts/coffee-cooling-doe/index.html#taking-a-closr-look-with-linear-contrasts",
+    "href": "posts/coffee-cooling-doe/index.html#taking-a-closr-look-with-linear-contrasts",
+    "title": "A 3x2x2 Factorial Design on Coffee Cooling",
+    "section": "Taking a Closr Look with Linear Contrasts",
+    "text": "Taking a Closr Look with Linear Contrasts\nI wanted to compare physical properties only. ANOVA only tells me if at least one group mean differs but does not show where those difference exist. Hence, linear contrast in this case help to identify which factors are more significant. Of course, TukeyHSD probably works as well but linear contrast looks cleaner so….\n\nlibrary(emmeans)\n\nWarning: package 'emmeans' was built under R version 4.4.3\n\nmaterial_emms &lt;- emmeans(model_anova, \"material\")\n\n# Contrast 1: Insulated Metal vs. Non-Insulated (Ceramic & Paper)\n# Contrast 2: Takeout Paper vs. Permanent Reusable Mugs\ncontrast(material_emms, list(\"Insulated Metal vs. Others\" = c(-0.5, 1, -0.5)))\n\n contrast                   estimate   SE df t.ratio p.value\n Insulated Metal vs. Others     18.9 1.56 11  12.084 &lt;0.0001\n\nResults are averaged over the levels of: block, lid, stir \n\ncontrast(material_emms, list(\"Disposable Paper vs. Reusable\" = c(-0.5, -0.5, 1)))\n\n contrast                      estimate   SE df t.ratio p.value\n Disposable Paper vs. Reusable    -2.31 1.56 11  -1.481  0.1668\n\nResults are averaged over the levels of: block, lid, stir \n\n\nThe contrast shows that the insulated metal cup holds heat significantly better (by about 18.9°F) than everything else. However, the paper takeout cup and the reusable ceramic mug actually performed comparably over this 10-minute stretch (\\(p = 0.1668\\))."
+  },
+  {
+    "objectID": "posts/coffee-cooling-doe/index.html#interaction-plot",
+    "href": "posts/coffee-cooling-doe/index.html#interaction-plot",
+    "title": "A 3x2x2 Factorial Design on Coffee Cooling",
+    "section": "Interaction Plot",
+    "text": "Interaction Plot\nHonestly, at times interaction plot do show some insights, but in this experiment, it does not really show much sadly, things stayed relatively parallel and predictable.\nWhile it would have been cool to see a massive 3-way interaction impact, discovering that factors like stirring operate independently of the cup material is a huge insight in itself. It proves the system is robust and predictable.\n\n# Interaction plots\ninteraction.plot(coffee_df$material, coffee_df$lid, coffee_df$temp)\n\n\n\n\n\n\n\ninteraction.plot(coffee_df$material, coffee_df$stir, coffee_df$temp)\n\n\n\n\n\n\n\ninteraction.plot(coffee_df$lid, coffee_df$stir, coffee_df$temp)"
+  },
+  {
+    "objectID": "posts/coffee-cooling-doe/index.html#conclusion",
+    "href": "posts/coffee-cooling-doe/index.html#conclusion",
+    "title": "A 3x2x2 Factorial Design on Coffee Cooling",
+    "section": "Conclusion",
+    "text": "Conclusion\n\nPrimary Drivers of Heat Dispersal\n\nThe experiment confirms that Cup Material and the use of a Lid are the most critical factors in maintaining coffee temperature (\\(p &lt; 0.001\\)). The Ceramic cup was the superior performer for heat dispersal, losing significantly more heat than both the paper and metal alternatives. Post-hoc Tukey testing confirmed that all three materials are statistically distinct from one another, establishing a clear performance hierarchy: Ceramic &gt; Paper &gt; Metal.\n\nThe Interaction Effect (Material:Lid)\n\nA key finding of this study is the significant interaction between Material and Lid (\\(p = 0.0163\\)). While the addition of a lid caused a deterioration of the heat dispersal effects across all groups, its impact was most dramatic for the Ceramic cup. This is likely due to the ceramic cup’s larger surface area relative to the paper and metal containers; the lid acts as a critical barrier against evaporation and convective heat loss that would otherwise be maximized in an open-top ceramic vessel.\n\nInsights from Linear Contrasts\n\nInsulated vs. Non-Insulated: The contrast comparing the insulated metal cup against the average of the others was highly significant (\\(p &lt; 0.0001\\)), with an estimate of 18.9°F. This underscores that specialized vacuum or double-wall insulation is far more effective in heat retention than standard material density.\nThe contrast between the paper (disposable) cup and the average of the reusable cups (ceramic and metal) was not significant (\\(p = 0.1668\\)). This suggests that a standard paper takeout cup performs comparably to the average of “permanent” household mugs in short-duration (10-minute) heat dispersion.\n\nNon-Significant Factors and Environmental Control\n\nThe Stirring factor and its associated interactions were not significant (\\(p = 0.1848\\)). This indicates that the internal movement of the liquid has a negligible effect on cooling compared to the external insulation and surface-level heat loss. Finally, the significance of the Blocking factor (\\(p = 0.0495\\)) justifies the experimental design choice to account for time-of-day variations, ensuring that environmental shifts between morning and afternoon did not bias the treatment effects.\nFinal Recommendation: To achieve the optimal (fastest) cooling, the experiment suggests using a Ceramic cup without a lid. While the ‘Stirring’ factor did not reach statistical significance (\\(p = 0.18\\)), the Material:Lid interaction (\\(p = 0.016\\)) proves that the cooling effect of removing the lid is most potent when using a wide-mouthed ceramic vessel. Conversely, if the goal is to prevent cooling, an insulated metal cup with a lid should be used."
+  },
+  {
+    "objectID": "posts/coffee-cooling-doe/index.html#taking-a-closer-look-with-linear-contrasts",
+    "href": "posts/coffee-cooling-doe/index.html#taking-a-closer-look-with-linear-contrasts",
+    "title": "A 3x2x2 Factorial Design on Coffee Cooling",
+    "section": "Taking a Closer Look with Linear Contrasts",
+    "text": "Taking a Closer Look with Linear Contrasts\nI wanted to compare physical properties only. ANOVA only tells me if at least one group mean differs but does not show where those difference exist. Hence, linear contrast in this case help to identify which factors are more significant when grouped in a certain way, like takeout cups vs reusable mugs etc.\n\nlibrary(emmeans)\n\nWarning: package 'emmeans' was built under R version 4.4.3\n\nmaterial_emms &lt;- emmeans(model_anova, \"material\")\n\n# Contrast 1: Insulated Metal vs. Non-Insulated (Ceramic & Paper)\n# Contrast 2: Takeout Paper vs. Permanent Reusable Mugs\ncontrast(material_emms, list(\"Insulated Metal vs. Others\" = c(-0.5, 1, -0.5)))\n\n contrast                   estimate   SE df t.ratio p.value\n Insulated Metal vs. Others     18.9 1.56 11  12.084 &lt;0.0001\n\nResults are averaged over the levels of: block, lid, stir \n\ncontrast(material_emms, list(\"Disposable Paper vs. Reusable\" = c(-0.5, -0.5, 1)))\n\n contrast                      estimate   SE df t.ratio p.value\n Disposable Paper vs. Reusable    -2.31 1.56 11  -1.481  0.1668\n\nResults are averaged over the levels of: block, lid, stir \n\n\nThe contrast shows that the insulated metal cup holds heat significantly better (by about 18.9°F) than everything else. However, the paper takeout cup and the reusable ceramic mug actually performed comparably over this 10-minute stretch (\\(p = 0.1668\\))."
+  },
+  {
+    "objectID": "posts/coffee-cooling-doe/index.html#using-tukeyhsd-to-visualise-the-difference",
+    "href": "posts/coffee-cooling-doe/index.html#using-tukeyhsd-to-visualise-the-difference",
+    "title": "A 3x2x2 Factorial Design on Coffee Cooling",
+    "section": "Using TukeyHSD to visualise the difference",
+    "text": "Using TukeyHSD to visualise the difference\nSo, we know from our main ANOVA table that material is heavily significant. But remember: ANOVA is a bit of a tease. It tells us, “Hey, at least one of these cup materials performs differently than the others!” But it doesn’t actually tell us which pairs are different.\nAre ceramic and paper different? Are paper and metal different?\nTo find out, we could technically just run a bunch of individual \\(t\\)-tests comparing every single combination. But there is a massive trap called Family Wise Error Rate [FWER] (The Multiplicity Problem). Every time you run a statistical test, you have a 5% chance of claiming a false positive by pure luck. If you run dozens of tests, those 5% chances stack up fast, and your overall error rate skyrockets.\nThat is where Tukey’s Honest Significant Difference (TukeyHSD) steps in. It is “honest” because it adjusts our \\(p\\)-values backward, keeping our global error rate strictly at 5%, no matter how many pairs we compare.\nLet’s look at what happens when we run the full pairwise comparison across our cup materials:\n\nTukeyHSD(model_anova, \"material\")\n\n  Tukey multiple comparisons of means\n    95% family-wise confidence level\n\nFit: aov(formula = model_lm)\n\n$material\n                 diff        lwr       upr     p adj\nmetal-ceramic  23.625  18.753834 28.496166 0.0000001\npaper-ceramic   9.500   4.628834 14.371166 0.0007107\npaper-metal   -14.125 -18.996166 -9.253834 0.0000219"
+  }
+]
