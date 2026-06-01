@@ -1,12 +1,17 @@
 ---
 title: "Welcome To My Blog"
-author: "Tristan O'Malley"
-date: "2026-05-28"
-categories: [news]
+author: "Ying Hui Tan"
+date: "2026-05-31"
+categories: [intro]
+image: IMG_9731.jpeg
 ---
 
-This is the first post in a Quarto blog. Welcome!
+Hi everyone! The main purpose of this blog is to record the projects I did during my academic year and venture on interesting projects along the way. When I was choosing my major, I have no idea what Industrial and Systems Engineering (ISE) is all about and the course page does not really provide much information. I guess for now, I feel that ISE is a major that provides a lot of breadth in different areas of study.
 
-![](thumbnail.jpg)
+I realised that Industrial and Systems Engineering consists of a lot of different components that many may not really understand, like Operation Research (OR), Design of Experiment (DoE), Discrete Event Simulation (DES), Time Series etc. I hope that through my blog, readers could understand what this major is truly about.
 
-Since this post doesn't specify an explicit `image`, the first image in the post will be used in the listing page of posts.
+Some areas that I am particularly interested is DoE and some Machine Learning implementations. Hope that this blog can provide a better understanding of what ISE truly is for people who are interested in knowing what ISE is about.
+
+For people who are geniunely interested in the blog, much appreciated if you could provide any forms of feedback on the analysis!
+
+As for why the blog name is called "Confounding Human", I struggled with finding confounding factors in an Incomplete Block Design in a DoE module. Confounding is an interesting concept, just like how humans and experiments are; it is imperfect and always has unexpected outcomes.

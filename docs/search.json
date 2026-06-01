@@ -4,7 +4,35 @@
     "href": "posts/welcome/index.html",
     "title": "Welcome To My Blog",
     "section": "",
-    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+    "text": "Hi everyone! The main purpose of this blog is to record the projects I did during my academic year and venture on interesting projects along the way. When I was choosing my major, I have no idea what Industrial and Systems Engineering (ISE) is all about and the course page does not really provide much information. I guess for now, I feel that ISE is a major that provides a lot of breadth in different areas of study.\nI realised that Industrial and Systems Engineering consists of a lot of different components that many may not really understand, like Operation Research (OR), Design of Experiment (DoE), Discrete Event Simulation (DES), Time Series etc. I hope that through my blog, readers could understand what this major is truly about.\nSome areas that I am particularly interested is DoE and some Machine Learning implementations. Hope that this blog can provide a better understanding of what ISE truly is for people who are interested in knowing what ISE is about.\nFor people who are geniunely interested in the blog, much appreciated if you could provide any forms of feedback on the analysis!\nAs for why the blog name is called “Confounding Human”, I struggled with finding confounding factors in an Incomplete Block Design in a DoE module. Confounding is an interesting concept, just like how humans and experiments are; it is imperfect and always has unexpected outcomes."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Confounding Human",
+    "section": "",
+    "text": "A 3x2x2 Factorial Design on Coffee Cooling\n\n\n\nDOE\n\nR\n\nBIBD\n\n\n\nUsing an Analysis of Variance (ANOVA) and linear contrasts in R to determine the optimal combination of cup material, lids, and stirring for heat dispersal.\n\n\n\n\n\nJun 1, 2026\n\n\nYing Hui Tan\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\nintro\n\n\n\n\n\n\n\n\n\nMay 31, 2026\n\n\nYing Hui Tan\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About Me",
+    "section": "",
+    "text": "Hi, I’m Ying Hui. I am a student double-majoring in Industrial Engineering and Statistics.\nThis blog is my digital sandbox where I combine my ISE background with data analytics to solve practical problems. My toolkit is split into two main worlds:\nUltimately, this space is a collection of my project walk-throughs, engineering deep dives, and data experiments. Thanks for stopping by!"
+  },
+  {
+    "objectID": "about.html#education",
+    "href": "about.html#education",
+    "title": "About Me",
+    "section": "Education",
+    "text": "Education\nNational University of Singapore Bachelor of Engineering, Industrial and Systems Engineering | Aug 2023 - May 2027 Second Major in Statistics"
+  },
+  {
+    "objectID": "about.html#experience",
+    "href": "about.html#experience",
+    "title": "About Me",
+    "section": "Experience",
+    "text": "Experience\nASTM International | Advanced Manufacturing Research Intern | Jun 2025 - Dec 2025"
   },
   {
     "objectID": "posts/coffee-cooling-doe/index.html",
@@ -82,40 +110,5 @@
     "title": "A 3x2x2 Factorial Design on Coffee Cooling",
     "section": "Conclusion",
     "text": "Conclusion\n\nPrimary Drivers of Heat Dispersal\n\nThe experiment confirms that Cup Material and the use of a Lid are the most critical factors in maintaining coffee temperature (\\(p &lt; 0.001\\)). The Ceramic cup was the superior performer for heat dispersal, losing significantly more heat than both the paper and metal alternatives. Post-hoc Tukey testing confirmed that all three materials are statistically distinct from one another, establishing a clear performance hierarchy: Ceramic &gt; Paper &gt; Metal.\n\nThe Interaction Effect (Material:Lid)\n\nA key finding of this study is the significant interaction between Material and Lid (\\(p = 0.0163\\)). While the addition of a lid caused a deterioration of the heat dispersal effects across all groups, its impact was most dramatic for the Ceramic cup. This is likely due to the ceramic cup’s larger surface area relative to the paper and metal containers; the lid acts as a critical barrier against evaporation and convective heat loss that would otherwise be maximized in an open-top ceramic vessel.\n\nInsights from Linear Contrasts\n\nInsulated vs. Non-Insulated: The contrast comparing the insulated metal cup against the average of the others was highly significant (\\(p &lt; 0.0001\\)), with an estimate of 18.9°F. This underscores that specialized vacuum or double-wall insulation is far more effective in heat retention than standard material density.\nThe contrast between the paper (disposable) cup and the average of the reusable cups (ceramic and metal) was not significant (\\(p = 0.1668\\)). This suggests that a standard paper takeout cup performs comparably to the average of “permanent” household mugs in short-duration (10-minute) heat dispersion.\n\nNon-Significant Factors and Environmental Control\n\nThe Stirring factor and its associated interactions were not significant (\\(p = 0.1848\\)). This indicates that the internal movement of the liquid has a negligible effect on cooling compared to the external insulation and surface-level heat loss. Finally, the significance of the Blocking factor (\\(p = 0.0495\\)) justifies the experimental design choice to account for time-of-day variations, ensuring that environmental shifts between morning and afternoon did not bias the treatment effects.\nFinal Recommendation: To achieve the optimal (fastest) cooling, the experiment suggests using a Ceramic cup without a lid. While the ‘Stirring’ factor did not reach statistical significance (\\(p = 0.18\\)), the Material:Lid interaction (\\(p = 0.016\\)) proves that the cooling effect of removing the lid is most potent when using a wide-mouthed ceramic vessel. Conversely, if the goal is to prevent cooling, an insulated metal cup with a lid should be used."
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About Me",
-    "section": "",
-    "text": "Hi, I’m Ying Hui. I am a student double-majoring in Industrial Engineering and Statistics.\nThis blog is my digital sandbox where I combine my ISE background with data analytics to solve practical problems. My toolkit is split into two main worlds:\nUltimately, this space is a collection of my project walk-throughs, engineering deep dives, and data experiments. Thanks for stopping by!"
-  },
-  {
-    "objectID": "about.html#education",
-    "href": "about.html#education",
-    "title": "About Me",
-    "section": "Education",
-    "text": "Education\nNational University of Singapore Bachelor of Engineering, Industrial and Systems Engineering | Aug 2023 - May 2027 Second Major in Statistics"
-  },
-  {
-    "objectID": "about.html#experience",
-    "href": "about.html#experience",
-    "title": "About Me",
-    "section": "Experience",
-    "text": "Experience\nASTM International | Advanced Manufacturing Research Intern | Jun 2025 - Dec 2025"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "BLOG",
-    "section": "",
-    "text": "A 3x2x2 Factorial Design on Coffee Cooling\n\n\n\nDOE\n\nR\n\nBIBD\n\n\n\nUsing an Analysis of Variance (ANOVA) and linear contrasts in R to determine the optimal combination of cup material, lids, and stirring for heat dispersal.\n\n\n\n\n\nJun 1, 2026\n\n\nYing Hui Tan\n\n\n\n\n\n\n\n\n\n\n\n\nPost With Code\n\n\n\nnews\n\ncode\n\nanalysis\n\n\n\n\n\n\n\n\n\nMay 31, 2026\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nMay 28, 2026\n\n\nTristan O’Malley\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "posts/post-with-code/index.html",
-    "href": "posts/post-with-code/index.html",
-    "title": "Post With Code",
-    "section": "",
-    "text": "This is a post with executable code."
   }
 ]

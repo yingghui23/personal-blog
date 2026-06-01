@@ -1,5 +1,4 @@
 ---
-title: "BLOG"
 listing:
   contents: posts
   feed: true

@@ -5,16 +5,16 @@
       xmlns:dc="http://purl.org/dc/elements/1.1/" 
       version="2.0">
 <channel>
-<title>AliAs</title>
-<link>https://your-website-url.example.com/</link>
-<atom:link href="https://your-website-url.example.com/index.xml" rel="self" type="application/rss+xml"/>
-<description>A blog built with Quarto</description>
+<title>Confounding Human</title>
+<link>https://yingghui23.github.io/personal-blog/</link>
+<atom:link href="https://yingghui23.github.io/personal-blog/index.xml" rel="self" type="application/rss+xml"/>
+<description>A data analytics and statistics blog</description>
 <generator>quarto-1.9.38</generator>
 <lastBuildDate>Sun, 31 May 2026 16:00:00 GMT</lastBuildDate>
 <item>
   <title>A 3x2x2 Factorial Design on Coffee Cooling</title>
   <dc:creator>Ying Hui Tan</dc:creator>
-  <link>https://your-website-url.example.com/posts/coffee-cooling-doe/</link>
+  <link>https://yingghui23.github.io/personal-blog/posts/coffee-cooling-doe/</link>
   <description><![CDATA[ 
 
 
@@ -367,7 +367,7 @@ font-style: inherit;">plot</span>(model_lm)</span></code></pre></div></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://your-website-url.example.com/posts/coffee-cooling-doe/index_files/figure-html/diagnostics-1.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="https://yingghui23.github.io/personal-blog/posts/coffee-cooling-doe/index_files/figure-html/diagnostics-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -503,7 +503,7 @@ font-style: inherit;">$</span>temp)</span></code></pre></div></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://your-website-url.example.com/posts/coffee-cooling-doe/index_files/figure-html/interaction-plots-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://yingghui23.github.io/personal-blog/posts/coffee-cooling-doe/index_files/figure-html/interaction-plots-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -519,7 +519,7 @@ font-style: inherit;">$</span>temp)</span></code></pre></div></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://your-website-url.example.com/posts/coffee-cooling-doe/index_files/figure-html/interaction-plots-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://yingghui23.github.io/personal-blog/posts/coffee-cooling-doe/index_files/figure-html/interaction-plots-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -535,7 +535,7 @@ font-style: inherit;">$</span>temp)</span></code></pre></div></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://your-website-url.example.com/posts/coffee-cooling-doe/index_files/figure-html/interaction-plots-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://yingghui23.github.io/personal-blog/posts/coffee-cooling-doe/index_files/figure-html/interaction-plots-3.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -599,52 +599,33 @@ paper-metal   -14.125 -18.996166 -9.253834 0.0000219</code></pre>
   <category>DOE</category>
   <category>R</category>
   <category>BIBD</category>
-  <guid>https://your-website-url.example.com/posts/coffee-cooling-doe/</guid>
+  <guid>https://yingghui23.github.io/personal-blog/posts/coffee-cooling-doe/</guid>
   <pubDate>Sun, 31 May 2026 16:00:00 GMT</pubDate>
-  <media:content url="https://your-website-url.example.com/posts/coffee-cooling-doe/coffee.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Post With Code</title>
-  <dc:creator>Harlow Malloc</dc:creator>
-  <link>https://your-website-url.example.com/posts/post-with-code/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>This is a post with executable code.</p>
-
-
-
- ]]></description>
-  <category>news</category>
-  <category>code</category>
-  <category>analysis</category>
-  <guid>https://your-website-url.example.com/posts/post-with-code/</guid>
-  <pubDate>Sat, 30 May 2026 16:00:00 GMT</pubDate>
-  <media:content url="https://your-website-url.example.com/posts/post-with-code/image.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://yingghui23.github.io/personal-blog/posts/coffee-cooling-doe/coffee.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Welcome To My Blog</title>
-  <dc:creator>Tristan O&#39;Malley</dc:creator>
-  <link>https://your-website-url.example.com/posts/welcome/</link>
+  <dc:creator>Ying Hui Tan</dc:creator>
+  <link>https://yingghui23.github.io/personal-blog/posts/welcome/</link>
   <description><![CDATA[ 
 
 
 
 
 
-<p>This is the first post in a Quarto blog. Welcome!</p>
-<p><img src="https://your-website-url.example.com/posts/welcome/thumbnail.jpg" class="img-fluid"></p>
-<p>Since this post doesn’t specify an explicit <code>image</code>, the first image in the post will be used in the listing page of posts.</p>
+<p>Hi everyone! The main purpose of this blog is to record the projects I did during my academic year and venture on interesting projects along the way. When I was choosing my major, I have no idea what Industrial and Systems Engineering (ISE) is all about and the course page does not really provide much information. I guess for now, I feel that ISE is a major that provides a lot of breadth in different areas of study.</p>
+<p>I realised that Industrial and Systems Engineering consists of a lot of different components that many may not really understand, like Operation Research (OR), Design of Experiment (DoE), Discrete Event Simulation (DES), Time Series etc. I hope that through my blog, readers could understand what this major is truly about.</p>
+<p>Some areas that I am particularly interested is DoE and some Machine Learning implementations. Hope that this blog can provide a better understanding of what ISE truly is for people who are interested in knowing what ISE is about.</p>
+<p>For people who are geniunely interested in the blog, much appreciated if you could provide any forms of feedback on the analysis!</p>
+<p>As for why the blog name is called “Confounding Human”, I struggled with finding confounding factors in an Incomplete Block Design in a DoE module. Confounding is an interesting concept, just like how humans and experiments are; it is imperfect and always has unexpected outcomes.</p>
 
 
 
  ]]></description>
-  <category>news</category>
-  <guid>https://your-website-url.example.com/posts/welcome/</guid>
-  <pubDate>Wed, 27 May 2026 16:00:00 GMT</pubDate>
+  <category>intro</category>
+  <guid>https://yingghui23.github.io/personal-blog/posts/welcome/</guid>
+  <pubDate>Sat, 30 May 2026 16:00:00 GMT</pubDate>
+  <media:content url="https://yingghui23.github.io/personal-blog/posts/welcome/IMG_9731.jpeg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://your-website-url.example.com/posts/welcome/index.html</loc>
-    <lastmod>2026-05-31T07:00:57.353Z</lastmod>
+    <loc>https://yingghui23.github.io/personal-blog/posts/welcome/index.html</loc>
+    <lastmod>2026-06-01T11:36:33.742Z</lastmod>
   </url>
   <url>
-    <loc>https://your-website-url.example.com/posts/coffee-cooling-doe/index.html</loc>
-    <lastmod>2026-06-01T04:59:47.547Z</lastmod>
+    <loc>https://yingghui23.github.io/personal-blog/index.html</loc>
+    <lastmod>2026-06-01T08:21:47.919Z</lastmod>
   </url>
   <url>
-    <loc>https://your-website-url.example.com/about.html</loc>
-    <lastmod>2026-05-31T08:15:44.163Z</lastmod>
+    <loc>https://yingghui23.github.io/personal-blog/about.html</loc>
+    <lastmod>2026-06-01T11:01:54.274Z</lastmod>
   </url>
   <url>
-    <loc>https://your-website-url.example.com/index.html</loc>
-    <lastmod>2026-05-31T07:01:47.680Z</lastmod>
-  </url>
-  <url>
-    <loc>https://your-website-url.example.com/posts/post-with-code/index.html</loc>
-    <lastmod>2026-05-31T07:00:57.359Z</lastmod>
+    <loc>https://yingghui23.github.io/personal-blog/posts/coffee-cooling-doe/index.html</loc>
+    <lastmod>2026-06-01T08:22:46.955Z</lastmod>
   </url>
 </urlset>
