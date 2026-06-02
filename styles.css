@@ -4,3 +4,19 @@
   font-weight: 700 !important;
   letter-spacing: -0.3px; /* Slightly tightens letter spacing for a premium look */
 }
+
+/* Ensure the navbar logo scales cleanly alongside the text */
+.navbar-logo {
+  max-height: 40px;
+  width: auto;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+/* Optional styling to neatly box your sidebar categories */
+.quarto-category-list {
+  border: 1px solid #3a3a3a;
+  padding: 15px;
+  border-radius: 6px;
+  background-color: #1e1e1e;
+}

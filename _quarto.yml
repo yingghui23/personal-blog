@@ -8,9 +8,10 @@ execute:
 website:
   description: "A data analytics and statistics blog"
   site-url: https://yingghui23.github.io/personal-blog/
-  title: "Confounding Human"
+  favicon: logo.png
   navbar:
     background: "#2A3439"
+    logo: logontitle.png
     type: dark
     right:
       - about.qmd

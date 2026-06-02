@@ -5,6 +5,14 @@ author: "Ying Hui Tan"
 date: "2026-06-01"
 categories: [DOE, R, BIBD]
 image: coffee.jpg
+open-graph:
+  title: "A 3x2x2 Factorial Design on Coffee Cooling | Confounding Human"
+  description: "An in-depth statistical analysis analyzing heat dispersal using ANOVA and linear contrasts in R."
+  image: coffee.jpg
+twitter-card:
+  card-style: summary_large_image
+  title: "A 3x2x2 Factorial Design on Coffee Cooling"
+  description: "Statistical analysis using fractional factorial design layouts."
 ---
 
 ## Overview: The Core Objective
