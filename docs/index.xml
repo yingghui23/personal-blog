@@ -48,7 +48,7 @@
 </section>
 <section id="data-ingestion-initial-inspection" class="level2">
 <h2 class="anchored" data-anchor-id="data-ingestion-initial-inspection">Data Ingestion &amp; Initial Inspection</h2>
-<div id="b76aa580" class="cell" data-execution_count="2">
+<div id="31712c1e" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> kagglehub</span>
@@ -171,7 +171,7 @@ max        366.700000          2021.000000  1.700000e+06</code></pre>
 <p>For this particular dataset, we would focus on 6 main factors: * Time (Year) * Town (categorical) * Flat-type (categorical) * Storey (Numerical) * Lease Remaining (Numerical)</p>
 <p>Note that every government flats in Singapore have a maximum lease of 99 years, hence, lease remaining would be the 99 - (current_year - year_built).This is the formula for the column remaining_lease that is already in the dataset.</p>
 <p>The dependent variable (y), would be resale_price/floor_area_sqm, we can rename that as Price_per_sqm.</p>
-<div id="aa1f5690" class="cell" data-execution_count="3">
+<div id="0e84505f" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># create price_per_sqm (y)</span></span>
@@ -308,20 +308,6 @@ background-color: null;
 font-style: inherit;">'price_per_sqm'</span>,<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'month_val'</span>]]</span></code></pre></div></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>&lt;&gt;:12: SyntaxWarning:
-
-invalid escape sequence '\d'
-
-&lt;&gt;:12: SyntaxWarning:
-
-invalid escape sequence '\d'
-
-C:\Users\tanyi\AppData\Local\Temp\ipykernel_38492\1139280800.py:12: SyntaxWarning:
-
-invalid escape sequence '\d'
-</code></pre>
-</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   year  month_val        town flat_type  storey_mid  remaining_lease  \
 0  2017          1  ANG MO KIO    2 ROOM        11.0             61.0   
@@ -339,22 +325,22 @@ invalid escape sequence '\d'
 </div>
 </div>
 <p>After considering all features, we would plot these features to see the trend of features to price_per_sqm. Boxplot is used for categorical data such as flat type or town; normal line plot is used for numerical data.</p>
-<div id="5e96b2d9" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="im" style="color: #00769E;
+<div id="7a1e937b" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> seaborn <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">as</span> sns</span>
-<span id="cb6-2"><span class="im" style="color: #00769E;
+<span id="cb5-2"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">as</span> plt</span>
-<span id="cb6-3"></span>
-<span id="cb6-4"><span class="co" style="color: #5E5E5E;
+<span id="cb5-3"></span>
+<span id="cb5-4"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># town to price_per_sqm (boxplot)</span></span>
-<span id="cb6-5">town_order <span class="op" style="color: #5E5E5E;
+<span id="cb5-5">town_order <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> hdb_df.groupby(<span class="st" style="color: #20794D;
 background-color: null;
@@ -365,7 +351,7 @@ background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">False</span>).index</span>
-<span id="cb6-6">sns.boxplot(data<span class="op" style="color: #5E5E5E;
+<span id="cb5-6">sns.boxplot(data<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>hdb_df,y<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -382,28 +368,28 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'coolwarm'</span>)</span>
-<span id="cb6-7">plt.title(<span class="st" style="color: #20794D;
+<span id="cb5-7">plt.title(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'Price per SQM by Town (Sorted by Median)'</span>)</span>
-<span id="cb6-8">plt.xlabel(<span class="st" style="color: #20794D;
+<span id="cb5-8">plt.xlabel(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'Price per SQM ($)'</span>)</span>
-<span id="cb6-9">plt.ylabel(<span class="st" style="color: #20794D;
+<span id="cb5-9">plt.ylabel(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'Town'</span>)</span>
-<span id="cb6-10">plt.show()</span>
-<span id="cb6-11"></span>
-<span id="cb6-12"><span class="co" style="color: #5E5E5E;
+<span id="cb5-10">plt.show()</span>
+<span id="cb5-11"></span>
+<span id="cb5-12"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># boxplot for flat type</span></span>
-<span id="cb6-13">plt.figure(figsize<span class="op" style="color: #5E5E5E;
+<span id="cb5-13">plt.figure(figsize<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">6</span>))</span>
-<span id="cb6-14">hdb_df.boxplot(column<span class="op" style="color: #5E5E5E;
+<span id="cb5-14">hdb_df.boxplot(column<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
@@ -412,24 +398,24 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'flat_type'</span>)</span>
-<span id="cb6-15">plt.ylabel(<span class="st" style="color: #20794D;
+<span id="cb5-15">plt.ylabel(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'Price per SQM ($)'</span>)</span>
-<span id="cb6-16">plt.title(<span class="st" style="color: #20794D;
+<span id="cb5-16">plt.title(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'Price per SQM by Flat Type'</span>)</span>
-<span id="cb6-17"></span>
-<span id="cb6-18"><span class="co" style="color: #5E5E5E;
+<span id="cb5-17"></span>
+<span id="cb5-18"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># time-cost trend (year)</span></span>
-<span id="cb6-19">plt.figure(figsize<span class="op" style="color: #5E5E5E;
+<span id="cb5-19">plt.figure(figsize<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">6</span>))</span>
-<span id="cb6-20">sns.lineplot(data<span class="op" style="color: #5E5E5E;
+<span id="cb5-20">sns.lineplot(data<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>hdb, x<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -448,10 +434,10 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'red'</span>)</span>
-<span id="cb6-21">plt.title(<span class="st" style="color: #20794D;
+<span id="cb5-21">plt.title(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'Trend of Land Value (Price per SQM) Over Years'</span>)</span>
-<span id="cb6-22">plt.grid(<span class="va" style="color: #111111;
+<span id="cb5-22">plt.grid(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">True</span>, linestyle<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -462,19 +448,19 @@ background-color: null;
 font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.6</span>)</span>
-<span id="cb6-23">plt.show()</span>
-<span id="cb6-24"></span>
-<span id="cb6-25"><span class="co" style="color: #5E5E5E;
+<span id="cb5-23">plt.show()</span>
+<span id="cb5-24"></span>
+<span id="cb5-25"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># time-cost trend (month)</span></span>
-<span id="cb6-26">plt.figure(figsize<span class="op" style="color: #5E5E5E;
+<span id="cb5-26">plt.figure(figsize<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">6</span>))</span>
-<span id="cb6-27">sns.lineplot(data<span class="op" style="color: #5E5E5E;
+<span id="cb5-27">sns.lineplot(data<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>hdb, x<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -493,10 +479,10 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'red'</span>)</span>
-<span id="cb6-28">plt.title(<span class="st" style="color: #20794D;
+<span id="cb5-28">plt.title(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'Trend of Land Value (Price per SQM) Over Years'</span>)</span>
-<span id="cb6-29">plt.grid(<span class="va" style="color: #111111;
+<span id="cb5-29">plt.grid(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">True</span>, linestyle<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -507,19 +493,19 @@ background-color: null;
 font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.6</span>)</span>
-<span id="cb6-30">plt.show()</span>
-<span id="cb6-31"></span>
-<span id="cb6-32"><span class="co" style="color: #5E5E5E;
+<span id="cb5-30">plt.show()</span>
+<span id="cb5-31"></span>
+<span id="cb5-32"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># storey</span></span>
-<span id="cb6-33">plt.figure(figsize<span class="op" style="color: #5E5E5E;
+<span id="cb5-33">plt.figure(figsize<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">6</span>))</span>
-<span id="cb6-34">sns.scatterplot(data<span class="op" style="color: #5E5E5E;
+<span id="cb5-34">sns.scatterplot(data<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>hdb, x<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -538,10 +524,10 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'blue'</span>)</span>
-<span id="cb6-35"><span class="co" style="color: #5E5E5E;
+<span id="cb5-35"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Adding a regression line helps see the "Upward Slope" clearly</span></span>
-<span id="cb6-36">sns.regplot(data<span class="op" style="color: #5E5E5E;
+<span id="cb5-36">sns.regplot(data<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>hdb, x<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -560,22 +546,22 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'black'</span>)</span>
-<span id="cb6-37">plt.title(<span class="st" style="color: #20794D;
+<span id="cb5-37">plt.title(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'Correlation between Storey Level and Price per SQM'</span>)</span>
-<span id="cb6-38">plt.show()</span>
-<span id="cb6-39"></span>
-<span id="cb6-40"><span class="co" style="color: #5E5E5E;
+<span id="cb5-38">plt.show()</span>
+<span id="cb5-39"></span>
+<span id="cb5-40"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># remaining lease</span></span>
-<span id="cb6-41">plt.figure(figsize<span class="op" style="color: #5E5E5E;
+<span id="cb5-41">plt.figure(figsize<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">10</span>,<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">6</span>))</span>
-<span id="cb6-42">sns.lineplot(data<span class="op" style="color: #5E5E5E;
+<span id="cb5-42">sns.lineplot(data<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>hdb, x<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -594,10 +580,10 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'red'</span>)</span>
-<span id="cb6-43">plt.title(<span class="st" style="color: #20794D;
+<span id="cb5-43">plt.title(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'Trend of Land Value (Price per SQM) Over Years'</span>)</span>
-<span id="cb6-44">plt.grid(<span class="va" style="color: #111111;
+<span id="cb5-44">plt.grid(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">True</span>, linestyle<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -608,20 +594,11 @@ background-color: null;
 font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.6</span>)</span>
-<span id="cb6-45">plt.show()</span></code></pre></div></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>C:\Users\tanyi\AppData\Local\Temp\ipykernel_38492\3113747980.py:6: FutureWarning:
-
-
-
-Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `y` variable to `hue` and set `legend=False` for the same effect.
-
-</code></pre>
-</div>
+<span id="cb5-45">plt.show()</span></code></pre></div></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://yingghui23.github.io/personal-blog/posts/hdb-predict/index_files/figure-html/cell-5-output-2.png" width="706" height="449" class="figure-img"></p>
+<p><img src="https://yingghui23.github.io/personal-blog/posts/hdb-predict/index_files/figure-html/cell-5-output-1.png" width="706" height="449" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -631,7 +608,14 @@ Passing `palette` without assigning `hue` is deprecated and will be removed in v
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://yingghui23.github.io/personal-blog/posts/hdb-predict/index_files/figure-html/cell-5-output-4.png" width="654" height="458" class="figure-img"></p>
+<p><img src="https://yingghui23.github.io/personal-blog/posts/hdb-predict/index_files/figure-html/cell-5-output-3.png" width="654" height="458" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://yingghui23.github.io/personal-blog/posts/hdb-predict/index_files/figure-html/cell-5-output-4.png" width="825" height="523" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -645,7 +629,7 @@ Passing `palette` without assigning `hue` is deprecated and will be removed in v
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://yingghui23.github.io/personal-blog/posts/hdb-predict/index_files/figure-html/cell-5-output-6.png" width="825" height="523" class="figure-img"></p>
+<p><img src="https://yingghui23.github.io/personal-blog/posts/hdb-predict/index_files/figure-html/cell-5-output-6.png" width="833" height="523" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -656,45 +640,38 @@ Passing `palette` without assigning `hue` is deprecated and will be removed in v
 </figure>
 </div>
 </div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="https://yingghui23.github.io/personal-blog/posts/hdb-predict/index_files/figure-html/cell-5-output-8.png" width="833" height="523" class="figure-img"></p>
-</figure>
-</div>
-</div>
 </div>
 <p>Boxplot for categorical data looks like different category varries in price_per_sqm. To confirm the suspicion, we can use ANOVA to determine if there is indeed difference between at least one group.</p>
-<div id="2c884afd" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="im" style="color: #00769E;
+<div id="f06536dd" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> statsmodels.api <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">as</span> sm</span>
-<span id="cb9-2"><span class="im" style="color: #00769E;
+<span id="cb7-2"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> statsmodels.formula.api <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> ols</span>
-<span id="cb9-3"></span>
-<span id="cb9-4"><span class="co" style="color: #5E5E5E;
+<span id="cb7-3"></span>
+<span id="cb7-4"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># ANOVA for categorical variables</span></span>
-<span id="cb9-5">cat_variables <span class="op" style="color: #5E5E5E;
+<span id="cb7-5">cat_variables <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> hdb_df[[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'town'</span>,<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'flat_type'</span>]]</span>
-<span id="cb9-6"><span class="cf" style="color: #003B4F;
+<span id="cb7-6"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">for</span> col <span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">in</span> cat_variables:</span>
-<span id="cb9-7">  lm <span class="op" style="color: #5E5E5E;
+<span id="cb7-7">  lm <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> ols(<span class="ss" style="color: #20794D;
 background-color: null;
@@ -707,10 +684,10 @@ background-color: null;
 font-style: inherit;">)'</span>,data <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> hdb_df).fit()</span>
-<span id="cb9-8">  anova <span class="op" style="color: #5E5E5E;
+<span id="cb7-8">  anova <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> sm.stats.anova_lm(lm)</span>
-<span id="cb9-9">  <span class="bu" style="color: null;
+<span id="cb7-9">  <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
 background-color: null;
@@ -721,10 +698,10 @@ background-color: null;
 font-style: inherit;">}</span><span class="ss" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'</span>)</span>
-<span id="cb9-10">  <span class="bu" style="color: null;
+<span id="cb7-10">  <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">print</span>(anova)</span>
-<span id="cb9-11">  <span class="bu" style="color: null;
+<span id="cb7-11">  <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
 background-color: null;
@@ -757,44 +734,43 @@ Residual      228218.0  5.983760e+11  2.621949e+06       NaN     NaN
 <li><p>Month_val plot shows significant short-term volatility (noise) that does not represent the long-term appreciation of land value. To ensure the model focuses on structural price drivers rather than seasonal fluctuations, Month was excluded.</p></li>
 </ul>
 <p>EDA shows that these factors: [‘price_per_sqm’, ‘year’, ‘storey_mid’, ‘remaining_lease’] are significant. We can further show it by using embedded methods via random forest to validate our selection.</p>
-</section>
-<section id="we-can-also-evaluate-which-ensemble-learning-is-optimal-by-using-k-fold-cross-validation.-for-this-blog-i-am-using-random-forest-and-xgboost-for-model-evaluation." class="level2">
-<h2 class="anchored" data-anchor-id="we-can-also-evaluate-which-ensemble-learning-is-optimal-by-using-k-fold-cross-validation.-for-this-blog-i-am-using-random-forest-and-xgboost-for-model-evaluation.">We can also evaluate which ensemble learning is optimal by using k-fold cross validation. For this blog, I am using random forest and XGBoost for model evaluation.</h2>
+<p>We can also evaluate which ensemble learning is optimal by using k-fold cross validation. For this blog, I am using random forest and XGBoost for model evaluation.</p>
+<hr>
 </section>
 <section id="using-randomforestregressor" class="level2">
 <h2 class="anchored" data-anchor-id="using-randomforestregressor">Using RandomForestRegressor</h2>
 <p>I use grid search to find the optimal hyperparameter and then use R-squared and Root Mean Square Error (RMSE) to determine which model is better overall.</p>
-<div id="3807cea6" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><span class="im" style="color: #00769E;
+<div id="0e1ab659" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sklearn.model_selection <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> train_test_split</span>
-<span id="cb11-2"><span class="im" style="color: #00769E;
+<span id="cb9-2"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">as</span> np</span>
-<span id="cb11-3"><span class="im" style="color: #00769E;
+<span id="cb9-3"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sklearn.ensemble <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> RandomForestRegressor</span>
-<span id="cb11-4"><span class="im" style="color: #00769E;
+<span id="cb9-4"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sklearn.metrics <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> r2_score, mean_squared_error</span>
-<span id="cb11-5"><span class="im" style="color: #00769E;
+<span id="cb9-5"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sklearn.model_selection <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> GridSearchCV</span>
-<span id="cb11-6"></span>
-<span id="cb11-7"><span class="co" style="color: #5E5E5E;
+<span id="cb9-6"></span>
+<span id="cb9-7"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># split your data (80% training, 20% testing)</span></span>
-<span id="cb11-8">X <span class="op" style="color: #5E5E5E;
+<span id="cb9-8">X <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pd.get_dummies(hdb_df[[<span class="st" style="color: #20794D;
 background-color: null;
@@ -809,12 +785,12 @@ background-color: null;
 font-style: inherit;">'flat_type'</span>]]) <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># do ohe for town</span></span>
-<span id="cb11-9">y <span class="op" style="color: #5E5E5E;
+<span id="cb9-9">y <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> np.log1p(hdb_df[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'price_per_sqm'</span>])</span>
-<span id="cb11-10">X_train, X_test, y_train, y_test <span class="op" style="color: #5E5E5E;
+<span id="cb9-10">X_train, X_test, y_train, y_test <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> train_test_split(X, y, test_size<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -825,8 +801,8 @@ background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">42</span>)</span>
-<span id="cb11-11"></span>
-<span id="cb11-12">rf <span class="op" style="color: #5E5E5E;
+<span id="cb9-11"></span>
+<span id="cb9-12">rf <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> RandomForestRegressor(random_state<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -837,17 +813,17 @@ background-color: null;
 font-style: inherit;">=-</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>)</span>
-<span id="cb11-13">param_grid <span class="op" style="color: #5E5E5E;
+<span id="cb9-13">param_grid <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> {</span>
-<span id="cb11-14">    <span class="st" style="color: #20794D;
+<span id="cb9-14">    <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'n_estimators'</span>: [<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">100</span>,<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">300</span>],</span>
-<span id="cb11-15">    <span class="st" style="color: #20794D;
+<span id="cb9-15">    <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'max_depth'</span> : [<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -856,8 +832,8 @@ background-color: null;
 font-style: inherit;">30</span>,<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">45</span>]</span>
-<span id="cb11-16">}</span>
-<span id="cb11-17">grid_search <span class="op" style="color: #5E5E5E;
+<span id="cb9-16">}</span>
+<span id="cb9-17">grid_search <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> GridSearchCV(estimator<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -878,11 +854,11 @@ background-color: null;
 font-style: inherit;">1</span>)  <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># maximise the neg mse to ge the min mse model</span></span>
-<span id="cb11-18"></span>
-<span id="cb11-19"><span class="co" style="color: #5E5E5E;
+<span id="cb9-18"></span>
+<span id="cb9-19"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Tune on a representative sample so the blog renders faster.</span></span>
-<span id="cb11-20">tune_size <span class="op" style="color: #5E5E5E;
+<span id="cb9-20">tune_size <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="bu" style="color: null;
 background-color: null;
@@ -891,7 +867,7 @@ background-color: null;
 font-style: inherit;">50000</span>, <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">len</span>(X_train))</span>
-<span id="cb11-21">tune_index <span class="op" style="color: #5E5E5E;
+<span id="cb9-21">tune_index <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> X_train.sample(n<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -900,12 +876,12 @@ background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">42</span>).index</span>
-<span id="cb11-22"></span>
-<span id="cb11-23"><span class="co" style="color: #5E5E5E;
+<span id="cb9-22"></span>
+<span id="cb9-23"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># run the search and see the best parameters</span></span>
-<span id="cb11-24">grid_search.fit(X_train.loc[tune_index], y_train.loc[tune_index])</span>
-<span id="cb11-25"><span class="bu" style="color: null;
+<span id="cb9-24">grid_search.fit(X_train.loc[tune_index], y_train.loc[tune_index])</span>
+<span id="cb9-25"><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
 background-color: null;
@@ -924,30 +900,30 @@ font-style: inherit;"># best max_depth = 30</span></span></code></pre></div></di
 <pre><code>Best parameters: {'max_depth': 30, 'n_estimators': 300}</code></pre>
 </div>
 </div>
-<div id="5a799408" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="co" style="color: #5E5E5E;
+<div id="0283f056" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># test random forest with hyperparam</span></span>
-<span id="cb13-2"><span class="im" style="color: #00769E;
+<span id="cb11-2"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sklearn.ensemble <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> RandomForestRegressor</span>
-<span id="cb13-3"><span class="im" style="color: #00769E;
+<span id="cb11-3"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sklearn.model_selection <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> train_test_split</span>
-<span id="cb13-4"><span class="im" style="color: #00769E;
+<span id="cb11-4"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sklearn.metrics <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> r2_score, mean_squared_error</span>
-<span id="cb13-5"></span>
-<span id="cb13-6"><span class="co" style="color: #5E5E5E;
+<span id="cb11-5"></span>
+<span id="cb11-6"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># split your data (80% training, 20% testing)</span></span>
-<span id="cb13-7">X <span class="op" style="color: #5E5E5E;
+<span id="cb11-7">X <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pd.get_dummies(hdb_df[[<span class="st" style="color: #20794D;
 background-color: null;
@@ -962,12 +938,12 @@ background-color: null;
 font-style: inherit;">'flat_type'</span>]]) <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># do ohe for town</span></span>
-<span id="cb13-8">y <span class="op" style="color: #5E5E5E;
+<span id="cb11-8">y <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> np.log1p(hdb_df[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'price_per_sqm'</span>])</span>
-<span id="cb13-9">X_train, X_test, y_train, y_test <span class="op" style="color: #5E5E5E;
+<span id="cb11-9">X_train, X_test, y_train, y_test <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> train_test_split(X, y, test_size<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -978,11 +954,11 @@ background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">42</span>)</span>
-<span id="cb13-10"></span>
-<span id="cb13-11"><span class="co" style="color: #5E5E5E;
+<span id="cb11-10"></span>
+<span id="cb11-11"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># train</span></span>
-<span id="cb13-12">rf <span class="op" style="color: #5E5E5E;
+<span id="cb11-12">rf <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> RandomForestRegressor(n_estimators<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1001,15 +977,15 @@ background-color: null;
 font-style: inherit;">=-</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>)</span>
-<span id="cb13-13">rf.fit(X_train, y_train)</span>
-<span id="cb13-14"></span>
-<span id="cb13-15"><span class="co" style="color: #5E5E5E;
+<span id="cb11-13">rf.fit(X_train, y_train)</span>
+<span id="cb11-14"></span>
+<span id="cb11-15"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># r^2 and mse</span></span>
-<span id="cb13-16">predictions <span class="op" style="color: #5E5E5E;
+<span id="cb11-16">predictions <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> rf.predict(X_test)</span>
-<span id="cb13-17"><span class="bu" style="color: null;
+<span id="cb11-17"><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
 background-color: null;
@@ -1020,7 +996,7 @@ background-color: null;
 font-style: inherit;">:.4f}</span><span class="ss" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"</span>)</span>
-<span id="cb13-18"><span class="bu" style="color: null;
+<span id="cb11-18"><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
 background-color: null;
@@ -1041,38 +1017,38 @@ RMSE for RandomForest: 0.08</code></pre>
 </section>
 <section id="using-xgbregressor" class="level2">
 <h2 class="anchored" data-anchor-id="using-xgbregressor">Using XGBRegressor</h2>
-<div id="36d31226" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><span class="co" style="color: #5E5E5E;
+<div id="5103f600" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># test xgboost with hyperparameter</span></span>
-<span id="cb15-2"><span class="im" style="color: #00769E;
+<span id="cb13-2"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> xgboost <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> XGBRegressor</span>
-<span id="cb15-3"><span class="im" style="color: #00769E;
+<span id="cb13-3"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> xgboost <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> plot_importance</span>
-<span id="cb15-4"><span class="im" style="color: #00769E;
+<span id="cb13-4"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">as</span> plt</span>
-<span id="cb15-5"></span>
-<span id="cb15-6"><span class="im" style="color: #00769E;
+<span id="cb13-5"></span>
+<span id="cb13-6"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sklearn.model_selection <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> GridSearchCV</span>
-<span id="cb15-7"><span class="im" style="color: #00769E;
+<span id="cb13-7"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> xgboost <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> XGBRegressor</span>
-<span id="cb15-8"></span>
-<span id="cb15-9">xgb <span class="op" style="color: #5E5E5E;
+<span id="cb13-8"></span>
+<span id="cb13-9">xgb <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> XGBRegressor(learning_rate<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1091,17 +1067,17 @@ background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">42</span>)</span>
-<span id="cb15-10">param_grid <span class="op" style="color: #5E5E5E;
+<span id="cb13-10">param_grid <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> {</span>
-<span id="cb15-11">    <span class="st" style="color: #20794D;
+<span id="cb13-11">    <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'n_estimators'</span>: [<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">200</span>,<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">400</span>],</span>
-<span id="cb15-12">    <span class="st" style="color: #20794D;
+<span id="cb13-12">    <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'max_depth'</span> : [<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -1110,29 +1086,29 @@ background-color: null;
 font-style: inherit;">14</span>,<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">18</span>],</span>
-<span id="cb15-13">    <span class="st" style="color: #20794D;
+<span id="cb13-13">    <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'learning_rate'</span>:[<span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.05</span>,<span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.1</span>],</span>
-<span id="cb15-14">    <span class="st" style="color: #20794D;
+<span id="cb13-14">    <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'subsample'</span>: [<span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.8</span>,<span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1.0</span>],</span>
-<span id="cb15-15">    <span class="st" style="color: #20794D;
+<span id="cb13-15">    <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'colsample_bytree'</span>:[<span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.8</span>,<span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1.0</span>]</span>
-<span id="cb15-16">}</span>
-<span id="cb15-17">grid_search <span class="op" style="color: #5E5E5E;
+<span id="cb13-16">}</span>
+<span id="cb13-17">grid_search <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> GridSearchCV(estimator<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1153,12 +1129,12 @@ background-color: null;
 font-style: inherit;">1</span>)  <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># maximise the neg mse to ge the min mse model</span></span>
-<span id="cb15-18"></span>
-<span id="cb15-19"><span class="co" style="color: #5E5E5E;
+<span id="cb13-18"></span>
+<span id="cb13-19"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Tune on the same representative sample used for Random Forest.</span></span>
-<span id="cb15-20">grid_search.fit(X_train.loc[tune_index], y_train.loc[tune_index])</span>
-<span id="cb15-21"><span class="bu" style="color: null;
+<span id="cb13-20">grid_search.fit(X_train.loc[tune_index], y_train.loc[tune_index])</span>
+<span id="cb13-21"><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
 background-color: null;
@@ -1170,11 +1146,16 @@ font-style: inherit;">.</span>best_params_<span class="sc" style="color: #5E5E5E
 background-color: null;
 font-style: inherit;">}</span><span class="ss" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"</span>)</span>
-<span id="cb15-22"><span class="co" style="color: #5E5E5E;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Best parameters: {'colsample_bytree': 0.8, 'learning_rate': 0.05, 'max_depth': 10, 'n_estimators': 400, 'subsample': 0.8}</code></pre>
+</div>
+</div>
+<div id="e4d5de16" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># 'colsample_bytree': 0.8, 'learning_rate': 0.1, 'max_depth': 10, 'n_estimators': 400, 'subsample': 1.0</span></span>
-<span id="cb15-23">xgb <span class="op" style="color: #5E5E5E;
+<span id="cb15-2">xgb <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> XGBRegressor(colsample_bytree<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1205,457 +1186,15 @@ background-color: null;
 font-style: inherit;">=-</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>)</span>
-<span id="cb15-24">xgb.fit(X_train, y_train)</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Best parameters: {'colsample_bytree': 0.8, 'learning_rate': 0.05, 'max_depth': 10, 'n_estimators': 400, 'subsample': 0.8}</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="8">
-<style>#sk-container-id-1 {
-  /* Definition of color scheme common for light and dark mode */
-  --sklearn-color-text: #000;
-  --sklearn-color-text-muted: #666;
-  --sklearn-color-line: gray;
-  /* Definition of color scheme for unfitted estimators */
-  --sklearn-color-unfitted-level-0: #fff5e6;
-  --sklearn-color-unfitted-level-1: #f6e4d2;
-  --sklearn-color-unfitted-level-2: #ffe0b3;
-  --sklearn-color-unfitted-level-3: chocolate;
-  /* Definition of color scheme for fitted estimators */
-  --sklearn-color-fitted-level-0: #f0f8ff;
-  --sklearn-color-fitted-level-1: #d4ebff;
-  --sklearn-color-fitted-level-2: #b3dbfd;
-  --sklearn-color-fitted-level-3: cornflowerblue;
-
-  /* Specific color for light theme */
-  --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
-  --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
-  --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
-  --sklearn-color-icon: #696969;
-
-  @media (prefers-color-scheme: dark) {
-    /* Redefinition of color scheme for dark theme */
-    --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
-    --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
-    --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
-    --sklearn-color-icon: #878787;
-  }
-}
-
-#sk-container-id-1 {
-  color: var(--sklearn-color-text);
-}
-
-#sk-container-id-1 pre {
-  padding: 0;
-}
-
-#sk-container-id-1 input.sk-hidden--visually {
-  border: 0;
-  clip: rect(1px 1px 1px 1px);
-  clip: rect(1px, 1px, 1px, 1px);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
-}
-
-#sk-container-id-1 div.sk-dashed-wrapped {
-  border: 1px dashed var(--sklearn-color-line);
-  margin: 0 0.4em 0.5em 0.4em;
-  box-sizing: border-box;
-  padding-bottom: 0.4em;
-  background-color: var(--sklearn-color-background);
-}
-
-#sk-container-id-1 div.sk-container {
-  /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
-     but bootstrap.min.css set `[hidden] { display: none !important; }`
-     so we also need the `!important` here to be able to override the
-     default hidden behavior on the sphinx rendered scikit-learn.org.
-     See: https://github.com/scikit-learn/scikit-learn/issues/21755 */
-  display: inline-block !important;
-  position: relative;
-}
-
-#sk-container-id-1 div.sk-text-repr-fallback {
-  display: none;
-}
-
-div.sk-parallel-item,
-div.sk-serial,
-div.sk-item {
-  /* draw centered vertical line to link estimators */
-  background-image: linear-gradient(var(--sklearn-color-text-on-default-background), var(--sklearn-color-text-on-default-background));
-  background-size: 2px 100%;
-  background-repeat: no-repeat;
-  background-position: center center;
-}
-
-/* Parallel-specific style estimator block */
-
-#sk-container-id-1 div.sk-parallel-item::after {
-  content: "";
-  width: 100%;
-  border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
-  flex-grow: 1;
-}
-
-#sk-container-id-1 div.sk-parallel {
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  background-color: var(--sklearn-color-background);
-  position: relative;
-}
-
-#sk-container-id-1 div.sk-parallel-item {
-  display: flex;
-  flex-direction: column;
-}
-
-#sk-container-id-1 div.sk-parallel-item:first-child::after {
-  align-self: flex-end;
-  width: 50%;
-}
-
-#sk-container-id-1 div.sk-parallel-item:last-child::after {
-  align-self: flex-start;
-  width: 50%;
-}
-
-#sk-container-id-1 div.sk-parallel-item:only-child::after {
-  width: 0;
-}
-
-/* Serial-specific style estimator block */
-
-#sk-container-id-1 div.sk-serial {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: var(--sklearn-color-background);
-  padding-right: 1em;
-  padding-left: 1em;
-}
-
-
-/* Toggleable style: style used for estimator/Pipeline/ColumnTransformer box that is
-clickable and can be expanded/collapsed.
-- Pipeline and ColumnTransformer use this feature and define the default style
-- Estimators will overwrite some part of the style using the `sk-estimator` class
-*/
-
-/* Pipeline and ColumnTransformer style (default) */
-
-#sk-container-id-1 div.sk-toggleable {
-  /* Default theme specific background. It is overwritten whether we have a
-  specific estimator or a Pipeline/ColumnTransformer */
-  background-color: var(--sklearn-color-background);
-}
-
-/* Toggleable label */
-#sk-container-id-1 label.sk-toggleable__label {
-  cursor: pointer;
-  display: flex;
-  width: 100%;
-  margin-bottom: 0;
-  padding: 0.5em;
-  box-sizing: border-box;
-  text-align: center;
-  align-items: start;
-  justify-content: space-between;
-  gap: 0.5em;
-}
-
-#sk-container-id-1 label.sk-toggleable__label .caption {
-  font-size: 0.6rem;
-  font-weight: lighter;
-  color: var(--sklearn-color-text-muted);
-}
-
-#sk-container-id-1 label.sk-toggleable__label-arrow:before {
-  /* Arrow on the left of the label */
-  content: "▸";
-  float: left;
-  margin-right: 0.25em;
-  color: var(--sklearn-color-icon);
-}
-
-#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {
-  color: var(--sklearn-color-text);
-}
-
-/* Toggleable content - dropdown */
-
-#sk-container-id-1 div.sk-toggleable__content {
-  max-height: 0;
-  max-width: 0;
-  overflow: hidden;
-  text-align: left;
-  /* unfitted */
-  background-color: var(--sklearn-color-unfitted-level-0);
-}
-
-#sk-container-id-1 div.sk-toggleable__content.fitted {
-  /* fitted */
-  background-color: var(--sklearn-color-fitted-level-0);
-}
-
-#sk-container-id-1 div.sk-toggleable__content pre {
-  margin: 0.2em;
-  border-radius: 0.25em;
-  color: var(--sklearn-color-text);
-  /* unfitted */
-  background-color: var(--sklearn-color-unfitted-level-0);
-}
-
-#sk-container-id-1 div.sk-toggleable__content.fitted pre {
-  /* unfitted */
-  background-color: var(--sklearn-color-fitted-level-0);
-}
-
-#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {
-  /* Expand drop-down */
-  max-height: 200px;
-  max-width: 100%;
-  overflow: auto;
-}
-
-#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
-  content: "▾";
-}
-
-/* Pipeline/ColumnTransformer-specific style */
-
-#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
-  color: var(--sklearn-color-text);
-  background-color: var(--sklearn-color-unfitted-level-2);
-}
-
-#sk-container-id-1 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
-  background-color: var(--sklearn-color-fitted-level-2);
-}
-
-/* Estimator-specific style */
-
-/* Colorize estimator box */
-#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
-  /* unfitted */
-  background-color: var(--sklearn-color-unfitted-level-2);
-}
-
-#sk-container-id-1 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
-  /* fitted */
-  background-color: var(--sklearn-color-fitted-level-2);
-}
-
-#sk-container-id-1 div.sk-label label.sk-toggleable__label,
-#sk-container-id-1 div.sk-label label {
-  /* The background is the default theme color */
-  color: var(--sklearn-color-text-on-default-background);
-}
-
-/* On hover, darken the color of the background */
-#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {
-  color: var(--sklearn-color-text);
-  background-color: var(--sklearn-color-unfitted-level-2);
-}
-
-/* Label box, darken color on hover, fitted */
-#sk-container-id-1 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
-  color: var(--sklearn-color-text);
-  background-color: var(--sklearn-color-fitted-level-2);
-}
-
-/* Estimator label */
-
-#sk-container-id-1 div.sk-label label {
-  font-family: monospace;
-  font-weight: bold;
-  display: inline-block;
-  line-height: 1.2em;
-}
-
-#sk-container-id-1 div.sk-label-container {
-  text-align: center;
-}
-
-/* Estimator-specific */
-#sk-container-id-1 div.sk-estimator {
-  font-family: monospace;
-  border: 1px dotted var(--sklearn-color-border-box);
-  border-radius: 0.25em;
-  box-sizing: border-box;
-  margin-bottom: 0.5em;
-  /* unfitted */
-  background-color: var(--sklearn-color-unfitted-level-0);
-}
-
-#sk-container-id-1 div.sk-estimator.fitted {
-  /* fitted */
-  background-color: var(--sklearn-color-fitted-level-0);
-}
-
-/* on hover */
-#sk-container-id-1 div.sk-estimator:hover {
-  /* unfitted */
-  background-color: var(--sklearn-color-unfitted-level-2);
-}
-
-#sk-container-id-1 div.sk-estimator.fitted:hover {
-  /* fitted */
-  background-color: var(--sklearn-color-fitted-level-2);
-}
-
-/* Specification for estimator info (e.g. "i" and "?") */
-
-/* Common style for "i" and "?" */
-
-.sk-estimator-doc-link,
-a:link.sk-estimator-doc-link,
-a:visited.sk-estimator-doc-link {
-  float: right;
-  font-size: smaller;
-  line-height: 1em;
-  font-family: monospace;
-  background-color: var(--sklearn-color-background);
-  border-radius: 1em;
-  height: 1em;
-  width: 1em;
-  text-decoration: none !important;
-  margin-left: 0.5em;
-  text-align: center;
-  /* unfitted */
-  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
-  color: var(--sklearn-color-unfitted-level-1);
-}
-
-.sk-estimator-doc-link.fitted,
-a:link.sk-estimator-doc-link.fitted,
-a:visited.sk-estimator-doc-link.fitted {
-  /* fitted */
-  border: var(--sklearn-color-fitted-level-1) 1pt solid;
-  color: var(--sklearn-color-fitted-level-1);
-}
-
-/* On hover */
-div.sk-estimator:hover .sk-estimator-doc-link:hover,
-.sk-estimator-doc-link:hover,
-div.sk-label-container:hover .sk-estimator-doc-link:hover,
-.sk-estimator-doc-link:hover {
-  /* unfitted */
-  background-color: var(--sklearn-color-unfitted-level-3);
-  color: var(--sklearn-color-background);
-  text-decoration: none;
-}
-
-div.sk-estimator.fitted:hover .sk-estimator-doc-link.fitted:hover,
-.sk-estimator-doc-link.fitted:hover,
-div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
-.sk-estimator-doc-link.fitted:hover {
-  /* fitted */
-  background-color: var(--sklearn-color-fitted-level-3);
-  color: var(--sklearn-color-background);
-  text-decoration: none;
-}
-
-/* Span, style for the box shown on hovering the info icon */
-.sk-estimator-doc-link span {
-  display: none;
-  z-index: 9999;
-  position: relative;
-  font-weight: normal;
-  right: .2ex;
-  padding: .5ex;
-  margin: .5ex;
-  width: min-content;
-  min-width: 20ex;
-  max-width: 50ex;
-  color: var(--sklearn-color-text);
-  box-shadow: 2pt 2pt 4pt #999;
-  /* unfitted */
-  background: var(--sklearn-color-unfitted-level-0);
-  border: .5pt solid var(--sklearn-color-unfitted-level-3);
-}
-
-.sk-estimator-doc-link.fitted span {
-  /* fitted */
-  background: var(--sklearn-color-fitted-level-0);
-  border: var(--sklearn-color-fitted-level-3);
-}
-
-.sk-estimator-doc-link:hover span {
-  display: block;
-}
-
-/* "?"-specific style due to the `<a>` HTML tag */
-
-#sk-container-id-1 a.estimator_doc_link {
-  float: right;
-  font-size: 1rem;
-  line-height: 1em;
-  font-family: monospace;
-  background-color: var(--sklearn-color-background);
-  border-radius: 1rem;
-  height: 1rem;
-  width: 1rem;
-  text-decoration: none;
-  /* unfitted */
-  color: var(--sklearn-color-unfitted-level-1);
-  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
-}
-
-#sk-container-id-1 a.estimator_doc_link.fitted {
-  /* fitted */
-  border: var(--sklearn-color-fitted-level-1) 1pt solid;
-  color: var(--sklearn-color-fitted-level-1);
-}
-
-/* On hover */
-#sk-container-id-1 a.estimator_doc_link:hover {
-  /* unfitted */
-  background-color: var(--sklearn-color-unfitted-level-3);
-  color: var(--sklearn-color-background);
-  text-decoration: none;
-}
-
-#sk-container-id-1 a.estimator_doc_link.fitted:hover {
-  /* fitted */
-  background-color: var(--sklearn-color-fitted-level-3);
-}
-</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>XGBRegressor(base_score=None, booster=None, callbacks=None,
-             colsample_bylevel=None, colsample_bynode=None,
-             colsample_bytree=0.8, device=None, early_stopping_rounds=None,
-             enable_categorical=False, eval_metric=None, feature_types=None,
-             feature_weights=None, gamma=None, grow_policy=None,
-             importance_type=None, interaction_constraints=None,
-             learning_rate=0.1, max_bin=None, max_cat_threshold=None,
-             max_cat_to_onehot=None, max_delta_step=None, max_depth=10,
-             max_leaves=None, min_child_weight=None, missing=nan,
-             monotone_constraints=None, multi_strategy=None, n_estimators=400,
-             n_jobs=-1, num_parallel_tree=None, ...)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked=""><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>XGBRegressor</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://xgboost.readthedocs.io/en/release_3.0.0/python/python_api.html#xgboost.XGBRegressor">?<span>Documentation for XGBRegressor</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted"><pre>XGBRegressor(base_score=None, booster=None, callbacks=None,
-             colsample_bylevel=None, colsample_bynode=None,
-             colsample_bytree=0.8, device=None, early_stopping_rounds=None,
-             enable_categorical=False, eval_metric=None, feature_types=None,
-             feature_weights=None, gamma=None, grow_policy=None,
-             importance_type=None, interaction_constraints=None,
-             learning_rate=0.1, max_bin=None, max_cat_threshold=None,
-             max_cat_to_onehot=None, max_delta_step=None, max_depth=10,
-             max_leaves=None, min_child_weight=None, missing=nan,
-             monotone_constraints=None, multi_strategy=None, n_estimators=400,
-             n_jobs=-1, num_parallel_tree=None, ...)</pre></div> </div></div></div></div>
-</div>
-</div>
-<div id="18fa68c0" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><span class="co" style="color: #5E5E5E;
+<span id="cb15-3">xgb.fit(X_train, y_train)</span>
+<span id="cb15-4"></span>
+<span id="cb15-5"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># predict and get r^2, rmse</span></span>
-<span id="cb17-2">xgb_preds <span class="op" style="color: #5E5E5E;
+<span id="cb15-6">xgb_preds <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> xgb.predict(X_test)</span>
-<span id="cb17-3"><span class="bu" style="color: null;
+<span id="cb15-7"><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
 background-color: null;
@@ -1666,7 +1205,7 @@ background-color: null;
 font-style: inherit;">:.4f}</span><span class="ss" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"</span>)</span>
-<span id="cb17-4"><span class="bu" style="color: null;
+<span id="cb15-8"><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
 background-color: null;
@@ -1689,11 +1228,11 @@ XGBoost RMSE: 0.08</code></pre>
 </section>
 <section id="actual-vs-predicted-plot-residual-plot" class="level2">
 <h2 class="anchored" data-anchor-id="actual-vs-predicted-plot-residual-plot">Actual vs Predicted Plot &amp; Residual Plot</h2>
-<div id="0eeff64e" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><span class="co" style="color: #5E5E5E;
+<div id="d9cdf8b5" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># get prediction</span></span>
-<span id="cb19-2">xgb <span class="op" style="color: #5E5E5E;
+<span id="cb17-2">xgb <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> XGBRegressor(learning_rate<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1716,31 +1255,31 @@ background-color: null;
 font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.8</span>)</span>
-<span id="cb19-3">xgb.fit(X_train,y_train)</span>
-<span id="cb19-4">y_pred <span class="op" style="color: #5E5E5E;
+<span id="cb17-3">xgb.fit(X_train,y_train)</span>
+<span id="cb17-4">y_pred <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> xgb.predict(X_test)</span>
-<span id="cb19-5"></span>
-<span id="cb19-6"><span class="im" style="color: #00769E;
+<span id="cb17-5"></span>
+<span id="cb17-6"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">as</span> plt</span>
-<span id="cb19-7"><span class="im" style="color: #00769E;
+<span id="cb17-7"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> seaborn <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">as</span> sns</span>
-<span id="cb19-8"><span class="im" style="color: #00769E;
+<span id="cb17-8"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> pandas <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">as</span> pd</span>
-<span id="cb19-9"></span>
-<span id="cb19-10"><span class="co" style="color: #5E5E5E;
+<span id="cb17-9"></span>
+<span id="cb17-10"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># actual vs predicted plot</span></span>
-<span id="cb19-11">sns.scatterplot(x<span class="op" style="color: #5E5E5E;
+<span id="cb17-11">sns.scatterplot(x<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>y_test, y<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1757,7 +1296,7 @@ background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span>)</span>
-<span id="cb19-12">max_val <span class="op" style="color: #5E5E5E;
+<span id="cb17-12">max_val <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="bu" style="color: null;
 background-color: null;
@@ -1766,7 +1305,7 @@ background-color: null;
 font-style: inherit;">max</span>(y_test), <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">max</span>(y_pred))</span>
-<span id="cb19-13">min_val <span class="op" style="color: #5E5E5E;
+<span id="cb17-13">min_val <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="bu" style="color: null;
 background-color: null;
@@ -1775,7 +1314,7 @@ background-color: null;
 font-style: inherit;">min</span>(y_test), <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">min</span>(y_pred))</span>
-<span id="cb19-14">plt.plot([min_val, max_val], [min_val, max_val], color<span class="op" style="color: #5E5E5E;
+<span id="cb17-14">plt.plot([min_val, max_val], [min_val, max_val], color<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
@@ -1788,45 +1327,45 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'--'</span>)</span>
-<span id="cb19-15">plt.title(<span class="st" style="color: #20794D;
+<span id="cb17-15">plt.title(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'Actual vs Predicted HDB Price per SQM'</span>, fontsize<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">15</span>)</span>
-<span id="cb19-16">plt.xlabel(<span class="st" style="color: #20794D;
+<span id="cb17-16">plt.xlabel(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'Actual Price per SQM ($)'</span>, fontsize<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">12</span>)</span>
-<span id="cb19-17">plt.ylabel(<span class="st" style="color: #20794D;
+<span id="cb17-17">plt.ylabel(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'Predicted Price per SQM ($)'</span>, fontsize<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">12</span>)</span>
-<span id="cb19-18">plt.grid(<span class="va" style="color: #111111;
+<span id="cb17-18">plt.grid(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">True</span>, alpha<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.2</span>)</span>
-<span id="cb19-19">plt.show()</span>
-<span id="cb19-20"></span>
-<span id="cb19-21"><span class="co" style="color: #5E5E5E;
+<span id="cb17-19">plt.show()</span>
+<span id="cb17-20"></span>
+<span id="cb17-21"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># residual plot</span></span>
-<span id="cb19-22">residuals <span class="op" style="color: #5E5E5E;
+<span id="cb17-22">residuals <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> y_test<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-</span>y_pred</span>
-<span id="cb19-23">sns.scatterplot(x<span class="op" style="color: #5E5E5E;
+<span id="cb17-23">sns.scatterplot(x<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>y_pred,y<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1835,7 +1374,7 @@ background-color: null;
 font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.5</span>)</span>
-<span id="cb19-24">plt.axhline(<span class="dv" style="color: #AD0000;
+<span id="cb17-24">plt.axhline(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span>, color<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1846,16 +1385,16 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'--'</span>)</span>
-<span id="cb19-25">plt.title(<span class="st" style="color: #20794D;
+<span id="cb17-25">plt.title(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'Residual Plot: Predicted vs. Residuals'</span>)</span>
-<span id="cb19-26">plt.xlabel(<span class="st" style="color: #20794D;
+<span id="cb17-26">plt.xlabel(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'Predicted HDB Price ($)'</span>)</span>
-<span id="cb19-27">plt.ylabel(<span class="st" style="color: #20794D;
+<span id="cb17-27">plt.ylabel(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'Residuals (Actual - Predicted)'</span>)</span>
-<span id="cb19-28">plt.show()</span></code></pre></div></div>
+<span id="cb17-28">plt.show()</span></code></pre></div></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1875,55 +1414,55 @@ font-style: inherit;">'Residuals (Actual - Predicted)'</span>)</span>
 </section>
 <section id="top-10-highest-value-flat-features" class="level2">
 <h2 class="anchored" data-anchor-id="top-10-highest-value-flat-features">Top 10 Highest value flat features</h2>
-<div id="e5f8fdc3" class="cell" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><span class="co" style="color: #5E5E5E;
+<div id="48a012a5" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Create a results table</span></span>
-<span id="cb20-2">analysis_df <span class="op" style="color: #5E5E5E;
+<span id="cb18-2">analysis_df <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pd.DataFrame({</span>
-<span id="cb20-3">    <span class="st" style="color: #20794D;
+<span id="cb18-3">    <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'actual'</span>: y_test,</span>
-<span id="cb20-4">    <span class="st" style="color: #20794D;
+<span id="cb18-4">    <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'predicted'</span>: y_pred,</span>
-<span id="cb20-5">    <span class="st" style="color: #20794D;
+<span id="cb18-5">    <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'gap'</span>: y_pred <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-</span> y_test</span>
-<span id="cb20-6">})</span>
-<span id="cb20-7"></span>
-<span id="cb20-8"><span class="co" style="color: #5E5E5E;
+<span id="cb18-6">})</span>
+<span id="cb18-7"></span>
+<span id="cb18-8"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Add back the town and flat type so we know where these are</span></span>
-<span id="cb20-9">analysis_df[<span class="st" style="color: #20794D;
+<span id="cb18-9">analysis_df[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'town'</span>] <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> hdb_df.loc[X_test.index, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'town'</span>]</span>
-<span id="cb20-10">analysis_df[<span class="st" style="color: #20794D;
+<span id="cb18-10">analysis_df[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'flat_type'</span>] <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> hdb_df.loc[X_test.index, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'flat_type'</span>]</span>
-<span id="cb20-11">analysis_df[<span class="st" style="color: #20794D;
+<span id="cb18-11">analysis_df[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'remaining_lease'</span>] <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> hdb_df.loc[X_test.index, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'remaining_lease'</span>]</span>
-<span id="cb20-12"></span>
-<span id="cb20-13"><span class="co" style="color: #5E5E5E;
+<span id="cb18-12"></span>
+<span id="cb18-13"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Sort to find the Top 10 "Bargains"</span></span>
-<span id="cb20-14">top_bargains <span class="op" style="color: #5E5E5E;
+<span id="cb18-14">top_bargains <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> analysis_df.sort_values(by<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1936,7 +1475,7 @@ background-color: null;
 font-style: inherit;">False</span>).head(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">10</span>)</span>
-<span id="cb20-15"><span class="bu" style="color: null;
+<span id="cb18-15"><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">print</span>(top_bargains)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
@@ -1970,20 +1509,20 @@ font-style: inherit;">print</span>(top_bargains)</span></code></pre></div></div>
 </section>
 <section id="extrapolating-and-predicting-future-prices" class="level2">
 <h2 class="anchored" data-anchor-id="extrapolating-and-predicting-future-prices">Extrapolating and predicting future prices</h2>
-<div id="3d3ec1b5" class="cell" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><span class="co" style="color: #5E5E5E;
+<div id="34862a35" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># predicting future prices with certain districts</span></span>
-<span id="cb22-2"><span class="im" style="color: #00769E;
+<span id="cb20-2"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> xgboost <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> XGBRegressor</span>
-<span id="cb22-3"></span>
-<span id="cb22-4"><span class="co" style="color: #5E5E5E;
+<span id="cb20-3"></span>
+<span id="cb20-4"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># train the full dataset</span></span>
-<span id="cb22-5">xgb <span class="op" style="color: #5E5E5E;
+<span id="cb20-5">xgb <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> XGBRegressor(learning_rate<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2006,7 +1545,7 @@ background-color: null;
 font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.8</span>)</span>
-<span id="cb22-6">X <span class="op" style="color: #5E5E5E;
+<span id="cb20-6">X <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pd.get_dummies(hdb_df[[<span class="st" style="color: #20794D;
 background-color: null;
@@ -2021,21 +1560,21 @@ background-color: null;
 font-style: inherit;">'flat_type'</span>]]) <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># do ohe for town</span></span>
-<span id="cb22-7">y <span class="op" style="color: #5E5E5E;
+<span id="cb20-7">y <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> np.log1p(hdb_df[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'price_per_sqm'</span>])</span>
-<span id="cb22-8">xgb.fit(X,y)</span>
-<span id="cb22-9"></span>
-<span id="cb22-10"><span class="im" style="color: #00769E;
+<span id="cb20-8">xgb.fit(X,y)</span>
+<span id="cb20-9"></span>
+<span id="cb20-10"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> itertools</span>
-<span id="cb22-11"></span>
-<span id="cb22-12"><span class="co" style="color: #5E5E5E;
+<span id="cb20-11"></span>
+<span id="cb20-12"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># test all the ranges users would prefer</span></span>
-<span id="cb22-13">year <span class="op" style="color: #5E5E5E;
+<span id="cb20-13">year <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -2044,7 +1583,7 @@ background-color: null;
 font-style: inherit;">2028</span>,<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">2029</span>]</span>
-<span id="cb22-14">storey_mid <span class="op" style="color: #5E5E5E;
+<span id="cb20-14">storey_mid <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -2057,7 +1596,7 @@ background-color: null;
 font-style: inherit;">8</span>,<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">10</span>]</span>
-<span id="cb22-15">remaining_lease <span class="op" style="color: #5E5E5E;
+<span id="cb20-15">remaining_lease <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -2074,7 +1613,7 @@ background-color: null;
 font-style: inherit;">85</span>,<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">90</span>]</span>
-<span id="cb22-16">town <span class="op" style="color: #5E5E5E;
+<span id="cb20-16">town <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [<span class="st" style="color: #20794D;
 background-color: null;
@@ -2089,23 +1628,23 @@ background-color: null;
 font-style: inherit;">'BUKIT PANJANG'</span>, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'CHOA CHU KANG'</span>]</span>
-<span id="cb22-17">flat_type <span class="op" style="color: #5E5E5E;
+<span id="cb20-17">flat_type <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'4 ROOM'</span>,<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'5 ROOM'</span>]</span>
-<span id="cb22-18"></span>
-<span id="cb22-19"><span class="co" style="color: #5E5E5E;
+<span id="cb20-18"></span>
+<span id="cb20-19"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># create every possible combinations</span></span>
-<span id="cb22-20">combinations <span class="op" style="color: #5E5E5E;
+<span id="cb20-20">combinations <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">list</span>(itertools.product(year,town, remaining_lease, storey_mid, flat_type))</span>
-<span id="cb22-21">search_df <span class="op" style="color: #5E5E5E;
+<span id="cb20-21">search_df <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pd.DataFrame(combinations, columns<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2120,17 +1659,17 @@ background-color: null;
 font-style: inherit;">'storey_mid'</span>, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'flat_type'</span>])</span>
-<span id="cb22-22">df_new <span class="op" style="color: #5E5E5E;
+<span id="cb20-22">df_new <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pd.get_dummies(search_df)</span>
-<span id="cb22-23"></span>
-<span id="cb22-24"><span class="co" style="color: #5E5E5E;
+<span id="cb20-23"></span>
+<span id="cb20-24"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># adds missing columns</span></span>
-<span id="cb22-25">expected_columns <span class="op" style="color: #5E5E5E;
+<span id="cb20-25">expected_columns <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> xgb.get_booster().feature_names</span>
-<span id="cb22-26">df_new_aligned <span class="op" style="color: #5E5E5E;
+<span id="cb20-26">df_new_aligned <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> df_new.reindex(columns<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2139,20 +1678,20 @@ background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span>)</span>
-<span id="cb22-27"></span>
-<span id="cb22-28"><span class="co" style="color: #5E5E5E;
+<span id="cb20-27"></span>
+<span id="cb20-28"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># predict</span></span>
-<span id="cb22-29">search_df[<span class="st" style="color: #20794D;
+<span id="cb20-29">search_df[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'predicted_price'</span>] <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> xgb.predict(df_new_aligned)</span>
-<span id="cb22-30"></span>
-<span id="cb22-31"><span class="co" style="color: #5E5E5E;
+<span id="cb20-30"></span>
+<span id="cb20-31"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># most affordable</span></span>
-<span id="cb22-32"><span class="bu" style="color: null;
+<span id="cb20-32"><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">print</span>(search_df.sort_values(<span class="st" style="color: #20794D;
 background-color: null;
