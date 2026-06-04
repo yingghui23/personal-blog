@@ -1,0 +1,420 @@
+---
+title: "Which HDB resale flat is the best buy (Part 1)?"
+description: "Evaluating different HDB features using ensemble model (Random Forest & XGBoost)."
+author: "Ying Hui Tan"
+date: "2026-06-04"
+categories: [Machine Learning, XGBoost, Random Forest]
+image: hdb.jpg
+open-graph:
+  title: "Which HDB resale flat is the best buy? | Confounding Human"
+  description: "Evaluating different HDB features using ensemble model (Random Forest & XGBoost)."
+  image: coffee.jpg
+twitter-card:
+  card-style: summary_large_image
+  title: "Which HDB resale flat is the best buy?"
+  description: "Evaluating different HDB features using ensemble model (Random Forest & XGBoost)."
+jupyter: python3
+---
+
+```{python}
+#| echo: false
+#| output: false
+import sys
+import subprocess
+import warnings
+
+# Remove all warnings
+warnings.filterwarnings('ignore')
+
+# Pin kagglehub to the compatible release; 1.0.1 can fail on kagglesdk imports.
+try:
+    import kagglehub
+except ImportError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "kagglehub==0.3.12"])
+
+# Ensure all other required packages are installed in the active Quarto environment
+required_packages = {
+    "xgboost": "xgboost",
+    "statsmodels": "statsmodels",
+    "seaborn": "seaborn",
+    "sklearn": "scikit-learn",
+    "bs4": "beautifulsoup4",
+    "requests": "requests",
+}
+for import_name, package in required_packages.items():
+    try:
+        __import__(import_name)
+    except ImportError:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+```
+
+---
+
+## Business Context & Problem Statement
+
+### Business Context
+The real estate market in Singapore is highly dynamic and plays a critical role in the economy. In particular, Housing & Development Board (HDB) resale flats form a large portion of residential transactions, making price transparency and accurate valuation essential.
+
+However, resale flat prices are influenced by multiple factors such as:
+* Location
+* Flat type
+* Remaining lease
+* Market conditions over time
+
+This complexity makes it difficult for buyers, sellers, and policymakers to determine fair property values.
+
+### Problem Statement
+How can we accurately predict HDB resale flat prices based on historical transaction data and property attributes?
+
+---
+
+## Business Value
+
+* **For Buyers:** Avoid overpaying for properties; Make data-driven purchase decisions.
+* **For Sellers:** Price flats competitively; Reduce time on market.
+* **For Real Estate Platforms / Agencies:** Provide automated valuation tools; Improve customer trust and engagement.
+* **For Government / Policymakers:** Monitor housing affordability; Detect abnormal price trends.
+
+---
+
+## Data Ingestion & Initial Inspection
+
+```{python}
+import kagglehub
+import pandas as pd
+import os
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Download dataset
+path = kagglehub.dataset_download("yingghui233/hdb-resale-pricing-singapore")
+
+# Find csv name & make it a dataframe
+files = os.listdir(path)
+csv_file = os.path.join(path, files[0])
+hdb = pd.read_csv(csv_file)
+print(hdb.head())
+
+# data inspection
+print(hdb.info())
+print(hdb.describe())
+```
+
+---
+
+## Feature Engineering and Selection
+
+For this particular dataset, we would focus on 6 main factors:
+* Time (Year)
+* Town (categorical)
+* Flat-type (categorical)
+* Storey (Numerical)
+* Lease Remaining (Numerical)
+
+Note that every government flats in Singapore have a maximum lease of 99 years, hence, lease remaining would be the 99 - (current_year - year_built).This is the formula for the column remaining_lease that is already in the dataset.
+
+The dependent variable (y), would be resale_price/floor_area_sqm, we can rename that as Price_per_sqm.
+
+```{python}
+# create price_per_sqm (y)
+hdb['price_per_sqm'] = hdb['resale_price']/hdb['floor_area_sqm']
+
+# Convert to datetime objects
+hdb['month'] = pd.to_datetime(hdb['month'])
+
+# Create a 'year' and 'month_num' column
+hdb['year'] = hdb['month'].dt.year
+hdb['month_val'] = hdb['month'].dt.month
+
+# convert remaining_lease into a pure numerical number
+hdb['remaining_lease'] = hdb['remaining_lease'].str.extract('(\d+)').astype(float)
+
+# use the midpoint of storey
+hdb['storey_mid'] = hdb['storey_range'].apply(lambda x: (int(x.split(' TO ')[0]) + int(x.split(' TO ')[1])) / 2)
+
+# check new features
+print(hdb[['year','month_val','town', 'flat_type', 'storey_mid', 'remaining_lease', 'price_per_sqm']].head())
+hdb_df = hdb[['year','town', 'flat_type', 'storey_mid', 'remaining_lease', 'price_per_sqm','month_val']]
+```
+
+After considering all features, we would plot these features to see the trend of features to price_per_sqm. Boxplot is used for categorical data such as flat type or town; normal line plot is used for numerical data.
+
+```{python}
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# town to price_per_sqm (boxplot)
+town_order = hdb_df.groupby('town')['price_per_sqm'].median().sort_values(ascending=False).index
+sns.boxplot(data=hdb_df,y='town',x='price_per_sqm',order=town_order,palette='coolwarm')
+plt.title('Price per SQM by Town (Sorted by Median)')
+plt.xlabel('Price per SQM ($)')
+plt.ylabel('Town')
+plt.show()
+
+# boxplot for flat type
+plt.figure(figsize=(10, 6))
+hdb_df.boxplot(column='price_per_sqm',by='flat_type')
+plt.ylabel('Price per SQM ($)')
+plt.title('Price per SQM by Flat Type')
+
+# time-cost trend (year)
+plt.figure(figsize=(10, 6))
+sns.lineplot(data=hdb, x='year', y='price_per_sqm', marker='o', color='red')
+plt.title('Trend of Land Value (Price per SQM) Over Years')
+plt.grid(True, linestyle='--', alpha=0.6)
+plt.show()
+
+# time-cost trend (month)
+plt.figure(figsize=(10, 6))
+sns.lineplot(data=hdb, x='month_val', y='price_per_sqm', marker='o', color='red')
+plt.title('Trend of Land Value (Price per SQM) Over Years')
+plt.grid(True, linestyle='--', alpha=0.6)
+plt.show()
+
+# storey
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=hdb, x='storey_mid', y='price_per_sqm', alpha=0.1, color='blue')
+# Adding a regression line helps see the "Upward Slope" clearly
+sns.regplot(data=hdb, x='storey_mid', y='price_per_sqm', scatter=False, color='black')
+plt.title('Correlation between Storey Level and Price per SQM')
+plt.show()
+
+# remaining lease
+plt.figure(figsize=(10,6))
+sns.lineplot(data=hdb, x='remaining_lease', y='price_per_sqm', marker='o', color='red')
+plt.title('Trend of Land Value (Price per SQM) Over Years')
+plt.grid(True, linestyle='--', alpha=0.6)
+plt.show()
+```
+
+Boxplot for categorical data looks like different category varries in price_per_sqm. To confirm the suspicion, we can use ANOVA to determine if there is indeed difference between at least one group.
+
+```{python}
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+
+# ANOVA for categorical variables
+cat_variables = hdb_df[['town','flat_type']]
+for col in cat_variables:
+  lm = ols(f'price_per_sqm~C({col})',data = hdb_df).fit()
+  anova = sm.stats.anova_lm(lm)
+  print(f'Variable: {col}')
+  print(anova)
+  print('\n')
+```
+
+Summary:
+
+- price_per_sqm is calculated by dividing price by area to normalize the flat size. Use log transformation as some prices are significantly higher than the others.
+
+- One hot encoding should be implemented for categorical factors like town and flat_type so that models like linear regression can process them.
+
+- Using ANOVA, town and flat_type is significant in the linear model, hence, this two are significant predictor under 5% level of significance.
+
+- By looking at the visualisation for year, storey, and remaining lease, we can conclude that there is a linear trend, hence, these are predictors that we can add into our model.
+
+- Month_val plot shows significant short-term volatility (noise) that does not represent the long-term appreciation of land value. To ensure the model focuses on structural price drivers rather than seasonal fluctuations, Month was excluded.
+
+EDA shows that these factors: ['price_per_sqm', 'year', 'storey_mid', 'remaining_lease'] are significant. We can further show it by using embedded methods via random forest to validate our selection.
+
+We can also evaluate which ensemble learning is optimal by using k-fold cross validation. For this blog, I am using random forest and XGBoost for model evaluation.
+
+---
+
+## Using RandomForestRegressor
+
+I use grid search to find the optimal hyperparameter and then use R-squared and Root Mean Square Error (RMSE) to determine which model is better overall.
+
+```{python}
+from sklearn.model_selection import train_test_split
+import numpy as np
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import r2_score, mean_squared_error
+from sklearn.model_selection import GridSearchCV
+
+# split your data (80% training, 20% testing)
+X = pd.get_dummies(hdb_df[['year', 'storey_mid', 'remaining_lease', 'town', 'flat_type']]) # do ohe for town
+y = np.log1p(hdb_df['price_per_sqm'])
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+rf = RandomForestRegressor(random_state=42, n_jobs=-1)
+param_grid = {
+    'n_estimators': [100,300],
+    'max_depth' : [15,30,45]
+}
+grid_search = GridSearchCV(estimator=rf, param_grid=param_grid, cv=3, scoring='neg_mean_squared_error', n_jobs=-1)  # maximise the neg mse to ge the min mse model
+
+# Tune on a representative sample so the blog renders faster.
+tune_size = min(50000, len(X_train))
+tune_index = X_train.sample(n=tune_size, random_state=42).index
+
+# run the search and see the best parameters
+grid_search.fit(X_train.loc[tune_index], y_train.loc[tune_index])
+print(f"Best parameters: {grid_search.best_params_}")  # best max_depth = 30
+```
+
+```{python}
+# test random forest with hyperparam
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score, mean_squared_error
+
+# split your data (80% training, 20% testing)
+X = pd.get_dummies(hdb_df[['year', 'storey_mid', 'remaining_lease', 'town', 'flat_type']]) # do ohe for town
+y = np.log1p(hdb_df['price_per_sqm'])
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# train
+rf = RandomForestRegressor(n_estimators=300, max_depth=30, random_state=42, n_jobs=-1)
+rf.fit(X_train, y_train)
+
+# r^2 and mse
+predictions = rf.predict(X_test)
+print(f"R^2 Score for RandomForest: {r2_score(y_test, predictions):.4f}")
+print(f"RMSE for RandomForest: {np.sqrt(mean_squared_error(y_test, predictions)):.2f}")
+```
+
+## Using XGBRegressor
+
+```{python}
+# test xgboost with hyperparameter
+from xgboost import XGBRegressor
+from xgboost import plot_importance
+import matplotlib.pyplot as plt
+
+from sklearn.model_selection import GridSearchCV
+from xgboost import XGBRegressor
+
+xgb = XGBRegressor(learning_rate=0.05, max_depth=6, n_jobs=-1,random_state=42)
+param_grid = {
+    'n_estimators': [200,400],
+    'max_depth' : [10,14,18],
+    'learning_rate':[0.05,0.1],
+    'subsample': [0.8,1.0],
+    'colsample_bytree':[0.8,1.0]
+}
+grid_search = GridSearchCV(estimator=xgb, param_grid=param_grid, cv=3, scoring='neg_mean_squared_error', n_jobs=-1)  # maximise the neg mse to ge the min mse model
+
+# Tune on the same representative sample used for Random Forest.
+grid_search.fit(X_train.loc[tune_index], y_train.loc[tune_index])
+print(f"Best parameters: {grid_search.best_params_}")
+```
+
+```{python}
+# 'colsample_bytree': 0.8, 'learning_rate': 0.1, 'max_depth': 10, 'n_estimators': 400, 'subsample': 1.0
+xgb = XGBRegressor(colsample_bytree= 0.8, learning_rate= 0.1, max_depth= 10, n_estimators= 400, subsample= 1.0,random_state=42, n_jobs=-1)
+xgb.fit(X_train, y_train)
+
+# predict and get r^2, rmse
+xgb_preds = xgb.predict(X_test)
+print(f"XGBoost R^2: {r2_score(y_test, xgb_preds):.4f}")
+print(f"XGBoost RMSE: {np.sqrt(mean_squared_error(y_test, xgb_preds)):.2f}")
+```
+
+Conclusion:
+
+Both random forest and XGBoost have very close results as the RMSE of both models are approximately similar, however, XGboost seems to perform better in terms of R^2, hence, we choose XGBoost
+
+## Actual vs Predicted Plot & Residual Plot
+
+```{python}
+# get prediction
+xgb = XGBRegressor(learning_rate=0.1, max_depth=10, n_jobs=-1,subsample= 1.0,colsample_bytree= 0.8)
+xgb.fit(X_train,y_train)
+y_pred = xgb.predict(X_test)
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+
+# actual vs predicted plot
+sns.scatterplot(x=y_test, y=y_pred, alpha=0.3, color='teal', edgecolor=None)
+max_val = max(max(y_test), max(y_pred))
+min_val = min(min(y_test), min(y_pred))
+plt.plot([min_val, max_val], [min_val, max_val], color='red', lw=2, linestyle='--')
+plt.title('Actual vs Predicted HDB Price per SQM', fontsize=15)
+plt.xlabel('Actual Price per SQM ($)', fontsize=12)
+plt.ylabel('Predicted Price per SQM ($)', fontsize=12)
+plt.grid(True, alpha=0.2)
+plt.show()
+
+# residual plot
+residuals = y_test-y_pred
+sns.scatterplot(x=y_pred,y=residuals,alpha=0.5)
+plt.axhline(0, color='red', linestyle='--')
+plt.title('Residual Plot: Predicted vs. Residuals')
+plt.xlabel('Predicted HDB Price ($)')
+plt.ylabel('Residuals (Actual - Predicted)')
+plt.show()
+```
+
+From the residual plot, we can see that points are centred around 0, suggesting that model is not biased and prediction is largely accurate. Model is good in predicting cheaper flats as compared to expensive ones.
+
+## Top 10 Highest value flat features
+
+```{python}
+# Create a results table
+analysis_df = pd.DataFrame({
+    'actual': y_test,
+    'predicted': y_pred,
+    'gap': y_pred - y_test
+})
+
+# Add back the town and flat type so we know where these are
+analysis_df['town'] = hdb_df.loc[X_test.index, 'town']
+analysis_df['flat_type'] = hdb_df.loc[X_test.index, 'flat_type']
+analysis_df['remaining_lease'] = hdb_df.loc[X_test.index, 'remaining_lease']
+
+# Sort to find the Top 10 "Bargains"
+top_bargains = analysis_df.sort_values(by='gap', ascending=False).head(10)
+print(top_bargains)
+```
+
+The primary goal was to transition from passive observation to optimization using the X values. We have successfully identified that Tampines 4-room flat with around 61 year of lease seems to yield the highest value (predicted-actual). This model would be useful for individuals who want to purchase a flat of the highest value and returns.
+
+This solution transforms a complex decision into an optimization problem, where buyers could find flats within their budget with a high value.
+
+## Extrapolating and predicting future prices
+
+```{python}
+# predicting future prices with certain districts
+from xgboost import XGBRegressor
+
+# train the full dataset
+xgb = XGBRegressor(learning_rate=0.1, max_depth=10, n_jobs=-1,subsample= 1.0,colsample_bytree= 0.8)
+X = pd.get_dummies(hdb_df[['year', 'storey_mid', 'remaining_lease', 'town', 'flat_type']]) # do ohe for town
+y = np.log1p(hdb_df['price_per_sqm'])
+xgb.fit(X,y)
+
+import itertools
+
+# test all the ranges users would prefer
+year = [2027,2028,2029]
+storey_mid = [2,4,6,8,10]
+remaining_lease = [60,65,70,75,80,85,90]
+town = ['BUKIT TIMAH', 'BUKIT BATOK', 'CENTRAL AREA', 'CLEMENTI', 'BUKIT PANJANG', 'CHOA CHU KANG']
+flat_type = ['4 ROOM','5 ROOM']
+
+# create every possible combinations
+combinations = list(itertools.product(year,town, remaining_lease, storey_mid, flat_type))
+search_df = pd.DataFrame(combinations, columns=['year','town', 'remaining_lease', 'storey_mid', 'flat_type'])
+df_new = pd.get_dummies(search_df)
+
+# adds missing columns
+expected_columns = xgb.get_booster().feature_names
+df_new_aligned = df_new.reindex(columns=expected_columns, fill_value=0)
+
+# predict
+search_df['predicted_price'] = xgb.predict(df_new_aligned)
+
+# most affordable
+print(search_df.sort_values('predicted_price', ascending=True).head(10))
+```
+
+From the result, we observed that the top 10 highest predicted price flats have the same features but different year. Everyone knows that price of flat will always increase as time passes due to inflation. However, the result shows relative constant pricing within years.
+
+This suggest that using xgBoost and year feature alone is insufficient for predict future prices. XGBoost is not known for extrapolating, especially time series. Hence, a better idea would be to use time series first, then predict the residuals with the HDB features.
+
+In the next blog, different time series model like ARIMA, Prophet, XGBoost prediction with time lag, or even neutral network will be discussed.

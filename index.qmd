@@ -1,4 +1,5 @@
 ---
+title: "My Blog"
 listing:
   contents: posts
   feed: true

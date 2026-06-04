@@ -6,6 +6,7 @@ execute:
   freeze: true
 
 website:
+  title: "Confounding Human"
   description: "A data analytics and statistics blog"
   site-url: https://yingghui23.github.io/personal-blog/
   favicon: logo.png

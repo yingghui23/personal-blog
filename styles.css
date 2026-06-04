@@ -2,15 +2,27 @@
 /* Bold the main blog title in the navigation bar */
 .navbar-brand {
   font-weight: 700 !important;
-  letter-spacing: -0.3px; /* Slightly tightens letter spacing for a premium look */
+  letter-spacing: 0;
+  color: #ffffff !important;
+}
+
+.navbar-brand:hover,
+.navbar-brand:focus {
+  color: var(--bs-navbar-hover-color) !important;
 }
 
 /* Ensure the navbar logo scales cleanly alongside the text */
 .navbar-logo {
   max-height: 40px;
   width: auto;
-  margin-right: 10px;
+  margin-right: 4px;
   vertical-align: middle;
+}
+
+/* Keep the homepage title quieter than the default banner heading. */
+.quarto-title-banner .quarto-title h1.title {
+  font-size: 1.45rem;
+  letter-spacing: 0;
 }
 
 /* Optional styling to neatly box your sidebar categories */
