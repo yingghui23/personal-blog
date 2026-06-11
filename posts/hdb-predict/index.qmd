@@ -2,7 +2,7 @@
 title: "Which HDB resale flat is the best buy (Part 1)?"
 description: "Evaluating different HDB features using ensemble model (Random Forest & XGBoost)."
 author: "Ying Hui Tan"
-date: "2026-06-04"
+date: "2026-06-06"
 categories: [Machine Learning, XGBoost, Random Forest]
 image: hdb.jpg
 open-graph:
