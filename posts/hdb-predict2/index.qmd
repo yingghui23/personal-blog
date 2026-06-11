@@ -4,7 +4,7 @@ description: "Evaluating different Time Series Method for the best price predict
 author: "Ying Hui Tan"
 date: "2026-06-11"
 categories: [Time Series, ARIMA, XGBoost]
-image: hdb.jpg
+image: hdb2.jpg
 open-graph:
   title: "How I Married ARIMA and XGBoost to Predict HDB Prices (HDB Prediction Part 2) | Confounding Human"
   description: "Evaluating different Time Series Method for the best price prediction."
@@ -63,6 +63,8 @@ Here is a chart of how I am going to do this hybrid model to give everyone a bet
 ---
 
 # XGBoost with Lag_1
+
+As explained previously, Lag_1 data is used as a predictor. Lag_1 is basically the aggregated median of each town per month.
 
 ```{python}
 import kagglehub
@@ -143,16 +145,15 @@ print(f"True XGBoost RMSE: {rmse_sqm:.2f}")
 ```
 
 ```{python}
-# 1. Match your predictions back to the original dates
+# Match your predictions back to the original dates
 test_df = hdb_merged.loc[X_test.index].copy()
 test_df['Actual'] = true_y_test_sqm
 test_df['Predicted'] = true_preds_sqm
 
-# 2. Group by month so it becomes a clean line
+# Group by month so it becomes a clean line
 plot_data = test_df.groupby('month')[['Actual', 'Predicted']].median().reset_index()
 plot_data['month'] = plot_data['month'].dt.to_timestamp() # Fixes date formatting for matplotlib
 
-# 3. Just plot the damn thing!
 plt.figure(figsize=(12, 5))
 plt.plot(plot_data['month'], plot_data['Actual'], label='Actual Price', color='green', marker='o')
 plt.plot(plot_data['month'], plot_data['Predicted'], label='Predicted Price', color='red', linestyle='--')
@@ -458,3 +459,8 @@ It is evident that the ARIMA + XGBoost hybrid model performs better than the XGB
 One limitation of ARIMA is that it requires the time series to be stationary. Initially, price_per_sqm was considered as the target variable. However, ADF tests showed that the series remained non-stationary even after applying first-order and seasonal differencing. In contrast, the median resale_price series became stationary after differencing and was therefore more suitable for ARIMA modelling. As a result, median resale_price was selected as the target variable for the hybrid ARIMA-XGBoost model.
 
 In the next blog, we will experiment with a more modern time series forecasting model, Prophet, and evaluate how it compares with our ARIMA-XGBoost hybrid approach. Beyond forecasting accuracy, we aim to build an interactive platform where users can estimate future HDB resale prices based on housing characteristics and their planned purchase date. This could serve as a practical financial planning tool, helping prospective homeowners make more informed decisions about when and what to buy.
+
+# Image Credits
+
+Photo by <a href="https://unsplash.com/@jiachenlin?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Jiachen Lin</a> on <a href="https://unsplash.com/photos/city-skyline-under-cloudy-sky-during-daytime-AIk_5-M9Uho?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+      
