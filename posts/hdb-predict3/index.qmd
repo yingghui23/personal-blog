@@ -4,7 +4,7 @@ description: "Evaluating different Time Series Method for the best price predict
 author: "Ying Hui Tan"
 date: "2026-06-17"
 categories: [Time Series, ARIMA, XGBoost,Prophet]
-image: table_1.png
+image: p3.jpg
 open-graph:
   title: "Battle between ARIMA and Prophet hybrid model? (HDB Prediction Part 3) | Confounding Human"
   description: "Evaluating different Time Series Method for the best price prediction."
