@@ -147,7 +147,7 @@ window.Quarto = {
 <meta property="og:site_name" content="Confounding Human">
 <meta name="twitter:title" content="How I Married ARIMA and XGBoost to Predict HDB Prices (HDB Prediction Part 2)?">
 <meta name="twitter:description" content="Evaluating different Time Series Method for the best price prediction.">
-<meta name="twitter:image" content="https://yingghui23.github.io/personal-blog/posts/hdb-predict2/hdb.jpg">
+<meta name="twitter:image" content="https://yingghui23.github.io/personal-blog/posts/hdb-predict2/hdb2.jpg">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -258,7 +258,8 @@ window.Quarto = {
 </section>
 <section id="xgboost-with-lag_1" class="level1">
 <h1>XGBoost with Lag_1</h1>
-<div id="21a50ac8" class="cell" data-execution_count="2">
+<p>As explained previously, Lag_1 data is used as a predictor. Lag_1 is basically the aggregated median of each town per month.</p>
+<div id="658bac14" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> kagglehub</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
@@ -349,7 +350,7 @@ window.Quarto = {
 [228225 rows x 12 columns]</code></pre>
 </div>
 </div>
-<div id="5f9e4868" class="cell" data-execution_count="3">
+<div id="bb785390" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using XGBoost model with the addition of the cost from the previous month (differentiated by town)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a 'year' and 'month_num' column</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>hdb_merged[<span class="st">'year'</span>] <span class="op">=</span> hdb_merged[<span class="st">'month'</span>].dt.year</span>
@@ -362,7 +363,8 @@ window.Quarto = {
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># check new features</span></span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hdb_merged[[<span class="st">'year'</span>,<span class="st">'town'</span>, <span class="st">'flat_type'</span>, <span class="st">'storey_mid'</span>, <span class="st">'remaining_lease'</span>,<span class="st">'Lag_1'</span>,<span class="st">'floor_area_sqm'</span>,<span class="st">'resale_price'</span>]].head())</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>hdb_df <span class="op">=</span> hdb_merged[[<span class="st">'year'</span>,<span class="st">'town'</span>, <span class="st">'flat_type'</span>, <span class="st">'storey_mid'</span>, <span class="st">'remaining_lease'</span>,<span class="st">'Lag_1'</span>,<span class="st">'floor_area_sqm'</span>,<span class="st">'resale_price'</span>]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>hdb_merged <span class="op">=</span> hdb_merged.sort_values([<span class="st">'month'</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>hdb_df <span class="op">=</span> hdb_merged[[<span class="st">'year'</span>,<span class="st">'town'</span>, <span class="st">'flat_type'</span>, <span class="st">'storey_mid'</span>, <span class="st">'remaining_lease'</span>,<span class="st">'Lag_1'</span>,<span class="st">'floor_area_sqm'</span>,<span class="st">'resale_price'</span>]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   year        town flat_type  storey_mid  remaining_lease     Lag_1  \
 0  2017  ANG MO KIO    2 ROOM        11.0             61.0  336500.0   
@@ -379,7 +381,7 @@ window.Quarto = {
 4            67.0      265000.0  </code></pre>
 </div>
 </div>
-<div id="7bf349e4" class="cell" data-execution_count="4">
+<div id="196430d5" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> r2_score, mean_squared_error</span>
@@ -406,27 +408,26 @@ window.Quarto = {
 <span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>rmse_sqm <span class="op">=</span> np.sqrt(mean_squared_error(true_y_test_sqm, true_preds_sqm))</span>
 <span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"True XGBoost RMSE: </span><span class="sc">{</span>rmse_sqm<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>XGBoost R^2: 0.8974
-True XGBoost RMSE: 62833.57</code></pre>
+<pre><code>XGBoost R^2: 0.8893
+True XGBoost RMSE: 67080.26</code></pre>
 </div>
 </div>
-<div id="2bb6fe05" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Match your predictions back to the original dates</span></span>
+<div id="e1eadb09" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Match your predictions back to the original dates</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>test_df <span class="op">=</span> hdb_merged.loc[X_test.index].copy()</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>test_df[<span class="st">'Actual'</span>] <span class="op">=</span> true_y_test_sqm</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>test_df[<span class="st">'Predicted'</span>] <span class="op">=</span> true_preds_sqm</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Group by month so it becomes a clean line</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Group by month so it becomes a clean line</span></span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>plot_data <span class="op">=</span> test_df.groupby(<span class="st">'month'</span>)[[<span class="st">'Actual'</span>, <span class="st">'Predicted'</span>]].median().reset_index()</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>plot_data[<span class="st">'month'</span>] <span class="op">=</span> plot_data[<span class="st">'month'</span>].dt.to_timestamp() <span class="co"># Fixes date formatting for matplotlib</span></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Just plot the damn thing!</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>plt.plot(plot_data[<span class="st">'month'</span>], plot_data[<span class="st">'Actual'</span>], label<span class="op">=</span><span class="st">'Actual Price'</span>, color<span class="op">=</span><span class="st">'green'</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>plt.plot(plot_data[<span class="st">'month'</span>], plot_data[<span class="st">'Predicted'</span>], label<span class="op">=</span><span class="st">'Predicted Price'</span>, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"HDB True vs Predicted Trend"</span>)</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>plt.plot(plot_data[<span class="st">'month'</span>], plot_data[<span class="st">'Actual'</span>], label<span class="op">=</span><span class="st">'Actual Price'</span>, color<span class="op">=</span><span class="st">'green'</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>plt.plot(plot_data[<span class="st">'month'</span>], plot_data[<span class="st">'Predicted'</span>], label<span class="op">=</span><span class="st">'Predicted Price'</span>, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"HDB True vs Predicted Trend"</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -460,7 +461,7 @@ True XGBoost RMSE: 62833.57</code></pre>
 <p><em>Example</em></p>
 <p><span class="math display">\[ SARIMA(1, 1, 1) \times (1, 1, 1)_{12} \]</span></p>
 <hr>
-<div id="dfe268ae" class="cell" data-execution_count="6">
+<div id="789dd303" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ARIMA</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># EDA</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -517,7 +518,7 @@ month
 <li>Create the ACF and PACF plots</li>
 <li>Print out the results of an Augmented Dickey-Fuller (ADF) test</li>
 </ul>
-<div id="2e57864b" class="cell" data-execution_count="7">
+<div id="c2079b98" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.graphics.tsaplots <span class="im">import</span> plot_acf, plot_pacf</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.stattools <span class="im">import</span> adfuller</span>
@@ -670,7 +671,7 @@ Conclusion: Non-Stationary (Fail to Reject Null Hypothesis)</code></pre>
 <h1>Difference between old school way and grid search???</h1>
 <p>The above is kind of like the old school way to find the parameters. However, after using grid search, we found that the most optimal model is SARIMA(0,1,0) x (0,0,0)12, since it has the lowest AIC among the rest.</p>
 <p>The model that we got may be highly subjective and prone to overfitting, its AIC value is Inf supporting the overfitting suspicion. Hence, we will use SARIMA(0,1,0) x (0,0,0)12.</p>
-<div id="3a0deceb" class="cell" data-execution_count="8">
+<div id="ba6cf591" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># find optimal parameters using grid search</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pmdarima <span class="im">as</span> pm</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pmdarima.model_selection <span class="im">import</span> train_test_split</span>
@@ -699,66 +700,66 @@ Conclusion: Non-Stationary (Fail to Reject Null Hypothesis)</code></pre>
 <span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model.summary())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> ARIMA(0,1,0)(0,0,0)[12] intercept   : AIC=1746.990, Time=0.07 sec
- ARIMA(0,1,0)(0,0,1)[12] intercept   : AIC=1748.936, Time=0.10 sec
+<pre><code> ARIMA(0,1,0)(0,0,0)[12] intercept   : AIC=1746.990, Time=0.03 sec
+ ARIMA(0,1,0)(0,0,1)[12] intercept   : AIC=1748.936, Time=0.07 sec
  ARIMA(0,1,0)(1,0,0)[12] intercept   : AIC=1748.936, Time=0.07 sec
- ARIMA(0,1,0)(1,0,1)[12] intercept   : AIC=1750.934, Time=0.20 sec
+ ARIMA(0,1,0)(1,0,1)[12] intercept   : AIC=1750.934, Time=0.21 sec
  ARIMA(0,1,1)(0,0,0)[12] intercept   : AIC=1750.826, Time=0.04 sec
- ARIMA(0,1,1)(0,0,1)[12] intercept   : AIC=1752.720, Time=0.11 sec
- ARIMA(0,1,1)(1,0,0)[12] intercept   : AIC=1752.672, Time=0.17 sec
- ARIMA(0,1,1)(1,0,1)[12] intercept   : AIC=inf, Time=1.00 sec
+ ARIMA(0,1,1)(0,0,1)[12] intercept   : AIC=1752.720, Time=0.12 sec
+ ARIMA(0,1,1)(1,0,0)[12] intercept   : AIC=1752.672, Time=0.12 sec
+ ARIMA(0,1,1)(1,0,1)[12] intercept   : AIC=inf, Time=0.92 sec
  ARIMA(0,1,2)(0,0,0)[12] intercept   : AIC=1753.695, Time=0.07 sec
- ARIMA(0,1,2)(0,0,1)[12] intercept   : AIC=1755.592, Time=0.19 sec
- ARIMA(0,1,2)(1,0,0)[12] intercept   : AIC=1755.495, Time=0.20 sec
- ARIMA(0,1,2)(1,0,1)[12] intercept   : AIC=inf, Time=0.95 sec
- ARIMA(0,1,3)(0,0,0)[12] intercept   : AIC=1755.981, Time=0.09 sec
- ARIMA(0,1,3)(0,0,1)[12] intercept   : AIC=1757.892, Time=0.20 sec
- ARIMA(0,1,3)(1,0,0)[12] intercept   : AIC=1757.861, Time=0.19 sec
- ARIMA(0,1,3)(1,0,1)[12] intercept   : AIC=inf, Time=1.15 sec
- ARIMA(1,1,0)(0,0,0)[12] intercept   : AIC=1749.607, Time=0.12 sec
- ARIMA(1,1,0)(0,0,1)[12] intercept   : AIC=1751.528, Time=0.09 sec
- ARIMA(1,1,0)(1,0,0)[12] intercept   : AIC=1751.516, Time=0.09 sec
- ARIMA(1,1,0)(1,0,1)[12] intercept   : AIC=inf, Time=0.89 sec
- ARIMA(1,1,1)(0,0,0)[12] intercept   : AIC=1751.643, Time=0.11 sec
+ ARIMA(0,1,2)(0,0,1)[12] intercept   : AIC=1755.592, Time=0.20 sec
+ ARIMA(0,1,2)(1,0,0)[12] intercept   : AIC=1755.495, Time=0.22 sec
+ ARIMA(0,1,2)(1,0,1)[12] intercept   : AIC=inf, Time=0.97 sec
+ ARIMA(0,1,3)(0,0,0)[12] intercept   : AIC=1755.981, Time=0.11 sec
+ ARIMA(0,1,3)(0,0,1)[12] intercept   : AIC=1757.892, Time=0.22 sec
+ ARIMA(0,1,3)(1,0,0)[12] intercept   : AIC=1757.861, Time=0.18 sec
+ ARIMA(0,1,3)(1,0,1)[12] intercept   : AIC=inf, Time=1.13 sec
+ ARIMA(1,1,0)(0,0,0)[12] intercept   : AIC=1749.607, Time=0.15 sec
+ ARIMA(1,1,0)(0,0,1)[12] intercept   : AIC=1751.528, Time=0.11 sec
+ ARIMA(1,1,0)(1,0,0)[12] intercept   : AIC=1751.516, Time=0.11 sec
+ ARIMA(1,1,0)(1,0,1)[12] intercept   : AIC=inf, Time=0.83 sec
+ ARIMA(1,1,1)(0,0,0)[12] intercept   : AIC=1751.643, Time=0.09 sec
  ARIMA(1,1,1)(0,0,1)[12] intercept   : AIC=1753.565, Time=0.28 sec
- ARIMA(1,1,1)(1,0,0)[12] intercept   : AIC=1753.559, Time=0.25 sec
- ARIMA(1,1,1)(1,0,1)[12] intercept   : AIC=inf, Time=1.04 sec
+ ARIMA(1,1,1)(1,0,0)[12] intercept   : AIC=1753.559, Time=0.28 sec
+ ARIMA(1,1,1)(1,0,1)[12] intercept   : AIC=inf, Time=1.02 sec
  ARIMA(1,1,2)(0,0,0)[12] intercept   : AIC=1754.530, Time=0.26 sec
- ARIMA(1,1,2)(0,0,1)[12] intercept   : AIC=1756.441, Time=0.34 sec
+ ARIMA(1,1,2)(0,0,1)[12] intercept   : AIC=1756.441, Time=0.33 sec
  ARIMA(1,1,2)(1,0,0)[12] intercept   : AIC=1756.422, Time=0.35 sec
- ARIMA(1,1,2)(1,0,1)[12] intercept   : AIC=inf, Time=1.17 sec
- ARIMA(1,1,3)(0,0,0)[12] intercept   : AIC=1758.360, Time=0.30 sec
- ARIMA(1,1,3)(0,0,1)[12] intercept   : AIC=1760.296, Time=0.44 sec
- ARIMA(1,1,3)(1,0,0)[12] intercept   : AIC=1760.294, Time=0.41 sec
- ARIMA(2,1,0)(0,0,0)[12] intercept   : AIC=1752.513, Time=0.07 sec
- ARIMA(2,1,0)(0,0,1)[12] intercept   : AIC=1754.429, Time=0.16 sec
- ARIMA(2,1,0)(1,0,0)[12] intercept   : AIC=1754.393, Time=0.20 sec
- ARIMA(2,1,0)(1,0,1)[12] intercept   : AIC=inf, Time=0.95 sec
+ ARIMA(1,1,2)(1,0,1)[12] intercept   : AIC=inf, Time=1.15 sec
+ ARIMA(1,1,3)(0,0,0)[12] intercept   : AIC=1758.360, Time=0.33 sec
+ ARIMA(1,1,3)(0,0,1)[12] intercept   : AIC=1760.296, Time=0.43 sec
+ ARIMA(1,1,3)(1,0,0)[12] intercept   : AIC=1760.294, Time=0.44 sec
+ ARIMA(2,1,0)(0,0,0)[12] intercept   : AIC=1752.513, Time=0.05 sec
+ ARIMA(2,1,0)(0,0,1)[12] intercept   : AIC=1754.429, Time=0.12 sec
+ ARIMA(2,1,0)(1,0,0)[12] intercept   : AIC=1754.393, Time=0.16 sec
+ ARIMA(2,1,0)(1,0,1)[12] intercept   : AIC=inf, Time=0.89 sec
  ARIMA(2,1,1)(0,0,0)[12] intercept   : AIC=1753.954, Time=0.20 sec
- ARIMA(2,1,1)(0,0,1)[12] intercept   : AIC=1755.880, Time=0.47 sec
- ARIMA(2,1,1)(1,0,0)[12] intercept   : AIC=1755.865, Time=0.38 sec
- ARIMA(2,1,1)(1,0,1)[12] intercept   : AIC=inf, Time=1.08 sec
- ARIMA(2,1,2)(0,0,0)[12] intercept   : AIC=inf, Time=0.58 sec
- ARIMA(2,1,2)(0,0,1)[12] intercept   : AIC=inf, Time=1.24 sec
- ARIMA(2,1,2)(1,0,0)[12] intercept   : AIC=inf, Time=1.24 sec
- ARIMA(2,1,3)(0,0,0)[12] intercept   : AIC=inf, Time=0.61 sec
- ARIMA(3,1,0)(0,0,0)[12] intercept   : AIC=1754.642, Time=0.11 sec
- ARIMA(3,1,0)(0,0,1)[12] intercept   : AIC=1756.554, Time=0.17 sec
- ARIMA(3,1,0)(1,0,0)[12] intercept   : AIC=1756.505, Time=0.16 sec
- ARIMA(3,1,0)(1,0,1)[12] intercept   : AIC=inf, Time=1.19 sec
- ARIMA(3,1,1)(0,0,0)[12] intercept   : AIC=1755.648, Time=0.18 sec
- ARIMA(3,1,1)(0,0,1)[12] intercept   : AIC=1757.592, Time=0.60 sec
- ARIMA(3,1,1)(1,0,0)[12] intercept   : AIC=1757.591, Time=0.71 sec
- ARIMA(3,1,2)(0,0,0)[12] intercept   : AIC=inf, Time=0.61 sec
+ ARIMA(2,1,1)(0,0,1)[12] intercept   : AIC=1755.880, Time=0.44 sec
+ ARIMA(2,1,1)(1,0,0)[12] intercept   : AIC=1755.865, Time=0.32 sec
+ ARIMA(2,1,1)(1,0,1)[12] intercept   : AIC=inf, Time=1.00 sec
+ ARIMA(2,1,2)(0,0,0)[12] intercept   : AIC=inf, Time=0.55 sec
+ ARIMA(2,1,2)(0,0,1)[12] intercept   : AIC=inf, Time=1.15 sec
+ ARIMA(2,1,2)(1,0,0)[12] intercept   : AIC=inf, Time=1.08 sec
+ ARIMA(2,1,3)(0,0,0)[12] intercept   : AIC=inf, Time=0.60 sec
+ ARIMA(3,1,0)(0,0,0)[12] intercept   : AIC=1754.642, Time=0.08 sec
+ ARIMA(3,1,0)(0,0,1)[12] intercept   : AIC=1756.554, Time=0.15 sec
+ ARIMA(3,1,0)(1,0,0)[12] intercept   : AIC=1756.505, Time=0.15 sec
+ ARIMA(3,1,0)(1,0,1)[12] intercept   : AIC=inf, Time=1.04 sec
+ ARIMA(3,1,1)(0,0,0)[12] intercept   : AIC=1755.648, Time=0.20 sec
+ ARIMA(3,1,1)(0,0,1)[12] intercept   : AIC=1757.592, Time=0.56 sec
+ ARIMA(3,1,1)(1,0,0)[12] intercept   : AIC=1757.591, Time=0.61 sec
+ ARIMA(3,1,2)(0,0,0)[12] intercept   : AIC=inf, Time=0.58 sec
 
 Best model:  ARIMA(0,1,0)(0,0,0)[12] intercept
-Total fit time: 21.868 seconds
+Total fit time: 20.778 seconds
                                SARIMAX Results                                
 ==============================================================================
 Dep. Variable:                      y   No. Observations:                   80
 Model:               SARIMAX(0, 1, 0)   Log Likelihood                -871.495
-Date:                Thu, 11 Jun 2026   AIC                           1746.990
-Time:                        14:43:21   BIC                           1751.729
+Date:                Wed, 17 Jun 2026   AIC                           1746.990
+Time:                        17:43:31   BIC                           1751.729
 Sample:                    01-01-2017   HQIC                          1748.889
                          - 08-01-2023                                         
 Covariance Type:                  opg                                         
@@ -778,7 +779,7 @@ Warnings:
 [1] Covariance matrix calculated using the outer product of gradients (complex-step).</code></pre>
 </div>
 </div>
-<div id="4096c963" class="cell" data-execution_count="9">
+<div id="31cbaaf6" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># change period index to datetime timestamps</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>model.plot_diagnostics(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">8</span>))</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -803,7 +804,7 @@ Warnings:
 <p><span class="math display">\[\text{Initial Residual} = \text{Actual} - (Y_{t-1} + \text{Drift})\]</span></p>
 <p>Hence, we use the residuals as the target Y value using the XGBoost model we optimised in part 1.</p>
 <p>I tried using ARIMA on price_per_sqm instead of resale price but it did not work out. Hence, for XGBoost, we will add floor_area_sqm as a numerical variable.</p>
-<div id="44418686" class="cell" data-execution_count="10">
+<div id="50b43bca" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to datetime objects</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>hdb_ori[<span class="st">'month'</span>] <span class="op">=</span> pd.to_datetime(hdb_ori[<span class="st">'month'</span>])</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -894,7 +895,7 @@ Warnings:
 [67271 rows x 3 columns]</code></pre>
 </div>
 </div>
-<div id="e766194b" class="cell" data-execution_count="11">
+<div id="96754f79" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># find the r^2 and rmse</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'ARIMA + XGBoost R^2: </span><span class="sc">{</span>r2_score(predicted_df[<span class="st">'resale_price'</span>],predicted_df[<span class="st">'y_test'</span>])<span class="sc">:.4f}</span><span class="ss">'</span>)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"ARIMA + XGBoost RMSE: </span><span class="sc">{</span>np<span class="sc">.</span>sqrt(mean_squared_error(predicted_df[<span class="st">'resale_price'</span>], predicted_df[<span class="st">'y_test'</span>]))<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -903,7 +904,7 @@ Warnings:
 ARIMA + XGBoost RMSE: 63766.82</code></pre>
 </div>
 </div>
-<div id="db06e3f1" class="cell" data-execution_count="12">
+<div id="df2f3abb" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group by month so it becomes a clean line</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>plot_data <span class="op">=</span> predicted_df.groupby(<span class="st">'month'</span>)[[<span class="st">'resale_price'</span>, <span class="st">'y_test'</span>]].median().reset_index()</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co">#plot_data['month'] = plot_data['month'].dt.to_timestamp() # Fixes date formatting for matplotlib</span></span>
@@ -929,6 +930,10 @@ ARIMA + XGBoost RMSE: 63766.82</code></pre>
 <p>It is evident that the ARIMA + XGBoost hybrid model performs better than the XGBoost model with only a Lag_1 feature, as it achieved a higher R² and lower RMSE. This result is expected because ARIMA is able to capture the linear temporal patterns in the time series, while XGBoost can model the nonlinear relationships present in the residuals.</p>
 <p>One limitation of ARIMA is that it requires the time series to be stationary. Initially, price_per_sqm was considered as the target variable. However, ADF tests showed that the series remained non-stationary even after applying first-order and seasonal differencing. In contrast, the median resale_price series became stationary after differencing and was therefore more suitable for ARIMA modelling. As a result, median resale_price was selected as the target variable for the hybrid ARIMA-XGBoost model.</p>
 <p>In the next blog, we will experiment with a more modern time series forecasting model, Prophet, and evaluate how it compares with our ARIMA-XGBoost hybrid approach. Beyond forecasting accuracy, we aim to build an interactive platform where users can estimate future HDB resale prices based on housing characteristics and their planned purchase date. This could serve as a practical financial planning tool, helping prospective homeowners make more informed decisions about when and what to buy.</p>
+</section>
+<section id="image-credits" class="level1">
+<h1>Image Credits</h1>
+<p>Photo by <a href="https://unsplash.com/@jiachenlin?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Jiachen Lin</a> on <a href="https://unsplash.com/photos/city-skyline-under-cloudy-sky-during-daytime-AIk_5-M9Uho?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></p>
 
 
 </section>

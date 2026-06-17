@@ -113,6 +113,7 @@ hdb_merged['storey_mid'] = hdb_merged['storey_range'].apply(lambda x: (int(x.spl
 
 # check new features
 print(hdb_merged[['year','town', 'flat_type', 'storey_mid', 'remaining_lease','Lag_1','floor_area_sqm','resale_price']].head())
+hdb_merged = hdb_merged.sort_values(['month']).reset_index(drop=True)
 hdb_df = hdb_merged[['year','town', 'flat_type', 'storey_mid', 'remaining_lease','Lag_1','floor_area_sqm','resale_price']]
 ```
 

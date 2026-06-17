@@ -10,7 +10,727 @@
 <atom:link href="https://yingghui23.github.io/personal-blog/index.xml" rel="self" type="application/rss+xml"/>
 <description>A data analytics and statistics blog</description>
 <generator>quarto-1.9.38</generator>
-<lastBuildDate>Wed, 10 Jun 2026 16:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 13 Jun 2026 16:00:00 GMT</lastBuildDate>
+<item>
+  <title>Battle between ARIMA and Prophet hybrid model? (HDB Prediction Part 3)</title>
+  <dc:creator>Ying Hui Tan</dc:creator>
+  <link>https://yingghui23.github.io/personal-blog/posts/hdb-predict3/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>With new models like Prophet being widely available especially in R and Python, I would like to evaluate whether it could outperform ARIMA, a traditional time series model. It is fully automated so no more manually looking at ACF and PACF (LOL gotta do that for my assignments in uni) and it captures trend and seasonality.</p>
+<p>Similarly, as would train the data with prophet first, then get the residuals and use them in our XGBoost model.</p>
+<p>The rough equation of the model would be:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Chat%7By%7D%5E%7B%5Ctext%7BHybrid%7D%7D_t%20=%20%5Chat%7By%7D%5E%7B%5Ctext%7BProphet%7D%7D_t%20+%20f_%7B%5Ctext%7BXGBoost%7D%7D(X_t)"><img src="https://latex.codecogs.com/png.latex?%5Chat%7By%7D%5E%7B%5Ctext%7BProphet%7D%7D_t%20=%20g(t)%20+%20s(t)%20+%20h(t)"></p>
+<div id="fa51a19c" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> kagglehub</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> pandas <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pd</span>
+<span id="cb1-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> os</span>
+<span id="cb1-4"></span>
+<span id="cb1-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># import hdb price with time</span></span>
+<span id="cb1-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Download dataset</span></span>
+<span id="cb1-7">path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> kagglehub.dataset_download(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"yingghui233/hdb-resale-pricing-singapore"</span>)</span>
+<span id="cb1-8"></span>
+<span id="cb1-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Find csv name &amp; make it a dataframe</span></span>
+<span id="cb1-10">files <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> os.listdir(path)</span>
+<span id="cb1-11">csv_file <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> os.path.join(path, files[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>])</span>
+<span id="cb1-12">hdb <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.read_csv(csv_file)</span>
+<span id="cb1-13"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># print(hdb.head())</span></span>
+<span id="cb1-14"></span>
+<span id="cb1-15"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># make it datetime</span></span>
+<span id="cb1-16">hdb_ori <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> hdb.copy()</span>
+<span id="cb1-17">hdb[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'month'</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.to_datetime(hdb[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'month'</span>]).dt.to_period(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'M'</span>)</span>
+<span id="cb1-18"></span>
+<span id="cb1-19">tw <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> hdb.groupby([<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'month'</span>])[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'resale_price'</span>].median().reset_index()</span>
+<span id="cb1-20"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(tw)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Warning: Looks like you're using an outdated `kagglehub` version (installed: 0.3.12), please consider upgrading to the latest version (1.0.2).
+       month  resale_price
+0    2017-01      405000.0
+1    2017-02      415000.0
+2    2017-03      415000.0
+3    2017-04      408000.0
+4    2017-05      410000.0
+..       ...           ...
+107  2025-12      635000.0
+108  2026-01      630000.0
+109  2026-02      621444.0
+110  2026-03      630000.0
+111  2026-04      618000.0
+
+[112 rows x 2 columns]</code></pre>
+</div>
+</div>
+<div id="50d0ee95" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># clean data and find the datasets where there's no one month gap</span></span>
+<span id="cb3-2">tw[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'month'</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> tw[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'month'</span>].dt.to_timestamp()</span>
+<span id="cb3-3"></span>
+<span id="cb3-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Create complete monthly index</span></span>
+<span id="cb3-5">full_months <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.date_range(</span>
+<span id="cb3-6">    start<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>tw[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'month'</span>].<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">min</span>(),</span>
+<span id="cb3-7">    end<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>tw[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'month'</span>].<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>(),</span>
+<span id="cb3-8">    freq<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'MS'</span>)  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Month Start</span></span>
+<span id="cb3-9"></span>
+<span id="cb3-10">tw <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (tw.set_index(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'month'</span>)</span>
+<span id="cb3-11">      .reindex(full_months)</span>
+<span id="cb3-12">      .rename_axis(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'month'</span>)</span>
+<span id="cb3-13">      .reset_index())</span>
+<span id="cb3-14"></span>
+<span id="cb3-15"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(tw[tw[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'resale_price'</span>].isna()])</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Empty DataFrame
+Columns: [month, resale_price]
+Index: []</code></pre>
+</div>
+</div>
+<div id="a6d32459" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> prophet <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Prophet</span>
+<span id="cb5-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> pmdarima <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pm</span>
+<span id="cb5-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> pmdarima.model_selection <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> train_test_split</span>
+<span id="cb5-4"></span>
+<span id="cb5-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># change the column name of tw to [ds,y]</span></span>
+<span id="cb5-6">twr <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> tw.rename(columns<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>{<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'month'</span>:<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'ds'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'resale_price'</span>:<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'y'</span>})</span>
+<span id="cb5-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># use pmdarima to split the data for better comparison</span></span>
+<span id="cb5-8">train, test <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> train_test_split(twr, train_size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span>)</span>
+<span id="cb5-9"></span>
+<span id="cb5-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fit the train df into prophet</span></span>
+<span id="cb5-11">m <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Prophet()</span>
+<span id="cb5-12">m.fit(train)</span>
+<span id="cb5-13"></span>
+<span id="cb5-14"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># predict the test set</span></span>
+<span id="cb5-15">test_date <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> test[[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'ds'</span>]]</span>
+<span id="cb5-16">forecast <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> m.predict(test_date)</span>
+<span id="cb5-17"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(forecast.head())</span>
+<span id="cb5-18"></span>
+<span id="cb5-19"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># plot the forecast</span></span>
+<span id="cb5-20">fig1 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> m.plot(forecast)</span>
+<span id="cb5-21">fig2 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> m.plot_components(forecast)</span></code></pre></div></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>16:52:46 - cmdstanpy - INFO - Chain [1] start processing
+16:52:49 - cmdstanpy - INFO - Chain [1] done processing</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          ds          trend     yhat_lower     yhat_upper    trend_lower  \
+0 2023-09-01  558849.370096  552604.633622  563798.820489  558746.162052   
+1 2023-10-01  561162.446318  553848.406642  565118.719271  560753.258154   
+2 2023-11-01  563552.625080  559125.586436  570562.188938  562699.942866   
+3 2023-12-01  565865.701301  559326.380723  571272.637096  564341.512977   
+4 2024-01-01  568255.880063  558660.703509  570868.944184  566068.790828   
+
+     trend_upper  additive_terms  additive_terms_lower  additive_terms_upper  \
+0  558945.751019     -550.920144           -550.920144           -550.920144   
+1  561525.052946    -1609.842240          -1609.842240          -1609.842240   
+2  564315.660757     1243.529068           1243.529068           1243.529068   
+3  567284.627229     -765.374608           -765.374608           -765.374608   
+4  570341.908213    -3523.174366          -3523.174366          -3523.174366   
+
+        yearly  yearly_lower  yearly_upper  multiplicative_terms  \
+0  -550.920144   -550.920144   -550.920144                   0.0   
+1 -1609.842240  -1609.842240  -1609.842240                   0.0   
+2  1243.529068   1243.529068   1243.529068                   0.0   
+3  -765.374608   -765.374608   -765.374608                   0.0   
+4 -3523.174366  -3523.174366  -3523.174366                   0.0   
+
+   multiplicative_terms_lower  multiplicative_terms_upper           yhat  
+0                         0.0                         0.0  558298.449952  
+1                         0.0                         0.0  559552.604078  
+2                         0.0                         0.0  564796.154148  
+3                         0.0                         0.0  565100.326693  
+4                         0.0                         0.0  564732.705697  </code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://yingghui23.github.io/personal-blog/posts/hdb-predict3/index_files/figure-html/cell-5-output-3.png" width="950" height="566" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://yingghui23.github.io/personal-blog/posts/hdb-predict3/index_files/figure-html/cell-5-output-4.png" width="853" height="566" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="b0bd0ae8" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># get the residuals from the train data, use xgboost </span></span>
+<span id="cb8-2"></span>
+<span id="cb8-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># predict on training dates</span></span>
+<span id="cb8-4">train_forecast <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> m.predict(train[[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'ds'</span>]])</span>
+<span id="cb8-5">train_ds <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> train_forecast[[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'ds'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'yhat'</span>]]</span>
+<span id="cb8-6"></span>
+<span id="cb8-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># bring out hdb data, make it like prev </span></span>
+<span id="cb8-8">hdb_ori <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> hdb.copy()</span>
+<span id="cb8-9">hdb_ori[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'ds'</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> hdb_ori[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'month'</span>].dt.to_timestamp()</span>
+<span id="cb8-10">hdb_ori[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'remaining_lease'</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> hdb_ori[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'remaining_lease'</span>].<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>.extract(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'(</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">d+)'</span>).astype(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>)</span>
+<span id="cb8-11">hdb_ori[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'storey_mid'</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> hdb_ori[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'storey_range'</span>].<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">apply</span>(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">lambda</span> x: (<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>(x.split(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">' TO '</span>)[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>(x.split(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">' TO '</span>)[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>])) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb8-12">hdb_df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> hdb_ori[[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'ds'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'town'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'flat_type'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'storey_mid'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'remaining_lease'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'floor_area_sqm'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'resale_price'</span>]]</span>
+<span id="cb8-13"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># hdb_df.head()</span></span>
+<span id="cb8-14"></span>
+<span id="cb8-15"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># merge with the ori data &amp; remove all wth na yhat (right df dh the date)</span></span>
+<span id="cb8-16">train_merged <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> hdb_df.merge(train_ds,on<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'ds'</span>],how<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'left'</span>).dropna(subset<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'yhat'</span>])</span>
+<span id="cb8-17">train_merged[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'residual'</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> train_merged[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'resale_price'</span>]<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>train_merged[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'yhat'</span>]</span>
+<span id="cb8-18">train_merged.head()</span>
+<span id="cb8-19"></span>
+<span id="cb8-20"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># get test_merged</span></span>
+<span id="cb8-21">test_merged <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> hdb_df.merge(train_ds,on<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'ds'</span>],how<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'left'</span>)</span>
+<span id="cb8-22">test_merged <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> test_merged[test_merged.isna().<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">any</span>(axis<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)]</span>
+<span id="cb8-23">X_test <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.get_dummies(test_merged[[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'town'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'flat_type'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'storey_mid'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'remaining_lease'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'floor_area_sqm'</span>]])</span></code></pre></div></div>
+</div>
+<div id="b700f495" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> xgboost <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> XGBRegressor</span>
+<span id="cb9-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> sklearn.metrics <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> r2_score, mean_squared_error</span>
+<span id="cb9-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb9-4"></span>
+<span id="cb9-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># X_train and y_train</span></span>
+<span id="cb9-6">X_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.get_dummies(train_merged[[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'town'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'flat_type'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'storey_mid'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'remaining_lease'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'floor_area_sqm'</span>]])</span>
+<span id="cb9-7">y_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> train_merged[[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'residual'</span>]]</span>
+<span id="cb9-8">xgb <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> XGBRegressor(colsample_bytree<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>, learning_rate<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>, max_depth<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, n_estimators<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">400</span>, subsample<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>,random_state<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span>, n_jobs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb9-9">xgb.fit(X_train,y_train)</span>
+<span id="cb9-10"></span>
+<span id="cb9-11"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># get the test data, add prophet predict with xgb predict</span></span>
+<span id="cb9-12">xgb_preds <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> xgb.predict(X_test)</span>
+<span id="cb9-13">test_merged[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'xgb_predict'</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> xgb_preds</span>
+<span id="cb9-14"></span>
+<span id="cb9-15"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># merge with the prophet</span></span>
+<span id="cb9-16">prophet_test <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> forecast[[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'ds'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'yhat'</span>]]</span>
+<span id="cb9-17">test_merged_final <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> test_merged[[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'ds'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'town'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'flat_type'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'storey_mid'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'remaining_lease'</span> ,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'floor_area_sqm'</span>,  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'resale_price'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'xgb_predict'</span>]].merge(prophet_test, on<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'ds'</span>],how<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'inner'</span>)</span>
+<span id="cb9-18">test_merged_final[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'total_predict'</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> test_merged_final[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'xgb_predict'</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> test_merged_final[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'yhat'</span>]</span>
+<span id="cb9-19"></span>
+<span id="cb9-20"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># get y_test and predictions</span></span>
+<span id="cb9-21">y_test <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> test_merged_final[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'resale_price'</span>]</span>
+<span id="cb9-22">predictions <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> test_merged_final[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'total_predict'</span>]</span>
+<span id="cb9-23"></span>
+<span id="cb9-24"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># get the r^2 and RMSE for the resale_price vs the total predicted price</span></span>
+<span id="cb9-25"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"R^2 Score for RandomForest: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>r2_score(y_test, predictions)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.4f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb9-26"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"RMSE for RandomForest: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>np<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>sqrt(mean_squared_error(y_test, predictions))<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.2f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R^2 Score for RandomForest: 0.8900
+RMSE for RandomForest: 65315.72</code></pre>
+</div>
+</div>
+<div id="0581f121" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> plt</span>
+<span id="cb11-2"></span>
+<span id="cb11-3">plot_data <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> test_merged_final.groupby(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'ds'</span>)[[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'resale_price'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'total_predict'</span>]].median().reset_index()</span>
+<span id="cb11-4">plt.figure(figsize<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>))</span>
+<span id="cb11-5">plt.plot(plot_data[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'ds'</span>], plot_data[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'resale_price'</span>], label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Actual Price'</span>, color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'green'</span>, marker<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'o'</span>)</span>
+<span id="cb11-6">plt.plot(plot_data[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'ds'</span>], plot_data[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'total_predict'</span>], label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Predicted Price'</span>, color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'red'</span>, linestyle<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'--'</span>)</span>
+<span id="cb11-7">plt.legend()</span>
+<span id="cb11-8">plt.title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"HDB True vs Predicted Trend"</span>)</span>
+<span id="cb11-9">plt.show()</span></code></pre></div></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://yingghui23.github.io/personal-blog/posts/hdb-predict3/index_files/figure-html/cell-8-output-1.png" width="985" height="431" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+
+ ]]></description>
+  <category>Time Series</category>
+  <category>ARIMA</category>
+  <category>XGBoost</category>
+  <category>Prophet</category>
+  <guid>https://yingghui23.github.io/personal-blog/posts/hdb-predict3/</guid>
+  <pubDate>Sat, 13 Jun 2026 16:00:00 GMT</pubDate>
+  <media:content url="https://yingghui23.github.io/personal-blog/posts/hdb-predict3/hdb2.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>How I Married ARIMA and XGBoost to Predict HDB Prices (HDB Prediction Part 2)</title>
   <dc:creator>Ying Hui Tan</dc:creator>
@@ -36,7 +756,8 @@
 </section>
 <section id="xgboost-with-lag_1" class="level1">
 <h1>XGBoost with Lag_1</h1>
-<div id="21a50ac8" class="cell" data-execution_count="2">
+<p>As explained previously, Lag_1 data is used as a predictor. Lag_1 is basically the aggregated median of each town per month.</p>
+<div id="658bac14" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> kagglehub</span>
@@ -229,7 +950,7 @@ font-style: inherit;">print</span>(hdb_merged)</span></code></pre></div></div>
 [228225 rows x 12 columns]</code></pre>
 </div>
 </div>
-<div id="5f9e4868" class="cell" data-execution_count="3">
+<div id="bb785390" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># using XGBoost model with the addition of the cost from the previous month (differentiated by town)</span></span>
@@ -321,7 +1042,16 @@ background-color: null;
 font-style: inherit;">'floor_area_sqm'</span>,<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'resale_price'</span>]].head())</span>
-<span id="cb3-13">hdb_df <span class="op" style="color: #5E5E5E;
+<span id="cb3-13">hdb_merged <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> hdb_merged.sort_values([<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'month'</span>]).reset_index(drop<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span>
+<span id="cb3-14">hdb_df <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> hdb_merged[[<span class="st" style="color: #20794D;
 background-color: null;
@@ -356,7 +1086,7 @@ font-style: inherit;">'resale_price'</span>]]</span></code></pre></div></div>
 4            67.0      265000.0  </code></pre>
 </div>
 </div>
-<div id="7bf349e4" class="cell" data-execution_count="4">
+<div id="196430d5" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sklearn.model_selection <span class="im" style="color: #00769E;
@@ -503,14 +1233,14 @@ font-style: inherit;">:.2f}</span><span class="ss" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"</span>)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>XGBoost R^2: 0.8974
-True XGBoost RMSE: 62833.57</code></pre>
+<pre><code>XGBoost R^2: 0.8893
+True XGBoost RMSE: 67080.26</code></pre>
 </div>
 </div>
-<div id="2bb6fe05" class="cell" data-execution_count="5">
+<div id="e1eadb09" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"># 1. Match your predictions back to the original dates</span></span>
+font-style: inherit;"># Match your predictions back to the original dates</span></span>
 <span id="cb7-2">test_df <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> hdb_merged.loc[X_test.index].copy()</span>
@@ -527,7 +1257,7 @@ font-style: inherit;">=</span> true_preds_sqm</span>
 <span id="cb7-5"></span>
 <span id="cb7-6"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"># 2. Group by month so it becomes a clean line</span></span>
+font-style: inherit;"># Group by month so it becomes a clean line</span></span>
 <span id="cb7-7">plot_data <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> test_df.groupby(<span class="st" style="color: #20794D;
@@ -547,17 +1277,14 @@ font-style: inherit;">'month'</span>].dt.to_timestamp() <span class="co" style="
 background-color: null;
 font-style: inherit;"># Fixes date formatting for matplotlib</span></span>
 <span id="cb7-9"></span>
-<span id="cb7-10"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># 3. Just plot the damn thing!</span></span>
-<span id="cb7-11">plt.figure(figsize<span class="op" style="color: #5E5E5E;
+<span id="cb7-10">plt.figure(figsize<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">12</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">5</span>))</span>
-<span id="cb7-12">plt.plot(plot_data[<span class="st" style="color: #20794D;
+<span id="cb7-11">plt.plot(plot_data[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'month'</span>], plot_data[<span class="st" style="color: #20794D;
 background-color: null;
@@ -574,7 +1301,7 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'o'</span>)</span>
-<span id="cb7-13">plt.plot(plot_data[<span class="st" style="color: #20794D;
+<span id="cb7-12">plt.plot(plot_data[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'month'</span>], plot_data[<span class="st" style="color: #20794D;
 background-color: null;
@@ -591,11 +1318,11 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'--'</span>)</span>
-<span id="cb7-14">plt.legend()</span>
-<span id="cb7-15">plt.title(<span class="st" style="color: #20794D;
+<span id="cb7-13">plt.legend()</span>
+<span id="cb7-14">plt.title(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"HDB True vs Predicted Trend"</span>)</span>
-<span id="cb7-16">plt.show()</span></code></pre></div></div>
+<span id="cb7-15">plt.show()</span></code></pre></div></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -629,7 +1356,7 @@ font-style: inherit;">"HDB True vs Predicted Trend"</span>)</span>
 <p><em>Example</em></p>
 <p><img src="https://latex.codecogs.com/png.latex?%20SARIMA(1,%201,%201)%20%5Ctimes%20(1,%201,%201)_%7B12%7D%20"></p>
 <hr>
-<div id="dfe268ae" class="cell" data-execution_count="6">
+<div id="789dd303" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># ARIMA</span></span>
@@ -750,7 +1477,7 @@ month
 <li>Create the ACF and PACF plots</li>
 <li>Print out the results of an Augmented Dickey-Fuller (ADF) test</li>
 </ul>
-<div id="2e57864b" class="cell" data-execution_count="7">
+<div id="c2079b98" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
@@ -1085,7 +1812,7 @@ Conclusion: Non-Stationary (Fail to Reject Null Hypothesis)</code></pre>
 <h1>Difference between old school way and grid search???</h1>
 <p>The above is kind of like the old school way to find the parameters. However, after using grid search, we found that the most optimal model is SARIMA(0,1,0) x (0,0,0)12, since it has the lowest AIC among the rest.</p>
 <p>The model that we got may be highly subjective and prone to overfitting, its AIC value is Inf supporting the overfitting suspicion. Hence, we will use SARIMA(0,1,0) x (0,0,0)12.</p>
-<div id="3a0deceb" class="cell" data-execution_count="8">
+<div id="ba6cf591" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># find optimal parameters using grid search</span></span>
@@ -1224,66 +1951,66 @@ font-style: inherit;">True</span></span>
 background-color: null;
 font-style: inherit;">print</span>(model.summary())</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> ARIMA(0,1,0)(0,0,0)[12] intercept   : AIC=1746.990, Time=0.07 sec
- ARIMA(0,1,0)(0,0,1)[12] intercept   : AIC=1748.936, Time=0.10 sec
+<pre><code> ARIMA(0,1,0)(0,0,0)[12] intercept   : AIC=1746.990, Time=0.03 sec
+ ARIMA(0,1,0)(0,0,1)[12] intercept   : AIC=1748.936, Time=0.07 sec
  ARIMA(0,1,0)(1,0,0)[12] intercept   : AIC=1748.936, Time=0.07 sec
- ARIMA(0,1,0)(1,0,1)[12] intercept   : AIC=1750.934, Time=0.20 sec
+ ARIMA(0,1,0)(1,0,1)[12] intercept   : AIC=1750.934, Time=0.21 sec
  ARIMA(0,1,1)(0,0,0)[12] intercept   : AIC=1750.826, Time=0.04 sec
- ARIMA(0,1,1)(0,0,1)[12] intercept   : AIC=1752.720, Time=0.11 sec
- ARIMA(0,1,1)(1,0,0)[12] intercept   : AIC=1752.672, Time=0.17 sec
- ARIMA(0,1,1)(1,0,1)[12] intercept   : AIC=inf, Time=1.00 sec
+ ARIMA(0,1,1)(0,0,1)[12] intercept   : AIC=1752.720, Time=0.12 sec
+ ARIMA(0,1,1)(1,0,0)[12] intercept   : AIC=1752.672, Time=0.12 sec
+ ARIMA(0,1,1)(1,0,1)[12] intercept   : AIC=inf, Time=0.92 sec
  ARIMA(0,1,2)(0,0,0)[12] intercept   : AIC=1753.695, Time=0.07 sec
- ARIMA(0,1,2)(0,0,1)[12] intercept   : AIC=1755.592, Time=0.19 sec
- ARIMA(0,1,2)(1,0,0)[12] intercept   : AIC=1755.495, Time=0.20 sec
- ARIMA(0,1,2)(1,0,1)[12] intercept   : AIC=inf, Time=0.95 sec
- ARIMA(0,1,3)(0,0,0)[12] intercept   : AIC=1755.981, Time=0.09 sec
- ARIMA(0,1,3)(0,0,1)[12] intercept   : AIC=1757.892, Time=0.20 sec
- ARIMA(0,1,3)(1,0,0)[12] intercept   : AIC=1757.861, Time=0.19 sec
- ARIMA(0,1,3)(1,0,1)[12] intercept   : AIC=inf, Time=1.15 sec
- ARIMA(1,1,0)(0,0,0)[12] intercept   : AIC=1749.607, Time=0.12 sec
- ARIMA(1,1,0)(0,0,1)[12] intercept   : AIC=1751.528, Time=0.09 sec
- ARIMA(1,1,0)(1,0,0)[12] intercept   : AIC=1751.516, Time=0.09 sec
- ARIMA(1,1,0)(1,0,1)[12] intercept   : AIC=inf, Time=0.89 sec
- ARIMA(1,1,1)(0,0,0)[12] intercept   : AIC=1751.643, Time=0.11 sec
+ ARIMA(0,1,2)(0,0,1)[12] intercept   : AIC=1755.592, Time=0.20 sec
+ ARIMA(0,1,2)(1,0,0)[12] intercept   : AIC=1755.495, Time=0.22 sec
+ ARIMA(0,1,2)(1,0,1)[12] intercept   : AIC=inf, Time=0.97 sec
+ ARIMA(0,1,3)(0,0,0)[12] intercept   : AIC=1755.981, Time=0.11 sec
+ ARIMA(0,1,3)(0,0,1)[12] intercept   : AIC=1757.892, Time=0.22 sec
+ ARIMA(0,1,3)(1,0,0)[12] intercept   : AIC=1757.861, Time=0.18 sec
+ ARIMA(0,1,3)(1,0,1)[12] intercept   : AIC=inf, Time=1.13 sec
+ ARIMA(1,1,0)(0,0,0)[12] intercept   : AIC=1749.607, Time=0.15 sec
+ ARIMA(1,1,0)(0,0,1)[12] intercept   : AIC=1751.528, Time=0.11 sec
+ ARIMA(1,1,0)(1,0,0)[12] intercept   : AIC=1751.516, Time=0.11 sec
+ ARIMA(1,1,0)(1,0,1)[12] intercept   : AIC=inf, Time=0.83 sec
+ ARIMA(1,1,1)(0,0,0)[12] intercept   : AIC=1751.643, Time=0.09 sec
  ARIMA(1,1,1)(0,0,1)[12] intercept   : AIC=1753.565, Time=0.28 sec
- ARIMA(1,1,1)(1,0,0)[12] intercept   : AIC=1753.559, Time=0.25 sec
- ARIMA(1,1,1)(1,0,1)[12] intercept   : AIC=inf, Time=1.04 sec
+ ARIMA(1,1,1)(1,0,0)[12] intercept   : AIC=1753.559, Time=0.28 sec
+ ARIMA(1,1,1)(1,0,1)[12] intercept   : AIC=inf, Time=1.02 sec
  ARIMA(1,1,2)(0,0,0)[12] intercept   : AIC=1754.530, Time=0.26 sec
- ARIMA(1,1,2)(0,0,1)[12] intercept   : AIC=1756.441, Time=0.34 sec
+ ARIMA(1,1,2)(0,0,1)[12] intercept   : AIC=1756.441, Time=0.33 sec
  ARIMA(1,1,2)(1,0,0)[12] intercept   : AIC=1756.422, Time=0.35 sec
- ARIMA(1,1,2)(1,0,1)[12] intercept   : AIC=inf, Time=1.17 sec
- ARIMA(1,1,3)(0,0,0)[12] intercept   : AIC=1758.360, Time=0.30 sec
- ARIMA(1,1,3)(0,0,1)[12] intercept   : AIC=1760.296, Time=0.44 sec
- ARIMA(1,1,3)(1,0,0)[12] intercept   : AIC=1760.294, Time=0.41 sec
- ARIMA(2,1,0)(0,0,0)[12] intercept   : AIC=1752.513, Time=0.07 sec
- ARIMA(2,1,0)(0,0,1)[12] intercept   : AIC=1754.429, Time=0.16 sec
- ARIMA(2,1,0)(1,0,0)[12] intercept   : AIC=1754.393, Time=0.20 sec
- ARIMA(2,1,0)(1,0,1)[12] intercept   : AIC=inf, Time=0.95 sec
+ ARIMA(1,1,2)(1,0,1)[12] intercept   : AIC=inf, Time=1.15 sec
+ ARIMA(1,1,3)(0,0,0)[12] intercept   : AIC=1758.360, Time=0.33 sec
+ ARIMA(1,1,3)(0,0,1)[12] intercept   : AIC=1760.296, Time=0.43 sec
+ ARIMA(1,1,3)(1,0,0)[12] intercept   : AIC=1760.294, Time=0.44 sec
+ ARIMA(2,1,0)(0,0,0)[12] intercept   : AIC=1752.513, Time=0.05 sec
+ ARIMA(2,1,0)(0,0,1)[12] intercept   : AIC=1754.429, Time=0.12 sec
+ ARIMA(2,1,0)(1,0,0)[12] intercept   : AIC=1754.393, Time=0.16 sec
+ ARIMA(2,1,0)(1,0,1)[12] intercept   : AIC=inf, Time=0.89 sec
  ARIMA(2,1,1)(0,0,0)[12] intercept   : AIC=1753.954, Time=0.20 sec
- ARIMA(2,1,1)(0,0,1)[12] intercept   : AIC=1755.880, Time=0.47 sec
- ARIMA(2,1,1)(1,0,0)[12] intercept   : AIC=1755.865, Time=0.38 sec
- ARIMA(2,1,1)(1,0,1)[12] intercept   : AIC=inf, Time=1.08 sec
- ARIMA(2,1,2)(0,0,0)[12] intercept   : AIC=inf, Time=0.58 sec
- ARIMA(2,1,2)(0,0,1)[12] intercept   : AIC=inf, Time=1.24 sec
- ARIMA(2,1,2)(1,0,0)[12] intercept   : AIC=inf, Time=1.24 sec
- ARIMA(2,1,3)(0,0,0)[12] intercept   : AIC=inf, Time=0.61 sec
- ARIMA(3,1,0)(0,0,0)[12] intercept   : AIC=1754.642, Time=0.11 sec
- ARIMA(3,1,0)(0,0,1)[12] intercept   : AIC=1756.554, Time=0.17 sec
- ARIMA(3,1,0)(1,0,0)[12] intercept   : AIC=1756.505, Time=0.16 sec
- ARIMA(3,1,0)(1,0,1)[12] intercept   : AIC=inf, Time=1.19 sec
- ARIMA(3,1,1)(0,0,0)[12] intercept   : AIC=1755.648, Time=0.18 sec
- ARIMA(3,1,1)(0,0,1)[12] intercept   : AIC=1757.592, Time=0.60 sec
- ARIMA(3,1,1)(1,0,0)[12] intercept   : AIC=1757.591, Time=0.71 sec
- ARIMA(3,1,2)(0,0,0)[12] intercept   : AIC=inf, Time=0.61 sec
+ ARIMA(2,1,1)(0,0,1)[12] intercept   : AIC=1755.880, Time=0.44 sec
+ ARIMA(2,1,1)(1,0,0)[12] intercept   : AIC=1755.865, Time=0.32 sec
+ ARIMA(2,1,1)(1,0,1)[12] intercept   : AIC=inf, Time=1.00 sec
+ ARIMA(2,1,2)(0,0,0)[12] intercept   : AIC=inf, Time=0.55 sec
+ ARIMA(2,1,2)(0,0,1)[12] intercept   : AIC=inf, Time=1.15 sec
+ ARIMA(2,1,2)(1,0,0)[12] intercept   : AIC=inf, Time=1.08 sec
+ ARIMA(2,1,3)(0,0,0)[12] intercept   : AIC=inf, Time=0.60 sec
+ ARIMA(3,1,0)(0,0,0)[12] intercept   : AIC=1754.642, Time=0.08 sec
+ ARIMA(3,1,0)(0,0,1)[12] intercept   : AIC=1756.554, Time=0.15 sec
+ ARIMA(3,1,0)(1,0,0)[12] intercept   : AIC=1756.505, Time=0.15 sec
+ ARIMA(3,1,0)(1,0,1)[12] intercept   : AIC=inf, Time=1.04 sec
+ ARIMA(3,1,1)(0,0,0)[12] intercept   : AIC=1755.648, Time=0.20 sec
+ ARIMA(3,1,1)(0,0,1)[12] intercept   : AIC=1757.592, Time=0.56 sec
+ ARIMA(3,1,1)(1,0,0)[12] intercept   : AIC=1757.591, Time=0.61 sec
+ ARIMA(3,1,2)(0,0,0)[12] intercept   : AIC=inf, Time=0.58 sec
 
 Best model:  ARIMA(0,1,0)(0,0,0)[12] intercept
-Total fit time: 21.868 seconds
+Total fit time: 20.778 seconds
                                SARIMAX Results                                
 ==============================================================================
 Dep. Variable:                      y   No. Observations:                   80
 Model:               SARIMAX(0, 1, 0)   Log Likelihood                -871.495
-Date:                Thu, 11 Jun 2026   AIC                           1746.990
-Time:                        14:43:21   BIC                           1751.729
+Date:                Wed, 17 Jun 2026   AIC                           1746.990
+Time:                        17:43:31   BIC                           1751.729
 Sample:                    01-01-2017   HQIC                          1748.889
                          - 08-01-2023                                         
 Covariance Type:                  opg                                         
@@ -1303,7 +2030,7 @@ Warnings:
 [1] Covariance matrix calculated using the outer product of gradients (complex-step).</code></pre>
 </div>
 </div>
-<div id="4096c963" class="cell" data-execution_count="9">
+<div id="31cbaaf6" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># change period index to datetime timestamps</span></span>
@@ -1340,7 +2067,7 @@ font-style: inherit;">as</span> plt</span>
 <p><img src="https://latex.codecogs.com/png.latex?%5Ctext%7BInitial%20Residual%7D%20=%20%5Ctext%7BActual%7D%20-%20(Y_%7Bt-1%7D%20+%20%5Ctext%7BDrift%7D)"></p>
 <p>Hence, we use the residuals as the target Y value using the XGBoost model we optimised in part 1.</p>
 <p>I tried using ARIMA on price_per_sqm instead of resale price but it did not work out. Hence, for XGBoost, we will add floor_area_sqm as a numerical variable.</p>
-<div id="44418686" class="cell" data-execution_count="10">
+<div id="50b43bca" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Convert to datetime objects</span></span>
@@ -1670,7 +2397,7 @@ font-style: inherit;">'y_test'</span>]])</span></code></pre></div></div>
 [67271 rows x 3 columns]</code></pre>
 </div>
 </div>
-<div id="e766194b" class="cell" data-execution_count="11">
+<div id="96754f79" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># find the r^2 and rmse</span></span>
@@ -1711,7 +2438,7 @@ font-style: inherit;">"</span>)</span></code></pre></div></div>
 ARIMA + XGBoost RMSE: 63766.82</code></pre>
 </div>
 </div>
-<div id="db06e3f1" class="cell" data-execution_count="12">
+<div id="df2f3abb" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Group by month so it becomes a clean line</span></span>
@@ -1791,6 +2518,10 @@ font-style: inherit;">"HDB True vs Predicted Trend"</span>)</span>
 <p>It is evident that the ARIMA + XGBoost hybrid model performs better than the XGBoost model with only a Lag_1 feature, as it achieved a higher R² and lower RMSE. This result is expected because ARIMA is able to capture the linear temporal patterns in the time series, while XGBoost can model the nonlinear relationships present in the residuals.</p>
 <p>One limitation of ARIMA is that it requires the time series to be stationary. Initially, price_per_sqm was considered as the target variable. However, ADF tests showed that the series remained non-stationary even after applying first-order and seasonal differencing. In contrast, the median resale_price series became stationary after differencing and was therefore more suitable for ARIMA modelling. As a result, median resale_price was selected as the target variable for the hybrid ARIMA-XGBoost model.</p>
 <p>In the next blog, we will experiment with a more modern time series forecasting model, Prophet, and evaluate how it compares with our ARIMA-XGBoost hybrid approach. Beyond forecasting accuracy, we aim to build an interactive platform where users can estimate future HDB resale prices based on housing characteristics and their planned purchase date. This could serve as a practical financial planning tool, helping prospective homeowners make more informed decisions about when and what to buy.</p>
+</section>
+<section id="image-credits" class="level1">
+<h1>Image Credits</h1>
+<p>Photo by <a href="https://unsplash.com/@jiachenlin?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Jiachen Lin</a> on <a href="https://unsplash.com/photos/city-skyline-under-cloudy-sky-during-daytime-AIk_5-M9Uho?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></p>
 
 
 </section>
@@ -1801,7 +2532,7 @@ font-style: inherit;">"HDB True vs Predicted Trend"</span>)</span>
   <category>XGBoost</category>
   <guid>https://yingghui23.github.io/personal-blog/posts/hdb-predict2/</guid>
   <pubDate>Wed, 10 Jun 2026 16:00:00 GMT</pubDate>
-  <media:content url="https://yingghui23.github.io/personal-blog/posts/hdb-predict2/hdb.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://yingghui23.github.io/personal-blog/posts/hdb-predict2/hdb2.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Which HDB resale flat is the best buy (Part 1)?</title>
