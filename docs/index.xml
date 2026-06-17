@@ -10,7 +10,7 @@
 <atom:link href="https://yingghui23.github.io/personal-blog/index.xml" rel="self" type="application/rss+xml"/>
 <description>A data analytics and statistics blog</description>
 <generator>quarto-1.9.38</generator>
-<lastBuildDate>Sat, 13 Jun 2026 16:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 16 Jun 2026 16:00:00 GMT</lastBuildDate>
 <item>
   <title>Battle between ARIMA and Prophet hybrid model? (HDB Prediction Part 3)</title>
   <dc:creator>Ying Hui Tan</dc:creator>
@@ -27,7 +27,11 @@
 <p>Similarly, as would train the data with prophet first, then get the residuals and use them in our XGBoost model.</p>
 <p>The rough equation of the model would be:</p>
 <p><img src="https://latex.codecogs.com/png.latex?%5Chat%7By%7D%5E%7B%5Ctext%7BHybrid%7D%7D_t%20=%20%5Chat%7By%7D%5E%7B%5Ctext%7BProphet%7D%7D_t%20+%20f_%7B%5Ctext%7BXGBoost%7D%7D(X_t)"><img src="https://latex.codecogs.com/png.latex?%5Chat%7By%7D%5E%7B%5Ctext%7BProphet%7D%7D_t%20=%20g(t)%20+%20s(t)%20+%20h(t)"></p>
-<div id="fa51a19c" class="cell" data-execution_count="2">
+<hr>
+</section>
+<section id="prophet-time-series-training" class="level1">
+<h1>Prophet Time Series (training)</h1>
+<div id="af6bb3ef" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> kagglehub</span>
@@ -114,7 +118,7 @@ font-style: inherit;">print</span>(tw)</span></code></pre></div></div>
 [112 rows x 2 columns]</code></pre>
 </div>
 </div>
-<div id="50d0ee95" class="cell" data-execution_count="3">
+<div id="97060e14" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># clean data and find the datasets where there's no one month gap</span></span>
@@ -176,7 +180,7 @@ Columns: [month, resale_price]
 Index: []</code></pre>
 </div>
 </div>
-<div id="a6d32459" class="cell" data-execution_count="4">
+<div id="722e3dc1" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> prophet <span class="im" style="color: #00769E;
@@ -253,23 +257,23 @@ font-style: inherit;">=</span> m.plot(forecast)</span>
 background-color: null;
 font-style: inherit;">=</span> m.plot_components(forecast)</span></code></pre></div></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>16:52:46 - cmdstanpy - INFO - Chain [1] start processing
-16:52:49 - cmdstanpy - INFO - Chain [1] done processing</code></pre>
+<pre><code>20:15:37 - cmdstanpy - INFO - Chain [1] start processing
+20:15:38 - cmdstanpy - INFO - Chain [1] done processing</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          ds          trend     yhat_lower     yhat_upper    trend_lower  \
-0 2023-09-01  558849.370096  552604.633622  563798.820489  558746.162052   
-1 2023-10-01  561162.446318  553848.406642  565118.719271  560753.258154   
-2 2023-11-01  563552.625080  559125.586436  570562.188938  562699.942866   
-3 2023-12-01  565865.701301  559326.380723  571272.637096  564341.512977   
-4 2024-01-01  568255.880063  558660.703509  570868.944184  566068.790828   
+0 2023-09-01  558849.370096  552319.190334  564354.845111  558783.533872   
+1 2023-10-01  561162.446318  553832.012165  565414.784953  560800.621511   
+2 2023-11-01  563552.625080  559366.765040  570280.953087  562741.105837   
+3 2023-12-01  565865.701301  559526.083789  570701.068404  564551.119505   
+4 2024-01-01  568255.880063  558890.202251  570752.103019  566330.661162   
 
      trend_upper  additive_terms  additive_terms_lower  additive_terms_upper  \
-0  558945.751019     -550.920144           -550.920144           -550.920144   
-1  561525.052946    -1609.842240          -1609.842240          -1609.842240   
-2  564315.660757     1243.529068           1243.529068           1243.529068   
-3  567284.627229     -765.374608           -765.374608           -765.374608   
-4  570341.908213    -3523.174366          -3523.174366          -3523.174366   
+0  558935.463903     -550.920144           -550.920144           -550.920144   
+1  561553.983686    -1609.842240          -1609.842240          -1609.842240   
+2  564329.198715     1243.529068           1243.529068           1243.529068   
+3  567194.510181     -765.374608           -765.374608           -765.374608   
+4  570339.292116    -3523.174366          -3523.174366          -3523.174366   
 
         yearly  yearly_lower  yearly_upper  multiplicative_terms  \
 0  -550.920144   -550.920144   -550.920144                   0.0   
@@ -300,7 +304,13 @@ font-style: inherit;">=</span> m.plot_components(forecast)</span></code></pre></
 </div>
 </div>
 </div>
-<div id="b0bd0ae8" class="cell" data-execution_count="5">
+<p>Overall trend suggest that price increases as time pass. We can observe that the standard deviation increases (blue shaded area). Prophet predictions provides the percentiles, which can definitely be used in many context. This is what ARIMA or LAG_1 XGBoost do not provide.</p>
+<p>Users may use the upper and lower prediction bounds to evaluate best-case and worst-case scenarios when making housing purchase decisions. This made Prophet more valuable compared to ARIMA hybrid model.</p>
+<hr>
+</section>
+<section id="xgboost-on-residuals" class="level1">
+<h1>XGBoost on Residuals</h1>
+<div id="acadf1dc" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># get the residuals from the train data, use xgboost </span></span>
@@ -470,7 +480,11 @@ font-style: inherit;">'remaining_lease'</span>,<span class="st" style="color: #2
 background-color: null;
 font-style: inherit;">'floor_area_sqm'</span>]])</span></code></pre></div></div>
 </div>
-<div id="b700f495" class="cell" data-execution_count="6">
+<hr>
+</section>
+<section id="results" class="level1">
+<h1>Results</h1>
+<div id="ff312139" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> xgboost <span class="im" style="color: #00769E;
@@ -623,7 +637,7 @@ font-style: inherit;"># get the r^2 and RMSE for the resale_price vs the total p
 background-color: null;
 font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
 background-color: null;
-font-style: inherit;">f"R^2 Score for RandomForest: </span><span class="sc" style="color: #5E5E5E;
+font-style: inherit;">f"R^2 Score for Prophet-XGBoost Hybrid: </span><span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">{</span>r2_score(y_test, predictions)<span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -634,7 +648,7 @@ font-style: inherit;">"</span>)</span>
 background-color: null;
 font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
 background-color: null;
-font-style: inherit;">f"RMSE for RandomForest: </span><span class="sc" style="color: #5E5E5E;
+font-style: inherit;">f"RMSE for Prophet-XGBoost Hybrid: </span><span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">{</span>np<span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -644,11 +658,11 @@ font-style: inherit;">:.2f}</span><span class="ss" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"</span>)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>R^2 Score for RandomForest: 0.8900
-RMSE for RandomForest: 65315.72</code></pre>
+<pre><code>R^2 Score for Prophet-XGBoost Hybrid: 0.8900
+RMSE for Prophet-XGBoost Hybrid: 65315.72</code></pre>
 </div>
 </div>
-<div id="0581f121" class="cell" data-execution_count="7">
+<div id="50c73a87" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
@@ -718,6 +732,13 @@ font-style: inherit;">"HDB True vs Predicted Trend"</span>)</span>
 </div>
 </div>
 </div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://yingghui23.github.io/personal-blog/posts/hdb-predict3/table_1.png" class="img-fluid figure-img"></p>
+<figcaption>All Model Evaluation</figcaption>
+</figure>
+</div>
+<p>As we can see, ARIMA_XGBoost Hybrid model performs the best, followed by Prophet_XGBoost hybrid model. This is quite unexpected as Prophet is often seen as a model that takes more factors into consideration like the general trend, seasonality, and holiday.</p>
 
 
 </section>
@@ -728,8 +749,8 @@ font-style: inherit;">"HDB True vs Predicted Trend"</span>)</span>
   <category>XGBoost</category>
   <category>Prophet</category>
   <guid>https://yingghui23.github.io/personal-blog/posts/hdb-predict3/</guid>
-  <pubDate>Sat, 13 Jun 2026 16:00:00 GMT</pubDate>
-  <media:content url="https://yingghui23.github.io/personal-blog/posts/hdb-predict3/hdb2.jpg" medium="image" type="image/jpeg"/>
+  <pubDate>Tue, 16 Jun 2026 16:00:00 GMT</pubDate>
+  <media:content url="https://yingghui23.github.io/personal-blog/posts/hdb-predict3/table_1.png" medium="image" type="image/png" height="32" width="144"/>
 </item>
 <item>
   <title>How I Married ARIMA and XGBoost to Predict HDB Prices (HDB Prediction Part 2)</title>

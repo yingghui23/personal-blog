@@ -209,6 +209,12 @@ plt.title("HDB True vs Predicted Trend")
 plt.show()
 ```
 
+---
+
+# Comparing different models
+
 ![All Model Evaluation](table_1.png)
 
 As we can see, ARIMA_XGBoost Hybrid model performs the best, followed by Prophet_XGBoost hybrid model. This is quite unexpected as Prophet is often seen as a model that takes more factors into consideration like the general trend, seasonality, and holiday.
+
+As mentioned previously, prophet have the benefit of evaluating best and worst case scenario. In order to add more depth, the streamlit dashboard will show prophet model prediction as well so that users have more options. Of course, as ARIMA_XGBoost works the best, that would be our main model used for prediction.

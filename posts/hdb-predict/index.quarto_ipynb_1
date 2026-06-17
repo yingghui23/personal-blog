@@ -22,7 +22,7 @@
         "jupyter: python3\n",
         "---"
       ],
-      "id": "c53a63d0"
+      "id": "cf9b7337"
     },
     {
       "cell_type": "code",
@@ -58,7 +58,7 @@
         "    except ImportError:\n",
         "        subprocess.check_call([sys.executable, \"-m\", \"pip\", \"install\", package])"
       ],
-      "id": "65da4662",
+      "id": "f000d332",
       "execution_count": null,
       "outputs": []
     },
@@ -97,7 +97,7 @@
         "\n",
         "## Data Ingestion & Initial Inspection"
       ],
-      "id": "0dd549d7"
+      "id": "1106c315"
     },
     {
       "cell_type": "code",
@@ -123,7 +123,7 @@
         "print(hdb.info())\n",
         "print(hdb.describe())"
       ],
-      "id": "33e9743d",
+      "id": "bdcca741",
       "execution_count": null,
       "outputs": []
     },
@@ -146,7 +146,7 @@
         "\n",
         "The dependent variable (y), would be resale_price/floor_area_sqm, we can rename that as Price_per_sqm."
       ],
-      "id": "1555bb29"
+      "id": "c60fdb76"
     },
     {
       "cell_type": "code",
@@ -172,7 +172,7 @@
         "print(hdb[['year','month_val','town', 'flat_type', 'storey_mid', 'remaining_lease', 'price_per_sqm']].head())\n",
         "hdb_df = hdb[['year','town', 'flat_type', 'storey_mid', 'remaining_lease', 'price_per_sqm','month_val']]"
       ],
-      "id": "cacce999",
+      "id": "752168ad",
       "execution_count": null,
       "outputs": []
     },
@@ -182,7 +182,7 @@
       "source": [
         "After considering all features, we would plot these features to see the trend of features to price_per_sqm. Boxplot is used for categorical data such as flat type or town; normal line plot is used for numerical data."
       ],
-      "id": "d7cba193"
+      "id": "f7679201"
     },
     {
       "cell_type": "code",
@@ -234,7 +234,7 @@
         "plt.grid(True, linestyle='--', alpha=0.6)\n",
         "plt.show()"
       ],
-      "id": "334fe109",
+      "id": "998f5c0b",
       "execution_count": null,
       "outputs": []
     },
@@ -244,7 +244,7 @@
       "source": [
         "Boxplot for categorical data looks like different category varries in price_per_sqm. To confirm the suspicion, we can use ANOVA to determine if there is indeed difference between at least one group."
       ],
-      "id": "91c3c915"
+      "id": "ab0637ee"
     },
     {
       "cell_type": "code",
@@ -262,7 +262,7 @@
         "  print(anova)\n",
         "  print('\\n')"
       ],
-      "id": "f109e23b",
+      "id": "1a066b45",
       "execution_count": null,
       "outputs": []
     },
@@ -292,7 +292,7 @@
         "\n",
         "I use grid search to find the optimal hyperparameter and then use R-squared and Root Mean Square Error (RMSE) to determine which model is better overall."
       ],
-      "id": "2c23d266"
+      "id": "d01e7cd5"
     },
     {
       "cell_type": "code",
@@ -324,7 +324,7 @@
         "grid_search.fit(X_train.loc[tune_index], y_train.loc[tune_index])\n",
         "print(f\"Best parameters: {grid_search.best_params_}\")  # best max_depth = 30"
       ],
-      "id": "f955263f",
+      "id": "e4c85178",
       "execution_count": null,
       "outputs": []
     },
@@ -351,7 +351,7 @@
         "print(f\"R^2 Score for RandomForest: {r2_score(y_test, predictions):.4f}\")\n",
         "print(f\"RMSE for RandomForest: {np.sqrt(mean_squared_error(y_test, predictions)):.2f}\")"
       ],
-      "id": "feeb031b",
+      "id": "c8c024e6",
       "execution_count": null,
       "outputs": []
     },
@@ -361,7 +361,7 @@
       "source": [
         "## Using XGBRegressor"
       ],
-      "id": "b957c648"
+      "id": "a9c9c995"
     },
     {
       "cell_type": "code",
@@ -389,7 +389,7 @@
         "grid_search.fit(X_train.loc[tune_index], y_train.loc[tune_index])\n",
         "print(f\"Best parameters: {grid_search.best_params_}\")"
       ],
-      "id": "9ad513d5",
+      "id": "c9c2a2e5",
       "execution_count": null,
       "outputs": []
     },
@@ -406,7 +406,7 @@
         "print(f\"XGBoost R^2: {r2_score(y_test, xgb_preds):.4f}\")\n",
         "print(f\"XGBoost RMSE: {np.sqrt(mean_squared_error(y_test, xgb_preds)):.2f}\")"
       ],
-      "id": "30662a5f",
+      "id": "0c165ba6",
       "execution_count": null,
       "outputs": []
     },
@@ -420,7 +420,7 @@
         "\n",
         "## Actual vs Predicted Plot & Residual Plot"
       ],
-      "id": "3c216683"
+      "id": "aab48d3f"
     },
     {
       "cell_type": "code",
@@ -455,7 +455,7 @@
         "plt.ylabel('Residuals (Actual - Predicted)')\n",
         "plt.show()"
       ],
-      "id": "43a5f949",
+      "id": "e61442ed",
       "execution_count": null,
       "outputs": []
     },
@@ -467,7 +467,7 @@
         "\n",
         "## Top 10 Highest value flat features"
       ],
-      "id": "46e5d458"
+      "id": "d3833d36"
     },
     {
       "cell_type": "code",
@@ -489,7 +489,7 @@
         "top_bargains = analysis_df.sort_values(by='gap', ascending=False).head(10)\n",
         "print(top_bargains)"
       ],
-      "id": "1e2d4798",
+      "id": "0b25a576",
       "execution_count": null,
       "outputs": []
     },
@@ -503,7 +503,7 @@
         "\n",
         "## Extrapolating and predicting future prices"
       ],
-      "id": "c4743f26"
+      "id": "5cf9df5c"
     },
     {
       "cell_type": "code",
@@ -542,7 +542,7 @@
         "# most affordable\n",
         "print(search_df.sort_values('predicted_price', ascending=True).head(10))"
       ],
-      "id": "30f34d87",
+      "id": "fb165cb8",
       "execution_count": null,
       "outputs": []
     },
@@ -556,7 +556,7 @@
         "\n",
         "In the next blog, different time series model like ARIMA, Prophet, XGBoost prediction with time lag, or even neutral network will be discussed."
       ],
-      "id": "87fab30a"
+      "id": "a1285ade"
     }
   ],
   "metadata": {

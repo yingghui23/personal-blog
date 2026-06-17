@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Ying Hui Tan">
-<meta name="dcterms.date" content="2026-06-14">
+<meta name="dcterms.date" content="2026-06-17">
 <meta name="description" content="Evaluating different Time Series Method for the best price prediction.">
 
 <title>Battle between ARIMA and Prophet hybrid model? (HDB Prediction Part 3) – Confounding Human</title>
@@ -147,8 +147,10 @@ window.Quarto = {
 <meta property="og:site_name" content="Confounding Human">
 <meta name="twitter:title" content="Battle between ARIMA and Prophet hybrid model? (HDB Prediction Part 3)?">
 <meta name="twitter:description" content="Evaluating different Time Series Method for the best price prediction.">
-<meta name="twitter:image" content="https://yingghui23.github.io/personal-blog/posts/hdb-predict3/hdb2.jpg">
+<meta name="twitter:image" content="https://yingghui23.github.io/personal-blog/posts/hdb-predict3/table_1.png">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="253">
+<meta name="twitter:image-width" content="1134">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -225,7 +227,7 @@ window.Quarto = {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">June 14, 2026</p>
+        <p class="date">June 17, 2026</p>
       </div>
     </div>
     
@@ -250,7 +252,11 @@ window.Quarto = {
 <p>Similarly, as would train the data with prophet first, then get the residuals and use them in our XGBoost model.</p>
 <p>The rough equation of the model would be:</p>
 <p><span class="math display">\[\hat{y}^{\text{Hybrid}}_t = \hat{y}^{\text{Prophet}}_t + f_{\text{XGBoost}}(X_t)\]</span><span class="math display">\[\hat{y}^{\text{Prophet}}_t = g(t) + s(t) + h(t)\]</span></p>
-<div id="fa51a19c" class="cell" data-execution_count="2">
+<hr>
+</section>
+<section id="prophet-time-series-training" class="level1">
+<h1>Prophet Time Series (training)</h1>
+<div id="af6bb3ef" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> kagglehub</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
@@ -289,7 +295,7 @@ window.Quarto = {
 [112 rows x 2 columns]</code></pre>
 </div>
 </div>
-<div id="50d0ee95" class="cell" data-execution_count="3">
+<div id="97060e14" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># clean data and find the datasets where there's no one month gap</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>tw[<span class="st">'month'</span>] <span class="op">=</span> tw[<span class="st">'month'</span>].dt.to_timestamp()</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -311,7 +317,7 @@ Columns: [month, resale_price]
 Index: []</code></pre>
 </div>
 </div>
-<div id="a6d32459" class="cell" data-execution_count="4">
+<div id="722e3dc1" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> prophet <span class="im">import</span> Prophet</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pmdarima <span class="im">as</span> pm</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pmdarima.model_selection <span class="im">import</span> train_test_split</span>
@@ -334,23 +340,23 @@ Index: []</code></pre>
 <span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>fig1 <span class="op">=</span> m.plot(forecast)</span>
 <span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>fig2 <span class="op">=</span> m.plot_components(forecast)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>16:52:46 - cmdstanpy - INFO - Chain [1] start processing
-16:52:49 - cmdstanpy - INFO - Chain [1] done processing</code></pre>
+<pre><code>20:15:37 - cmdstanpy - INFO - Chain [1] start processing
+20:15:38 - cmdstanpy - INFO - Chain [1] done processing</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          ds          trend     yhat_lower     yhat_upper    trend_lower  \
-0 2023-09-01  558849.370096  552604.633622  563798.820489  558746.162052   
-1 2023-10-01  561162.446318  553848.406642  565118.719271  560753.258154   
-2 2023-11-01  563552.625080  559125.586436  570562.188938  562699.942866   
-3 2023-12-01  565865.701301  559326.380723  571272.637096  564341.512977   
-4 2024-01-01  568255.880063  558660.703509  570868.944184  566068.790828   
+0 2023-09-01  558849.370096  552319.190334  564354.845111  558783.533872   
+1 2023-10-01  561162.446318  553832.012165  565414.784953  560800.621511   
+2 2023-11-01  563552.625080  559366.765040  570280.953087  562741.105837   
+3 2023-12-01  565865.701301  559526.083789  570701.068404  564551.119505   
+4 2024-01-01  568255.880063  558890.202251  570752.103019  566330.661162   
 
      trend_upper  additive_terms  additive_terms_lower  additive_terms_upper  \
-0  558945.751019     -550.920144           -550.920144           -550.920144   
-1  561525.052946    -1609.842240          -1609.842240          -1609.842240   
-2  564315.660757     1243.529068           1243.529068           1243.529068   
-3  567284.627229     -765.374608           -765.374608           -765.374608   
-4  570341.908213    -3523.174366          -3523.174366          -3523.174366   
+0  558935.463903     -550.920144           -550.920144           -550.920144   
+1  561553.983686    -1609.842240          -1609.842240          -1609.842240   
+2  564329.198715     1243.529068           1243.529068           1243.529068   
+3  567194.510181     -765.374608           -765.374608           -765.374608   
+4  570339.292116    -3523.174366          -3523.174366          -3523.174366   
 
         yearly  yearly_lower  yearly_upper  multiplicative_terms  \
 0  -550.920144   -550.920144   -550.920144                   0.0   
@@ -381,7 +387,13 @@ Index: []</code></pre>
 </div>
 </div>
 </div>
-<div id="b0bd0ae8" class="cell" data-execution_count="5">
+<p>Overall trend suggest that price increases as time pass. We can observe that the standard deviation increases (blue shaded area). Prophet predictions provides the percentiles, which can definitely be used in many context. This is what ARIMA or LAG_1 XGBoost do not provide.</p>
+<p>Users may use the upper and lower prediction bounds to evaluate best-case and worst-case scenarios when making housing purchase decisions. This made Prophet more valuable compared to ARIMA hybrid model.</p>
+<hr>
+</section>
+<section id="xgboost-on-residuals" class="level1">
+<h1>XGBoost on Residuals</h1>
+<div id="acadf1dc" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the residuals from the train data, use xgboost </span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># predict on training dates</span></span>
@@ -406,7 +418,11 @@ Index: []</code></pre>
 <span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>test_merged <span class="op">=</span> test_merged[test_merged.isna().<span class="bu">any</span>(axis<span class="op">=</span><span class="dv">1</span>)]</span>
 <span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> pd.get_dummies(test_merged[[<span class="st">'town'</span>, <span class="st">'flat_type'</span>, <span class="st">'storey_mid'</span>, <span class="st">'remaining_lease'</span>,<span class="st">'floor_area_sqm'</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="b700f495" class="cell" data-execution_count="6">
+<hr>
+</section>
+<section id="results" class="level1">
+<h1>Results</h1>
+<div id="ff312139" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> xgboost <span class="im">import</span> XGBRegressor</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> r2_score, mean_squared_error</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -431,14 +447,14 @@ Index: []</code></pre>
 <span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> test_merged_final[<span class="st">'total_predict'</span>]</span>
 <span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co"># get the r^2 and RMSE for the resale_price vs the total predicted price</span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"R^2 Score for RandomForest: </span><span class="sc">{</span>r2_score(y_test, predictions)<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"RMSE for RandomForest: </span><span class="sc">{</span>np<span class="sc">.</span>sqrt(mean_squared_error(y_test, predictions))<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"R^2 Score for Prophet-XGBoost Hybrid: </span><span class="sc">{</span>r2_score(y_test, predictions)<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"RMSE for Prophet-XGBoost Hybrid: </span><span class="sc">{</span>np<span class="sc">.</span>sqrt(mean_squared_error(y_test, predictions))<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>R^2 Score for RandomForest: 0.8900
-RMSE for RandomForest: 65315.72</code></pre>
+<pre><code>R^2 Score for Prophet-XGBoost Hybrid: 0.8900
+RMSE for Prophet-XGBoost Hybrid: 65315.72</code></pre>
 </div>
 </div>
-<div id="0581f121" class="cell" data-execution_count="7">
+<div id="50c73a87" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>plot_data <span class="op">=</span> test_merged_final.groupby(<span class="st">'ds'</span>)[[<span class="st">'resale_price'</span>,<span class="st">'total_predict'</span>]].median().reset_index()</span>
@@ -456,6 +472,13 @@ RMSE for RandomForest: 65315.72</code></pre>
 </div>
 </div>
 </div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="table_1.png" class="img-fluid figure-img"></p>
+<figcaption>All Model Evaluation</figcaption>
+</figure>
+</div>
+<p>As we can see, ARIMA_XGBoost Hybrid model performs the best, followed by Prophet_XGBoost hybrid model. This is quite unexpected as Prophet is often seen as a model that takes more factors into consideration like the general trend, seasonality, and holiday.</p>
 
 
 </section>
