@@ -15,7 +15,7 @@ about:
 
 Hi, I'm Ying Hui. I am a student double-majoring in **Industrial Engineering and Statistics**.
 
-This blog is my digital sandbox where I combine my ISE background with data analytics to solve practical problems. My toolkit is split into two main worlds:
+This blog is my digital sandbox where I combine my ISE background with data analytics to solve practical and unpractical problems. My toolkit is split into two main worlds:
 
 * **The R Toolkit (Design of Experiments):** I use R to set up rigorous statistical experiments (DOE). This is where we deliberately change inputs in a system (like process variables) to figure out exactly what drives performance and cuts variance.
 * **The Python Toolkit (Machine Learning):** I use Python to build predictive models and machine learning pipelines—tinkering with things like Random Forests and hyperparameter tuning to forecast outcomes and optimize decisions.
@@ -25,8 +25,7 @@ Ultimately, this space is a collection of my project walk-throughs, engineering 
 ## Education
 
 National University of Singapore
-Bachelor of Engineering, Industrial and Systems Engineering | Aug 2023 - May 2027
-Second Major in Statistics
+Bachelor of Engineering, Industrial and Systems Engineering, Second Major in Statistics | Aug 2023 - May 2027
 
 ## Experience 
 

@@ -4,7 +4,7 @@ description: "Evaluating different Time Series Method for the best price predict
 author: "Ying Hui Tan"
 date: "2026-06-17"
 categories: [Time Series, ARIMA, XGBoost,Prophet]
-image: p3.jpg
+image: demo.png
 open-graph:
   title: "Battle between ARIMA and Prophet hybrid model? (HDB Prediction Part 3) | Confounding Human"
   description: "Evaluating different Time Series Method for the best price prediction."
@@ -218,3 +218,12 @@ plt.show()
 As we can see, ARIMA_XGBoost Hybrid model performs the best, followed by Prophet_XGBoost hybrid model. This is quite unexpected as Prophet is often seen as a model that takes more factors into consideration like the general trend, seasonality, and holiday.
 
 As mentioned previously, prophet have the benefit of evaluating best and worst case scenario. In order to add more depth, the streamlit dashboard will show prophet model prediction as well so that users have more options. Of course, as ARIMA_XGBoost works the best, that would be our main model used for prediction.
+
+Users would just need to key in the relevant features of the HDB they want to forecast, then add how many months of forecasted data they would prefer. This can be shown in the picture:
+
+![Streamlit demo](demo.png)
+
+Here is the link for the streamlit application for users to see the forecasts:
+
+https://hdbpredict-mm7oymwyumwmnabmmaegr7.streamlit.app/ 
+
