@@ -1,0 +1,18 @@
+---
+title: "Where Should Cross-Border Payments Go Next? A Data Look at Southeast Asia"
+description: ""
+author: "Ying Hui Tan"
+date: "2026-06-30"
+categories: [Machine Learning, XGBoost, Random Forest]
+image: hdb.jpg
+open-graph:
+  title: "Which HDB resale flat is the best buy? | Confounding Human"
+  description: "Evaluating different HDB features using ensemble model (Random Forest & XGBoost)."
+  image: coffee.jpg
+twitter-card:
+  card-style: summary_large_image
+  title: "Which HDB resale flat is the best buy?"
+  description: "Evaluating different HDB features using ensemble model (Random Forest & XGBoost)."
+jupyter: python3
+
+---
