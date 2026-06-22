@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Ying Hui Tan">
+<meta name="dcterms.date" content="2026-05-31">
 
-<title>My Blog – Confounding Human</title>
+<title>Welcome To My Blog – Confounding Human</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,26 +28,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./logo.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e647879dc0e26262fb7d9aca73064a4a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../logo.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-e647879dc0e26262fb7d9aca73064a4a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -73,81 +73,23 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
+<link rel="stylesheet" href="../../styles.css">
+</head>
 
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
-<link rel="alternate" type="application/rss+xml" title="Confounding Human" href="index.xml" data-external="1"></head>
-
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./logontitle.png" alt="" class="navbar-logo light-content">
-    <img src="./logontitle.png" alt="" class="navbar-logo dark-content">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../logontitle.png" alt="" class="navbar-logo light-content">
+    <img src="../../logontitle.png" alt="" class="navbar-logo dark-content">
     </a>
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Confounding Human</span>
     </a>
   </div>
@@ -158,7 +100,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About Me</span></a>
   </li>  
   <li class="nav-item compact">
@@ -181,229 +123,55 @@ window.Quarto = {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">My Blog</h1>
-                      </div>
+    <div class="quarto-title column-body">
+      <h1 class="title">Welcome To My Blog</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">intro</div>
+              </div>
+                  </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Ying Hui Tan </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">May 31, 2026</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(6)</span></div><div class="category" data-category="QVJJTUE=">ARIMA <span class="quarto-category-count">(2)</span></div><div class="category" data-category="QklCRA==">BIBD <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RE9F">DOE <span class="quarto-category-count">(1)</span></div><div class="category" data-category="aW50cm8=">intro <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TWFjaGluZSUyMExlYXJuaW5n">Machine Learning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UHJvcGhldA==">Prophet <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UmFuZG9tJTIwRm9yZXN0">Random Forest <span class="quarto-category-count">(1)</span></div><div class="category" data-category="VGltZSUyMFNlcmllcw==">Time Series <span class="quarto-category-count">(2)</span></div><div class="category" data-category="WEdCb29zdA==">XGBoost <span class="quarto-category-count">(3)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
+<p>Hi everyone! The main purpose of this blog is to record the projects I did during my academic year and venture on interesting projects along the way. When I was choosing my major, I have no idea what Industrial and Systems Engineering (ISE) is all about and the course page does not really provide much information. I guess for now, I feel that ISE is a major that provides a lot of breadth in different areas of study.</p>
+<p>I realised that Industrial and Systems Engineering consists of a lot of different components that many may not really understand, like Operation Research (OR), Design of Experiment (DoE), Discrete Event Simulation (DES), Time Series etc. I hope that through my blog, readers could understand what this major is truly about.</p>
+<p>Some areas that I am particularly interested is DoE and some Machine Learning implementations. Hope that this blog can provide a better understanding of what ISE truly is for people who are interested in knowing what ISE is about.</p>
+<p>For people who are geniunely interested in the blog, much appreciated if you could provide any forms of feedback on the analysis!</p>
+<p>As for why the blog name is called “Confounding Human”, I struggled with finding confounding factors in an Incomplete Block Design in a DoE module. Confounding is an interesting concept, just like how humans and experiments are; it is imperfect and always has unexpected outcomes.</p>
 
 
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-file-modified-sort="1782105743179">
-<div class="thumbnail"><a href="./posts/credit-card-fraud-detection/index.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/credit-card-fraud-detection/index.html" class="no-external"></a>
-</h3>
-<div class="delink listing-description"><a href="./posts/credit-card-fraud-detection/index.html" class="no-external">
-
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/credit-card-fraud-detection/index.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="VGltZSUyMFNlcmllcyUyQ0FSSU1BJTJDWEdCb29zdCUyQ1Byb3BoZXQ=" data-listing-date-sort="1781625600000" data-listing-file-modified-sort="1782031357249" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="782">
-<div class="thumbnail"><a href="./posts/hdb-predict3/index.html" class="no-external">
-
-<img loading="lazy" src="./posts/hdb-predict3/demo.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/hdb-predict3/index.html" class="no-external">Battle between ARIMA and Prophet hybrid model? (HDB Prediction Part 3)</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('VGltZSUyMFNlcmllcw=='); return false;">Time Series</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('QVJJTUE='); return false;">ARIMA</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('WEdCb29zdA=='); return false;">XGBoost</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHJvcGhldA=='); return false;">Prophet</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/hdb-predict3/index.html" class="no-external">
-<p>Evaluating different Time Series Method for the best price prediction.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/hdb-predict3/index.html" class="no-external">
-<div class="listing-date">
-Jun 17, 2026
-</div>
-<div class="listing-author">
-Ying Hui Tan
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="VGltZSUyMFNlcmllcyUyQ0FSSU1BJTJDWEdCb29zdA==" data-listing-date-sort="1781107200000" data-listing-file-modified-sort="1781708479382" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2388">
-<div class="thumbnail"><a href="./posts/hdb-predict2/index.html" class="no-external">
-
-<img loading="lazy" src="./posts/hdb-predict2/hdb2.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/hdb-predict2/index.html" class="no-external">How I Married ARIMA and XGBoost to Predict HDB Prices (HDB Prediction Part 2)</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('VGltZSUyMFNlcmllcw=='); return false;">Time Series</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('QVJJTUE='); return false;">ARIMA</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('WEdCb29zdA=='); return false;">XGBoost</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/hdb-predict2/index.html" class="no-external">
-<p>Evaluating different Time Series Method for the best price prediction.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/hdb-predict2/index.html" class="no-external">
-<div class="listing-date">
-Jun 11, 2026
-</div>
-<div class="listing-author">
-Ying Hui Tan
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDWEdCb29zdCUyQ1JhbmRvbSUyMEZvcmVzdA==" data-listing-date-sort="1780675200000" data-listing-file-modified-sort="1781708479386" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1634">
-<div class="thumbnail"><a href="./posts/hdb-predict/index.html" class="no-external">
-
-<img loading="lazy" src="./posts/hdb-predict/hdb.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/hdb-predict/index.html" class="no-external">Which HDB resale flat is the best buy (Part 1)?</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('WEdCb29zdA=='); return false;">XGBoost</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UmFuZG9tJTIwRm9yZXN0'); return false;">Random Forest</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/hdb-predict/index.html" class="no-external">
-<p>Evaluating different HDB features using ensemble model (Random Forest &amp; XGBoost).</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/hdb-predict/index.html" class="no-external">
-<div class="listing-date">
-Jun 6, 2026
-</div>
-<div class="listing-author">
-Ying Hui Tan
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="RE9FJTJDUiUyQ0JJQkQ=" data-listing-date-sort="1780243200000" data-listing-file-modified-sort="1780445557814" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1705">
-<div class="thumbnail"><a href="./posts/coffee-cooling-doe/index.html" class="no-external">
-
-<img loading="lazy" src="./posts/coffee-cooling-doe/coffee.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/coffee-cooling-doe/index.html" class="no-external">A 3x2x2 Factorial Design on Coffee Cooling</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('RE9F'); return false;">DOE</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('QklCRA=='); return false;">BIBD</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/coffee-cooling-doe/index.html" class="no-external">
-<p>Using an Analysis of Variance (ANOVA) and linear contrasts in R to determine the optimal combination of cup material, lids, and stirring for heat dispersal.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/coffee-cooling-doe/index.html" class="no-external">
-<div class="listing-date">
-Jun 1, 2026
-</div>
-<div class="listing-author">
-Ying Hui Tan
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="aW50cm8=" data-listing-date-sort="1780156800000" data-listing-file-modified-sort="1780445453457" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="230">
-<div class="thumbnail"><a href="./posts/welcome/index.html" class="no-external">
-
-<img loading="lazy" src="./posts/welcome/IMG_9731.jpeg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/welcome/index.html" class="no-external">Welcome To My Blog</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('aW50cm8='); return false;">intro</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/welcome/index.html" class="no-external">
-Hi everyone! The main purpose of this blog is to record the projects I did during my academic year and venture on interesting projects along the way. When I was choosing my…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/welcome/index.html" class="no-external">
-<div class="listing-date">
-May 31, 2026
-</div>
-<div class="listing-author">
-Ying Hui Tan
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
