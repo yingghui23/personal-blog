@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Confounding Human</title>
+<link>https://yingghui23.github.io/personal-blog/</link>
+<atom:link href="https://yingghui23.github.io/personal-blog/index.xml" rel="self" type="application/rss+xml"/>
+<description>A data analytics and statistics blog</description>
+<generator>quarto-1.9.38</generator>
+<lastBuildDate>Mon, 29 Jun 2026 16:00:00 GMT</lastBuildDate>
+<item>
+  <title>{B4F502887207:/posts/credit-card-fraud-detection/index.html}</title>
+  <dc:creator>Ying Hui Tan</dc:creator>
+  <link>https://yingghui23.github.io/personal-blog/posts/credit-card-fraud-detection/</link>
+  <description>{B4F502887207:/posts/credit-card-fraud-detection/index.html}</description>
+  <category>Machine Learning</category>
+  <category>XGBoost</category>
+  <category>Random Forest</category>
+  <guid>https://yingghui23.github.io/personal-blog/posts/credit-card-fraud-detection/</guid>
+  <pubDate>Mon, 29 Jun 2026 16:00:00 GMT</pubDate>
+  <media:content url="https://yingghui23.github.io/personal-blog/posts/credit-card-fraud-detection/hdb.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/hdb-predict3/index.html}</title>
+  <dc:creator>Ying Hui Tan</dc:creator>
+  <link>https://yingghui23.github.io/personal-blog/posts/hdb-predict3/</link>
+  <description>{B4F502887207:/posts/hdb-predict3/index.html}</description>
+  <category>Time Series</category>
+  <category>ARIMA</category>
+  <category>XGBoost</category>
+  <category>Prophet</category>
+  <guid>https://yingghui23.github.io/personal-blog/posts/hdb-predict3/</guid>
+  <pubDate>Tue, 16 Jun 2026 16:00:00 GMT</pubDate>
+  <media:content url="https://yingghui23.github.io/personal-blog/posts/hdb-predict3/demo.png" medium="image" type="image/png" height="65" width="144"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/hdb-predict2/index.html}</title>
+  <dc:creator>Ying Hui Tan</dc:creator>
+  <link>https://yingghui23.github.io/personal-blog/posts/hdb-predict2/</link>
+  <description>{B4F502887207:/posts/hdb-predict2/index.html}</description>
+  <category>Time Series</category>
+  <category>ARIMA</category>
+  <category>XGBoost</category>
+  <guid>https://yingghui23.github.io/personal-blog/posts/hdb-predict2/</guid>
+  <pubDate>Wed, 10 Jun 2026 16:00:00 GMT</pubDate>
+  <media:content url="https://yingghui23.github.io/personal-blog/posts/hdb-predict2/hdb2.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/hdb-predict/index.html}</title>
+  <dc:creator>Ying Hui Tan</dc:creator>
+  <link>https://yingghui23.github.io/personal-blog/posts/hdb-predict/</link>
+  <description>{B4F502887207:/posts/hdb-predict/index.html}</description>
+  <category>Machine Learning</category>
+  <category>XGBoost</category>
+  <category>Random Forest</category>
+  <guid>https://yingghui23.github.io/personal-blog/posts/hdb-predict/</guid>
+  <pubDate>Fri, 05 Jun 2026 16:00:00 GMT</pubDate>
+  <media:content url="https://yingghui23.github.io/personal-blog/posts/hdb-predict/hdb.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/coffee-cooling-doe/index.html}</title>
+  <dc:creator>Ying Hui Tan</dc:creator>
+  <link>https://yingghui23.github.io/personal-blog/posts/coffee-cooling-doe/</link>
+  <description>{B4F502887207:/posts/coffee-cooling-doe/index.html}</description>
+  <category>DOE</category>
+  <category>R</category>
+  <category>BIBD</category>
+  <guid>https://yingghui23.github.io/personal-blog/posts/coffee-cooling-doe/</guid>
+  <pubDate>Sun, 31 May 2026 16:00:00 GMT</pubDate>
+  <media:content url="https://yingghui23.github.io/personal-blog/posts/coffee-cooling-doe/coffee.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/welcome/index.html}</title>
+  <dc:creator>Ying Hui Tan</dc:creator>
+  <link>https://yingghui23.github.io/personal-blog/posts/welcome/</link>
+  <description>{B4F502887207:/posts/welcome/index.html}</description>
+  <category>intro</category>
+  <guid>https://yingghui23.github.io/personal-blog/posts/welcome/</guid>
+  <pubDate>Sat, 30 May 2026 16:00:00 GMT</pubDate>
+  <media:content url="https://yingghui23.github.io/personal-blog/posts/welcome/IMG_9731.jpeg" medium="image" type="image/jpeg"/>
+</item>
+</channel>
+</rss>
